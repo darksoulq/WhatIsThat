@@ -1,0 +1,7 @@
+name: WhatIsThat
+version: '1.0'
+main: me.darksoul.whatIsThat.WhatIsThat
+api-version: '1.21'
+
+softdepend:
+  - Minetorio

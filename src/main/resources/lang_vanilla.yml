@@ -1,0 +1,854 @@
+block:
+  STONE: Stone
+  GRANITE: Granite
+  POLISHED_GRANITE: Polished Granite
+  DIORITE: Diorite
+  POLISHED_DIORITE: Polished Diorite
+  ANDESITE: Andesite
+  POLISHED_ANDESITE: Polished Andesite
+  DEEPSLATE: Deepslate
+  COBBLED_DEEPSLATE: Cobbled Deepslate
+  POLISHED_DEEPSLATE: Polished Deepslate
+  CALCITE: Calcite
+  TUFF: Tuff
+  TUFF_SLAB: Tuff Slab
+  TUFF_STAIRS: Tuff Stairs
+  TUFF_WALL: Tuff Wall
+  CHISELED_TUFF: Chiseled Tuff
+  POLISHED_TUFF: Polished Tuff
+  POLISHED_TUFF_SLAB: Polished Tuff Slab
+  POLISHED_TUFF_STAIRS: Polished Tuff Stairs
+  POLISHED_TUFF_WALL: Polished Tuff Wall
+  TUFF_BRICKS: Tuff Bricks
+  TUFF_BRICK_SLAB: Tuff Brick Slab
+  TUFF_BRICK_STAIRS: Tuff Brick Stairs
+  TUFF_BRICK_WALL: Tuff Brick Wall
+  CHISELED_TUFF_BRICKS: Chiseled Tuff Bricks
+  DRIPSTONE_BLOCK: Dripstone Block
+  GRASS_BLOCK: Grass Block
+  DIRT: Dirt
+  COARSE_DIRT: Coarse Dirt
+  PODZOL: Podzol
+  ROOTED_DIRT: Rooted Dirt
+  MUD: Mud
+  CRIMSON_NYLIUM: Crimson Nylium
+  WARPED_NYLIUM: Warped Nylium
+  COBBLESTONE: Cobblestone
+  OAK_PLANKS: Oak Planks
+  SPRUCE_PLANKS: Spruce Planks
+  BIRCH_PLANKS: Birch Planks
+  JUNGLE_PLANKS: Jungle Planks
+  ACACIA_PLANKS: Acacia Planks
+  CHERRY_PLANKS: Cherry Planks
+  DARK_OAK_PLANKS: Dark Oak Planks
+  PALE_OAK_PLANKS: Pale Oak Planks
+  MANGROVE_PLANKS: Mangrove Planks
+  BAMBOO_PLANKS: Bamboo Planks
+  CRIMSON_PLANKS: Crimson Planks
+  WARPED_PLANKS: Warped Planks
+  BAMBOO_MOSAIC: Bamboo Mosaic
+  BEDROCK: Bedrock
+  SAND: Sand
+  SUSPICIOUS_SAND: Suspicious Sand
+  SUSPICIOUS_GRAVEL: Suspicious Gravel
+  RED_SAND: Red Sand
+  GRAVEL: Gravel
+  COAL_ORE: Coal Ore
+  DEEPSLATE_COAL_ORE: Deepslate Coal Ore
+  IRON_ORE: Iron Ore
+  DEEPSLATE_IRON_ORE: Deepslate Iron Ore
+  COPPER_ORE: Copper Ore
+  DEEPSLATE_COPPER_ORE: Deepslate Copper Ore
+  GOLD_ORE: Gold Ore
+  DEEPSLATE_GOLD_ORE: Deepslate Gold Ore
+  REDSTONE_ORE: Redstone Ore
+  DEEPSLATE_REDSTONE_ORE: Deepslate Redstone Ore
+  EMERALD_ORE: Emerald Ore
+  DEEPSLATE_EMERALD_ORE: Deepslate Emerald Ore
+  LAPIS_ORE: Lapis Ore
+  DEEPSLATE_LAPIS_ORE: Deepslate Lapis Ore
+  DIAMOND_ORE: Diamond Ore
+  DEEPSLATE_DIAMOND_ORE: Deepslate Diamond Ore
+  NETHER_GOLD_ORE: Nether Gold Ore
+  NETHER_QUARTZ_ORE: Nether Quartz Ore
+  ANCIENT_DEBRIS: Ancient Debris
+  COAL_BLOCK: Coal Block
+  RAW_IRON_BLOCK: Raw Iron Block
+  RAW_COPPER_BLOCK: Raw Copper Block
+  RAW_GOLD_BLOCK: Raw Gold Block
+  AMETHYST_BLOCK: Amethyst Block
+  BUDDING_AMETHYST: Budding Amethyst
+  IRON_BLOCK: Iron Block
+  COPPER_BLOCK: Copper Block
+  GOLD_BLOCK: Gold Block
+  DIAMOND_BLOCK: Diamond Block
+  NETHERITE_BLOCK: Netherite Block
+  EXPOSED_COPPER: Exposed Copper
+  WEATHERED_COPPER: Weathered Copper
+  OXIDIZED_COPPER: Oxidized Copper
+  CHISELED_COPPER: Chiseled Copper
+  EXPOSED_CHISELED_COPPER: Exposed Chiseled Copper
+  WEATHERED_CHISELED_COPPER: Weathered Chiseled Copper
+  OXIDIZED_CHISELED_COPPER: Oxidized Chiseled Copper
+  CUT_COPPER: Cut Copper
+  EXPOSED_CUT_COPPER: Exposed Cut Copper
+  WEATHERED_CUT_COPPER: Weathered Cut Copper
+  OXIDIZED_CUT_COPPER: Oxidized Cut Copper
+  CUT_COPPER_STAIRS: Cut Copper Stairs
+  EXPOSED_CUT_COPPER_STAIRS: Exposed Cut Copper Stairs
+  WEATHERED_CUT_COPPER_STAIRS: Weathered Cut Copper Stairs
+  OXIDIZED_CUT_COPPER_STAIRS: Oxidized Cut Copper Stairs
+  CUT_COPPER_SLAB: Cut Copper Slab
+  EXPOSED_CUT_COPPER_SLAB: Exposed Cut Copper Slab
+  WEATHERED_CUT_COPPER_SLAB: Weathered Cut Copper Slab
+  OXIDIZED_CUT_COPPER_SLAB: Oxidized Cut Copper Slab
+  WAXED_COPPER_BLOCK: Waxed Copper Block
+  WAXED_EXPOSED_COPPER: Waxed Exposed Copper
+  WAXED_WEATHERED_COPPER: Waxed Weathered Copper
+  WAXED_OXIDIZED_COPPER: Waxed Oxidized Copper
+  WAXED_CHISELED_COPPER: Waxed Chiseled Copper
+  WAXED_EXPOSED_CHISELED_COPPER: Waxed Exposed Chiseled Copper
+  WAXED_WEATHERED_CHISELED_COPPER: Waxed Weathered Chiseled Copper
+  WAXED_OXIDIZED_CHISELED_COPPER: Waxed Oxidized Chiseled Copper
+  WAXED_CUT_COPPER: Waxed Cut Copper
+  WAXED_EXPOSED_CUT_COPPER: Waxed Exposed Cut Copper
+  WAXED_WEATHERED_CUT_COPPER: Waxed Weathered Cut Copper
+  WAXED_OXIDIZED_CUT_COPPER: Waxed Oxidized Cut Copper
+  WAXED_CUT_COPPER_STAIRS: Waxed Cut Copper Stairs
+  WAXED_EXPOSED_CUT_COPPER_STAIRS: Waxed Exposed Cut Copper Stairs
+  WAXED_WEATHERED_CUT_COPPER_STAIRS: Waxed Weathered Cut Copper Stairs
+  WAXED_OXIDIZED_CUT_COPPER_STAIRS: Waxed Oxidized Cut Copper Stairs
+  WAXED_CUT_COPPER_SLAB: Waxed Cut Copper Slab
+  WAXED_EXPOSED_CUT_COPPER_SLAB: Waxed Exposed Cut Copper Slab
+  WAXED_WEATHERED_CUT_COPPER_SLAB: Waxed Weathered Cut Copper Slab
+  WAXED_OXIDIZED_CUT_COPPER_SLAB: Waxed Oxidized Cut Copper Slab
+  OAK_LOG: Oak Log
+  SPRUCE_LOG: Spruce Log
+  BIRCH_LOG: Birch Log
+  JUNGLE_LOG: Jungle Log
+  ACACIA_LOG: Acacia Log
+  CHERRY_LOG: Cherry Log
+  PALE_OAK_LOG: Pale Oak Log
+  DARK_OAK_LOG: Dark Oak Log
+  MANGROVE_LOG: Mangrove Log
+  MANGROVE_ROOTS: Mangrove Roots
+  MUDDY_MANGROVE_ROOTS: Muddy Mangrove Roots
+  CRIMSON_STEM: Crimson Stem
+  WARPED_STEM: Warped Stem
+  BAMBOO_BLOCK: Bamboo Block
+  STRIPPED_OAK_LOG: Stripped Oak Log
+  STRIPPED_SPRUCE_LOG: Stripped Spruce Log
+  STRIPPED_BIRCH_LOG: Stripped Birch Log
+  STRIPPED_JUNGLE_LOG: Stripped Jungle Log
+  STRIPPED_ACACIA_LOG: Stripped Acacia Log
+  STRIPPED_CHERRY_LOG: Stripped Cherry Log
+  STRIPPED_DARK_OAK_LOG: Stripped Dark Oak Log
+  STRIPPED_PALE_OAK_LOG: Stripped Pale Oak Log
+  STRIPPED_MANGROVE_LOG: Stripped Mangrove Log
+  STRIPPED_CRIMSON_STEM: Stripped Crimson Stem
+  STRIPPED_WARPED_STEM: Stripped Warped Stem
+  STRIPPED_OAK_WOOD: Stripped Oak Wood
+  STRIPPED_SPRUCE_WOOD: Stripped Spruce Wood
+  STRIPPED_BIRCH_WOOD: Stripped Birch Wood
+  STRIPPED_JUNGLE_WOOD: Stripped Jungle Wood
+  STRIPPED_ACACIA_WOOD: Stripped Acacia Wood
+  STRIPPED_CHERRY_WOOD: Stripped Cherry Wood
+  STRIPPED_DARK_OAK_WOOD: Stripped Dark Oak Wood
+  STRIPPED_PALE_OAK_WOOD: Stripped Pale Oak Wood
+  STRIPPED_MANGROVE_WOOD: Stripped Mangrove Wood
+  STRIPPED_CRIMSON_HYPHAE: Stripped Crimson Hyphae
+  STRIPPED_WARPED_HYPHAE: Stripped Warped Hyphae
+  STRIPPED_BAMBOO_BLOCK: Stripped Bamboo Block
+  OAK_WOOD: Oak Wood
+  SPRUCE_WOOD: Spruce Wood
+  BIRCH_WOOD: Birch Wood
+  JUNGLE_WOOD: Jungle Wood
+  ACACIA_WOOD: Acacia Wood
+  CHERRY_WOOD: Cherry Wood
+  PALE_OAK_WOOD: Pale Oak Wood
+  DARK_OAK_WOOD: Dark Oak Wood
+  MANGROVE_WOOD: Mangrove Wood
+  CRIMSON_HYPHAE: Crimson Hyphae
+  WARPED_HYPHAE: Warped Hyphae
+  OAK_LEAVES: Oak Leaves
+  SPRUCE_LEAVES: Spruce Leaves
+  BIRCH_LEAVES: Birch Leaves
+  JUNGLE_LEAVES: Jungle Leaves
+  ACACIA_LEAVES: Acacia Leaves
+  CHERRY_LEAVES: Cherry Leaves
+  DARK_OAK_LEAVES: Dark Oak Leaves
+  PALE_OAK_LEAVES: Pale Oak Leaves
+  MANGROVE_LEAVES: Mangrove Leaves
+  AZALEA_LEAVES: Azalea Leaves
+  FLOWERING_AZALEA_LEAVES: Flowering Azalea Leaves
+  SPONGE: Sponge
+  WET_SPONGE: Wet Sponge
+  GLASS: Glass
+  TINTED_GLASS: Tinted Glass
+  LAPIS_BLOCK: Lapis Block
+  SANDSTONE: Sandstone
+  CHISELED_SANDSTONE: Chiseled Sandstone
+  CUT_SANDSTONE: Cut Sandstone
+  WHITE_WOOL: White Wool
+  ORANGE_WOOL: Orange Wool
+  MAGENTA_WOOL: Magenta Wool
+  LIGHT_BLUE_WOOL: Light Blue Wool
+  YELLOW_WOOL: Yellow Wool
+  LIME_WOOL: Lime Wool
+  PINK_WOOL: Pink Wool
+  GRAY_WOOL: Gray Wool
+  LIGHT_GRAY_WOOL: Light Gray Wool
+  CYAN_WOOL: Cyan Wool
+  PURPLE_WOOL: Purple Wool
+  BLUE_WOOL: Blue Wool
+  BROWN_WOOL: Brown Wool
+  GREEN_WOOL: Green Wool
+  RED_WOOL: Red Wool
+  BLACK_WOOL: Black Wool
+  MOSS_BLOCK: Moss Block
+  PALE_MOSS_BLOCK: Pale Moss Block
+  BAMBOO: Bamboo
+  OAK_SLAB: Oak Slab
+  SPRUCE_SLAB: Spruce Slab
+  BIRCH_SLAB: Birch Slab
+  JUNGLE_SLAB: Jungle Slab
+  ACACIA_SLAB: Acacia Slab
+  CHERRY_SLAB: Cherry Slab
+  DARK_OAK_SLAB: Dark Oak Slab
+  PALE_OAK_SLAB: Pale Oak Slab
+  MANGROVE_SLAB: Mangrove Slab
+  BAMBOO_SLAB: Bamboo Slab
+  BAMBOO_MOSAIC_SLAB: Bamboo Mosaic Slab
+  CRIMSON_SLAB: Crimson Slab
+  WARPED_SLAB: Warped Slab
+  STONE_SLAB: Stone Slab
+  SMOOTH_STONE_SLAB: Smooth Stone Slab
+  SANDSTONE_SLAB: Sandstone Slab
+  CUT_SANDSTONE_SLAB: Cut Sandstone Slab
+  PETRIFIED_OAK_SLAB: Petrified Oak Slab
+  COBBLESTONE_SLAB: Cobblestone Slab
+  BRICK_SLAB: Brick Slab
+  STONE_BRICK_SLAB: Stone Brick Slab
+  MUD_BRICK_SLAB: Mud Brick Slab
+  NETHER_BRICK_SLAB: Nether Brick Slab
+  QUARTZ_SLAB: Quartz Slab
+  RED_SANDSTONE_SLAB: Red Sandstone Slab
+  CUT_RED_SANDSTONE_SLAB: Cut Red Sandstone Slab
+  PURPUR_SLAB: Purpur Slab
+  PRISMARINE_SLAB: Prismarine Slab
+  PRISMARINE_BRICK_SLAB: Prismarine Brick Slab
+  DARK_PRISMARINE_SLAB: Dark Prismarine Slab
+  SMOOTH_QUARTZ: Smooth Quartz
+  SMOOTH_RED_SANDSTONE: Smooth Red Sandstone
+  SMOOTH_SANDSTONE: Smooth Sandstone
+  SMOOTH_STONE: Smooth Stone
+  BRICKS: Bricks
+  BOOKSHELF: Bookshelf
+  CHISELED_BOOKSHELF: Chiseled Bookshelf
+  DECORATED_POT: Decorated Pot
+  MOSSY_COBBLESTONE: Mossy Cobblestone
+  OBSIDIAN: Obsidian
+  PURPUR_BLOCK: Purpur Block
+  PURPUR_PILLAR: Purpur Pillar
+  PURPUR_STAIRS: Purpur Stairs
+  SPAWNER: Spawner
+  CREAKING_HEART: Creaking Heart
+  CHEST: Chest
+  CRAFTING_TABLE: Crafting Table
+  FARMLAND: Farmland
+  FURNACE: Furnace
+  COBBLESTONE_STAIRS: Cobblestone Stairs
+  ICE: Ice
+  SNOW_BLOCK: Snow Block
+  CACTUS: Cactus
+  CLAY: Clay
+  JUKEBOX: Jukebox
+  OAK_FENCE: Oak Fence
+  SPRUCE_FENCE: Spruce Fence
+  BIRCH_FENCE: Birch Fence
+  JUNGLE_FENCE: Jungle Fence
+  ACACIA_FENCE: Acacia Fence
+  CHERRY_FENCE: Cherry Fence
+  DARK_OAK_FENCE: Dark Oak Fence
+  PALE_OAK_FENCE: Pale Oak Fence
+  MANGROVE_FENCE: Mangrove Fence
+  BAMBOO_FENCE: Bamboo Fence
+  CRIMSON_FENCE: Crimson Fence
+  WARPED_FENCE: Warped Fence
+  PUMPKIN: Pumpkin
+  CARVED_PUMPKIN: Carved Pumpkin
+  JACK_O_LANTERN: Jack O Lantern
+  NETHERRACK: Netherrack
+  SOUL_SAND: Soul Sand
+  SOUL_SOIL: Soul Soil
+  BASALT: Basalt
+  POLISHED_BASALT: Polished Basalt
+  SMOOTH_BASALT: Smooth Basalt
+  GLOWSTONE: Glowstone
+  INFESTED_STONE: Infested Stone
+  INFESTED_COBBLESTONE: Infested Cobblestone
+  INFESTED_STONE_BRICKS: Infested Stone Bricks
+  INFESTED_MOSSY_STONE_BRICKS: Infested Mossy Stone Bricks
+  INFESTED_CRACKED_STONE_BRICKS: Infested Cracked Stone Bricks
+  INFESTED_CHISELED_STONE_BRICKS: Infested Chiseled Stone Bricks
+  INFESTED_DEEPSLATE: Infested Deepslate
+  STONE_BRICKS: Stone Bricks
+  MOSSY_STONE_BRICKS: Mossy Stone Bricks
+  CRACKED_STONE_BRICKS: Cracked Stone Bricks
+  CHISELED_STONE_BRICKS: Chiseled Stone Bricks
+  PACKED_MUD: Packed Mud
+  MUD_BRICKS: Mud Bricks
+  DEEPSLATE_BRICKS: Deepslate Bricks
+  CRACKED_DEEPSLATE_BRICKS: Cracked Deepslate Bricks
+  DEEPSLATE_TILES: Deepslate Tiles
+  CRACKED_DEEPSLATE_TILES: Cracked Deepslate Tiles
+  CHISELED_DEEPSLATE: Chiseled Deepslate
+  REINFORCED_DEEPSLATE: Reinforced Deepslate
+  BROWN_MUSHROOM_BLOCK: Brown Mushroom Block
+  RED_MUSHROOM_BLOCK: Red Mushroom Block
+  MUSHROOM_STEM: Mushroom Stem
+  IRON_BARS: Iron Bars
+  CHAIN: Chain
+  GLASS_PANE: Glass Pane
+  MELON: Melon
+  BRICK_STAIRS: Brick Stairs
+  STONE_BRICK_STAIRS: Stone Brick Stairs
+  MUD_BRICK_STAIRS: Mud Brick Stairs
+  MYCELIUM: Mycelium
+  NETHER_BRICKS: Nether Bricks
+  CRACKED_NETHER_BRICKS: Cracked Nether Bricks
+  CHISELED_NETHER_BRICKS: Chiseled Nether Bricks
+  NETHER_BRICK_FENCE: Nether Brick Fence
+  NETHER_BRICK_STAIRS: Nether Brick Stairs
+  SCULK: Sculk
+  SCULK_VEIN: Sculk Vein
+  SCULK_CATALYST: Sculk Catalyst
+  SCULK_SHRIEKER: Sculk Shrieker
+  ENCHANTING_TABLE: Enchanting Table
+  END_PORTAL_FRAME: End Portal Frame
+  END_STONE: End Stone
+  END_STONE_BRICKS: End Stone Bricks
+  DRAGON_EGG: Dragon Egg
+  SANDSTONE_STAIRS: Sandstone Stairs
+  ENDER_CHEST: Ender Chest
+  EMERALD_BLOCK: Emerald Block
+  OAK_STAIRS: Oak Stairs
+  SPRUCE_STAIRS: Spruce Stairs
+  BIRCH_STAIRS: Birch Stairs
+  JUNGLE_STAIRS: Jungle Stairs
+  ACACIA_STAIRS: Acacia Stairs
+  CHERRY_STAIRS: Cherry Stairs
+  DARK_OAK_STAIRS: Dark Oak Stairs
+  PALE_OAK_STAIRS: Pale Oak Stairs
+  MANGROVE_STAIRS: Mangrove Stairs
+  BAMBOO_STAIRS: Bamboo Stairs
+  BAMBOO_MOSAIC_STAIRS: Bamboo Mosaic Stairs
+  CRIMSON_STAIRS: Crimson Stairs
+  WARPED_STAIRS: Warped Stairs
+  COMMAND_BLOCK: Command Block
+  BEACON: Beacon
+  COBBLESTONE_WALL: Cobblestone Wall
+  MOSSY_COBBLESTONE_WALL: Mossy Cobblestone Wall
+  BRICK_WALL: Brick Wall
+  PRISMARINE_WALL: Prismarine Wall
+  RED_SANDSTONE_WALL: Red Sandstone Wall
+  MOSSY_STONE_BRICK_WALL: Mossy Stone Brick Wall
+  GRANITE_WALL: Granite Wall
+  STONE_BRICK_WALL: Stone Brick Wall
+  MUD_BRICK_WALL: Mud Brick Wall
+  NETHER_BRICK_WALL: Nether Brick Wall
+  ANDESITE_WALL: Andesite Wall
+  RED_NETHER_BRICK_WALL: Red Nether Brick Wall
+  SANDSTONE_WALL: Sandstone Wall
+  END_STONE_BRICK_WALL: End Stone Brick Wall
+  DIORITE_WALL: Diorite Wall
+  BLACKSTONE_WALL: Blackstone Wall
+  POLISHED_BLACKSTONE_WALL: Polished Blackstone Wall
+  POLISHED_BLACKSTONE_BRICK_WALL: Polished Blackstone Brick Wall
+  COBBLED_DEEPSLATE_WALL: Cobbled Deepslate Wall
+  POLISHED_DEEPSLATE_WALL: Polished Deepslate Wall
+  DEEPSLATE_BRICK_WALL: Deepslate Brick Wall
+  DEEPSLATE_TILE_WALL: Deepslate Tile Wall
+  ANVIL: Anvil
+  CHIPPED_ANVIL: Chipped Anvil
+  DAMAGED_ANVIL: Damaged Anvil
+  CHISELED_QUARTZ_BLOCK: Chiseled Quartz Block
+  QUARTZ_BLOCK: Quartz Block
+  QUARTZ_BRICKS: Quartz Bricks
+  QUARTZ_PILLAR: Quartz Pillar
+  QUARTZ_STAIRS: Quartz Stairs
+  WHITE_TERRACOTTA: White Terracotta
+  ORANGE_TERRACOTTA: Orange Terracotta
+  MAGENTA_TERRACOTTA: Magenta Terracotta
+  LIGHT_BLUE_TERRACOTTA: Light Blue Terracotta
+  YELLOW_TERRACOTTA: Yellow Terracotta
+  LIME_TERRACOTTA: Lime Terracotta
+  PINK_TERRACOTTA: Pink Terracotta
+  GRAY_TERRACOTTA: Gray Terracotta
+  LIGHT_GRAY_TERRACOTTA: Light Gray Terracotta
+  CYAN_TERRACOTTA: Cyan Terracotta
+  PURPLE_TERRACOTTA: Purple Terracotta
+  BLUE_TERRACOTTA: Blue Terracotta
+  BROWN_TERRACOTTA: Brown Terracotta
+  GREEN_TERRACOTTA: Green Terracotta
+  RED_TERRACOTTA: Red Terracotta
+  BLACK_TERRACOTTA: Black Terracotta
+  BARRIER: Barrier
+  HAY_BLOCK: Hay Block
+  TERRACOTTA: Terracotta
+  PACKED_ICE: Packed Ice
+  DIRT_PATH: Dirt Path
+  WHITE_STAINED_GLASS: White Stained Glass
+  ORANGE_STAINED_GLASS: Orange Stained Glass
+  MAGENTA_STAINED_GLASS: Magenta Stained Glass
+  LIGHT_BLUE_STAINED_GLASS: Light Blue Stained Glass
+  YELLOW_STAINED_GLASS: Yellow Stained Glass
+  LIME_STAINED_GLASS: Lime Stained Glass
+  PINK_STAINED_GLASS: Pink Stained Glass
+  GRAY_STAINED_GLASS: Gray Stained Glass
+  LIGHT_GRAY_STAINED_GLASS: Light Gray Stained Glass
+  CYAN_STAINED_GLASS: Cyan Stained Glass
+  PURPLE_STAINED_GLASS: Purple Stained Glass
+  BLUE_STAINED_GLASS: Blue Stained Glass
+  BROWN_STAINED_GLASS: Brown Stained Glass
+  GREEN_STAINED_GLASS: Green Stained Glass
+  RED_STAINED_GLASS: Red Stained Glass
+  BLACK_STAINED_GLASS: Black Stained Glass
+  WHITE_STAINED_GLASS_PANE: White Stained Glass Pane
+  ORANGE_STAINED_GLASS_PANE: Orange Stained Glass Pane
+  MAGENTA_STAINED_GLASS_PANE: Magenta Stained Glass Pane
+  LIGHT_BLUE_STAINED_GLASS_PANE: Light Blue Stained Glass Pane
+  YELLOW_STAINED_GLASS_PANE: Yellow Stained Glass Pane
+  LIME_STAINED_GLASS_PANE: Lime Stained Glass Pane
+  PINK_STAINED_GLASS_PANE: Pink Stained Glass Pane
+  GRAY_STAINED_GLASS_PANE: Gray Stained Glass Pane
+  LIGHT_GRAY_STAINED_GLASS_PANE: Light Gray Stained Glass Pane
+  CYAN_STAINED_GLASS_PANE: Cyan Stained Glass Pane
+  PURPLE_STAINED_GLASS_PANE: Purple Stained Glass Pane
+  BLUE_STAINED_GLASS_PANE: Blue Stained Glass Pane
+  BROWN_STAINED_GLASS_PANE: Brown Stained Glass Pane
+  GREEN_STAINED_GLASS_PANE: Green Stained Glass Pane
+  RED_STAINED_GLASS_PANE: Red Stained Glass Pane
+  BLACK_STAINED_GLASS_PANE: Black Stained Glass Pane
+  PRISMARINE: Prismarine
+  PRISMARINE_BRICKS: Prismarine Bricks
+  DARK_PRISMARINE: Dark Prismarine
+  PRISMARINE_STAIRS: Prismarine Stairs
+  PRISMARINE_BRICK_STAIRS: Prismarine Brick Stairs
+  DARK_PRISMARINE_STAIRS: Dark Prismarine Stairs
+  SEA_LANTERN: Sea Lantern
+  RED_SANDSTONE: Red Sandstone
+  CHISELED_RED_SANDSTONE: Chiseled Red Sandstone
+  CUT_RED_SANDSTONE: Cut Red Sandstone
+  RED_SANDSTONE_STAIRS: Red Sandstone Stairs
+  REPEATING_COMMAND_BLOCK: Repeating Command Block
+  CHAIN_COMMAND_BLOCK: Chain Command Block
+  MAGMA_BLOCK: Magma Block
+  NETHER_WART_BLOCK: Nether Wart Block
+  WARPED_WART_BLOCK: Warped Wart Block
+  RED_NETHER_BRICKS: Red Nether Bricks
+  BONE_BLOCK: Bone Block
+  SHULKER_BOX: Shulker Box
+  WHITE_SHULKER_BOX: White Shulker Box
+  ORANGE_SHULKER_BOX: Orange Shulker Box
+  MAGENTA_SHULKER_BOX: Magenta Shulker Box
+  LIGHT_BLUE_SHULKER_BOX: Light Blue Shulker Box
+  YELLOW_SHULKER_BOX: Yellow Shulker Box
+  LIME_SHULKER_BOX: Lime Shulker Box
+  PINK_SHULKER_BOX: Pink Shulker Box
+  GRAY_SHULKER_BOX: Gray Shulker Box
+  LIGHT_GRAY_SHULKER_BOX: Light Gray Shulker Box
+  CYAN_SHULKER_BOX: Cyan Shulker Box
+  PURPLE_SHULKER_BOX: Purple Shulker Box
+  BLUE_SHULKER_BOX: Blue Shulker Box
+  BROWN_SHULKER_BOX: Brown Shulker Box
+  GREEN_SHULKER_BOX: Green Shulker Box
+  RED_SHULKER_BOX: Red Shulker Box
+  BLACK_SHULKER_BOX: Black Shulker Box
+  WHITE_GLAZED_TERRACOTTA: White Glazed Terracotta
+  ORANGE_GLAZED_TERRACOTTA: Orange Glazed Terracotta
+  MAGENTA_GLAZED_TERRACOTTA: Magenta Glazed Terracotta
+  LIGHT_BLUE_GLAZED_TERRACOTTA: Light Blue Glazed Terracotta
+  YELLOW_GLAZED_TERRACOTTA: Yellow Glazed Terracotta
+  LIME_GLAZED_TERRACOTTA: Lime Glazed Terracotta
+  PINK_GLAZED_TERRACOTTA: Pink Glazed Terracotta
+  GRAY_GLAZED_TERRACOTTA: Gray Glazed Terracotta
+  LIGHT_GRAY_GLAZED_TERRACOTTA: Light Gray Glazed Terracotta
+  CYAN_GLAZED_TERRACOTTA: Cyan Glazed Terracotta
+  PURPLE_GLAZED_TERRACOTTA: Purple Glazed Terracotta
+  BLUE_GLAZED_TERRACOTTA: Blue Glazed Terracotta
+  BROWN_GLAZED_TERRACOTTA: Brown Glazed Terracotta
+  GREEN_GLAZED_TERRACOTTA: Green Glazed Terracotta
+  RED_GLAZED_TERRACOTTA: Red Glazed Terracotta
+  BLACK_GLAZED_TERRACOTTA: Black Glazed Terracotta
+  WHITE_CONCRETE: White Concrete
+  ORANGE_CONCRETE: Orange Concrete
+  MAGENTA_CONCRETE: Magenta Concrete
+  LIGHT_BLUE_CONCRETE: Light Blue Concrete
+  YELLOW_CONCRETE: Yellow Concrete
+  LIME_CONCRETE: Lime Concrete
+  PINK_CONCRETE: Pink Concrete
+  GRAY_CONCRETE: Gray Concrete
+  LIGHT_GRAY_CONCRETE: Light Gray Concrete
+  CYAN_CONCRETE: Cyan Concrete
+  PURPLE_CONCRETE: Purple Concrete
+  BLUE_CONCRETE: Blue Concrete
+  BROWN_CONCRETE: Brown Concrete
+  GREEN_CONCRETE: Green Concrete
+  RED_CONCRETE: Red Concrete
+  BLACK_CONCRETE: Black Concrete
+  WHITE_CONCRETE_POWDER: White Concrete Powder
+  ORANGE_CONCRETE_POWDER: Orange Concrete Powder
+  MAGENTA_CONCRETE_POWDER: Magenta Concrete Powder
+  LIGHT_BLUE_CONCRETE_POWDER: Light Blue Concrete Powder
+  YELLOW_CONCRETE_POWDER: Yellow Concrete Powder
+  LIME_CONCRETE_POWDER: Lime Concrete Powder
+  PINK_CONCRETE_POWDER: Pink Concrete Powder
+  GRAY_CONCRETE_POWDER: Gray Concrete Powder
+  LIGHT_GRAY_CONCRETE_POWDER: Light Gray Concrete Powder
+  CYAN_CONCRETE_POWDER: Cyan Concrete Powder
+  PURPLE_CONCRETE_POWDER: Purple Concrete Powder
+  BLUE_CONCRETE_POWDER: Blue Concrete Powder
+  BROWN_CONCRETE_POWDER: Brown Concrete Powder
+  GREEN_CONCRETE_POWDER: Green Concrete Powder
+  RED_CONCRETE_POWDER: Red Concrete Powder
+  BLACK_CONCRETE_POWDER: Black Concrete Powder
+  TURTLE_EGG: Turtle Egg
+  SNIFFER_EGG: Sniffer Egg
+  DEAD_TUBE_CORAL_BLOCK: Dead Tube Coral Block
+  DEAD_BRAIN_CORAL_BLOCK: Dead Brain Coral Block
+  DEAD_BUBBLE_CORAL_BLOCK: Dead Bubble Coral Block
+  DEAD_FIRE_CORAL_BLOCK: Dead Fire Coral Block
+  DEAD_HORN_CORAL_BLOCK: Dead Horn Coral Block
+  TUBE_CORAL_BLOCK: Tube Coral Block
+  BRAIN_CORAL_BLOCK: Brain Coral Block
+  BUBBLE_CORAL_BLOCK: Bubble Coral Block
+  FIRE_CORAL_BLOCK: Fire Coral Block
+  HORN_CORAL_BLOCK: Horn Coral Block
+  DEAD_BRAIN_CORAL: Dead Brain Coral
+  DEAD_BUBBLE_CORAL: Dead Bubble Coral
+  DEAD_FIRE_CORAL: Dead Fire Coral
+  DEAD_HORN_CORAL: Dead Horn Coral
+  DEAD_TUBE_CORAL: Dead Tube Coral
+  DEAD_TUBE_CORAL_FAN: Dead Tube Coral Fan
+  DEAD_BRAIN_CORAL_FAN: Dead Brain Coral Fan
+  DEAD_BUBBLE_CORAL_FAN: Dead Bubble Coral Fan
+  DEAD_FIRE_CORAL_FAN: Dead Fire Coral Fan
+  DEAD_HORN_CORAL_FAN: Dead Horn Coral Fan
+  BLUE_ICE: Blue Ice
+  CONDUIT: Conduit
+  POLISHED_GRANITE_STAIRS: Polished Granite Stairs
+  SMOOTH_RED_SANDSTONE_STAIRS: Smooth Red Sandstone Stairs
+  MOSSY_STONE_BRICK_STAIRS: Mossy Stone Brick Stairs
+  POLISHED_DIORITE_STAIRS: Polished Diorite Stairs
+  MOSSY_COBBLESTONE_STAIRS: Mossy Cobblestone Stairs
+  END_STONE_BRICK_STAIRS: End Stone Brick Stairs
+  STONE_STAIRS: Stone Stairs
+  SMOOTH_SANDSTONE_STAIRS: Smooth Sandstone Stairs
+  SMOOTH_QUARTZ_STAIRS: Smooth Quartz Stairs
+  GRANITE_STAIRS: Granite Stairs
+  ANDESITE_STAIRS: Andesite Stairs
+  RED_NETHER_BRICK_STAIRS: Red Nether Brick Stairs
+  POLISHED_ANDESITE_STAIRS: Polished Andesite Stairs
+  DIORITE_STAIRS: Diorite Stairs
+  COBBLED_DEEPSLATE_STAIRS: Cobbled Deepslate Stairs
+  POLISHED_DEEPSLATE_STAIRS: Polished Deepslate Stairs
+  DEEPSLATE_BRICK_STAIRS: Deepslate Brick Stairs
+  DEEPSLATE_TILE_STAIRS: Deepslate Tile Stairs
+  POLISHED_GRANITE_SLAB: Polished Granite Slab
+  SMOOTH_RED_SANDSTONE_SLAB: Smooth Red Sandstone Slab
+  MOSSY_STONE_BRICK_SLAB: Mossy Stone Brick Slab
+  POLISHED_DIORITE_SLAB: Polished Diorite Slab
+  MOSSY_COBBLESTONE_SLAB: Mossy Cobblestone Slab
+  END_STONE_BRICK_SLAB: End Stone Brick Slab
+  SMOOTH_SANDSTONE_SLAB: Smooth Sandstone Slab
+  SMOOTH_QUARTZ_SLAB: Smooth Quartz Slab
+  GRANITE_SLAB: Granite Slab
+  ANDESITE_SLAB: Andesite Slab
+  RED_NETHER_BRICK_SLAB: Red Nether Brick Slab
+  POLISHED_ANDESITE_SLAB: Polished Andesite Slab
+  DIORITE_SLAB: Diorite Slab
+  COBBLED_DEEPSLATE_SLAB: Cobbled Deepslate Slab
+  POLISHED_DEEPSLATE_SLAB: Polished Deepslate Slab
+  DEEPSLATE_BRICK_SLAB: Deepslate Brick Slab
+  DEEPSLATE_TILE_SLAB: Deepslate Tile Slab
+  REDSTONE_BLOCK: Redstone Block
+  PISTON: Piston
+  STICKY_PISTON: Sticky Piston
+  SLIME_BLOCK: Slime Block
+  HONEY_BLOCK: Honey Block
+  OBSERVER: Observer
+  HOPPER: Hopper
+  DISPENSER: Dispenser
+  DROPPER: Dropper
+  LECTERN: Lectern
+  TARGET: Target
+  LIGHTNING_ROD: Lightning Rod
+  DAYLIGHT_DETECTOR: Daylight Detector
+  SCULK_SENSOR: Sculk Sensor
+  CALIBRATED_SCULK_SENSOR: Calibrated Sculk Sensor
+  TRAPPED_CHEST: Trapped Chest
+  TNT: TNT
+  REDSTONE_LAMP: Redstone Lamp
+  NOTE_BLOCK: Note Block
+  STONE_PRESSURE_PLATE: Stone Pressure Plate
+  POLISHED_BLACKSTONE_PRESSURE_PLATE: Polished Blackstone Pressure Plate
+  LIGHT_WEIGHTED_PRESSURE_PLATE: Light Weighted Pressure Plate
+  HEAVY_WEIGHTED_PRESSURE_PLATE: Heavy Weighted Pressure Plate
+  OAK_PRESSURE_PLATE: Oak Pressure Plate
+  SPRUCE_PRESSURE_PLATE: Spruce Pressure Plate
+  BIRCH_PRESSURE_PLATE: Birch Pressure Plate
+  JUNGLE_PRESSURE_PLATE: Jungle Pressure Plate
+  ACACIA_PRESSURE_PLATE: Acacia Pressure Plate
+  CHERRY_PRESSURE_PLATE: Cherry Pressure Plate
+  DARK_OAK_PRESSURE_PLATE: Dark Oak Pressure Plate
+  PALE_OAK_PRESSURE_PLATE: Pale Oak Pressure Plate
+  MANGROVE_PRESSURE_PLATE: Mangrove Pressure Plate
+  BAMBOO_PRESSURE_PLATE: Bamboo Pressure Plate
+  CRIMSON_PRESSURE_PLATE: Crimson Pressure Plate
+  WARPED_PRESSURE_PLATE: Warped Pressure Plate
+  IRON_DOOR: Iron Door
+  OAK_DOOR: Oak Door
+  SPRUCE_DOOR: Spruce Door
+  BIRCH_DOOR: Birch Door
+  JUNGLE_DOOR: Jungle Door
+  ACACIA_DOOR: Acacia Door
+  CHERRY_DOOR: Cherry Door
+  DARK_OAK_DOOR: Dark Oak Door
+  PALE_OAK_DOOR: Pale Oak Door
+  MANGROVE_DOOR: Mangrove Door
+  BAMBOO_DOOR: Bamboo Door
+  CRIMSON_DOOR: Crimson Door
+  WARPED_DOOR: Warped Door
+  COPPER_DOOR: Copper Door
+  EXPOSED_COPPER_DOOR: Exposed Copper Door
+  WEATHERED_COPPER_DOOR: Weathered Copper Door
+  OXIDIZED_COPPER_DOOR: Oxidized Copper Door
+  WAXED_COPPER_DOOR: Waxed Copper Door
+  WAXED_EXPOSED_COPPER_DOOR: Waxed Exposed Copper Door
+  WAXED_WEATHERED_COPPER_DOOR: Waxed Weathered Copper Door
+  WAXED_OXIDIZED_COPPER_DOOR: Waxed Oxidized Copper Door
+  IRON_TRAPDOOR: Iron Trapdoor
+  OAK_TRAPDOOR: Oak Trapdoor
+  SPRUCE_TRAPDOOR: Spruce Trapdoor
+  BIRCH_TRAPDOOR: Birch Trapdoor
+  JUNGLE_TRAPDOOR: Jungle Trapdoor
+  ACACIA_TRAPDOOR: Acacia Trapdoor
+  CHERRY_TRAPDOOR: Cherry Trapdoor
+  DARK_OAK_TRAPDOOR: Dark Oak Trapdoor
+  PALE_OAK_TRAPDOOR: Pale Oak Trapdoor
+  MANGROVE_TRAPDOOR: Mangrove Trapdoor
+  BAMBOO_TRAPDOOR: Bamboo Trapdoor
+  CRIMSON_TRAPDOOR: Crimson Trapdoor
+  WARPED_TRAPDOOR: Warped Trapdoor
+  COPPER_TRAPDOOR: Copper Trapdoor
+  EXPOSED_COPPER_TRAPDOOR: Exposed Copper Trapdoor
+  WEATHERED_COPPER_TRAPDOOR: Weathered Copper Trapdoor
+  OXIDIZED_COPPER_TRAPDOOR: Oxidized Copper Trapdoor
+  WAXED_COPPER_TRAPDOOR: Waxed Copper Trapdoor
+  WAXED_EXPOSED_COPPER_TRAPDOOR: Waxed Exposed Copper Trapdoor
+  WAXED_WEATHERED_COPPER_TRAPDOOR: Waxed Weathered Copper Trapdoor
+  WAXED_OXIDIZED_COPPER_TRAPDOOR: Waxed Oxidized Copper Trapdoor
+  OAK_FENCE_GATE: Oak Fence Gate
+  SPRUCE_FENCE_GATE: Spruce Fence Gate
+  BIRCH_FENCE_GATE: Birch Fence Gate
+  JUNGLE_FENCE_GATE: Jungle Fence Gate
+  ACACIA_FENCE_GATE: Acacia Fence Gate
+  CHERRY_FENCE_GATE: Cherry Fence Gate
+  DARK_OAK_FENCE_GATE: Dark Oak Fence Gate
+  PALE_OAK_FENCE_GATE: Pale Oak Fence Gate
+  MANGROVE_FENCE_GATE: Mangrove Fence Gate
+  BAMBOO_FENCE_GATE: Bamboo Fence Gate
+  CRIMSON_FENCE_GATE: Crimson Fence Gate
+  WARPED_FENCE_GATE: Warped Fence Gate
+  STRUCTURE_BLOCK: Structure Block
+  JIGSAW: Jigsaw
+  OAK_SIGN: Oak Sign
+  SPRUCE_SIGN: Spruce Sign
+  BIRCH_SIGN: Birch Sign
+  JUNGLE_SIGN: Jungle Sign
+  ACACIA_SIGN: Acacia Sign
+  CHERRY_SIGN: Cherry Sign
+  DARK_OAK_SIGN: Dark Oak Sign
+  PALE_OAK_SIGN: Pale Oak Sign
+  MANGROVE_SIGN: Mangrove Sign
+  BAMBOO_SIGN: Bamboo Sign
+  CRIMSON_SIGN: Crimson Sign
+  WARPED_SIGN: Warped Sign
+  OAK_HANGING_SIGN: Oak Hanging Sign
+  SPRUCE_HANGING_SIGN: Spruce Hanging Sign
+  BIRCH_HANGING_SIGN: Birch Hanging Sign
+  JUNGLE_HANGING_SIGN: Jungle Hanging Sign
+  ACACIA_HANGING_SIGN: Acacia Hanging Sign
+  CHERRY_HANGING_SIGN: Cherry Hanging Sign
+  DARK_OAK_HANGING_SIGN: Dark Oak Hanging Sign
+  PALE_OAK_HANGING_SIGN: Pale Oak Hanging Sign
+  MANGROVE_HANGING_SIGN: Mangrove Hanging Sign
+  BAMBOO_HANGING_SIGN: Bamboo Hanging Sign
+  CRIMSON_HANGING_SIGN: Crimson Hanging Sign
+  WARPED_HANGING_SIGN: Warped Hanging Sign
+  DRIED_KELP_BLOCK: Dried Kelp Block
+  CAKE: Cake
+  WHITE_BED: White Bed
+  ORANGE_BED: Orange Bed
+  MAGENTA_BED: Magenta Bed
+  LIGHT_BLUE_BED: Light Blue Bed
+  YELLOW_BED: Yellow Bed
+  LIME_BED: Lime Bed
+  PINK_BED: Pink Bed
+  GRAY_BED: Gray Bed
+  LIGHT_GRAY_BED: Light Gray Bed
+  CYAN_BED: Cyan Bed
+  PURPLE_BED: Purple Bed
+  BLUE_BED: Blue Bed
+  BROWN_BED: Brown Bed
+  GREEN_BED: Green Bed
+  RED_BED: Red Bed
+  BLACK_BED: Black Bed
+  CRAFTER: Crafter
+  BREWING_STAND: Brewing Stand
+  CAULDRON: Cauldron
+  WHITE_BANNER: White Banner
+  ORANGE_BANNER: Orange Banner
+  MAGENTA_BANNER: Magenta Banner
+  LIGHT_BLUE_BANNER: Light Blue Banner
+  YELLOW_BANNER: Yellow Banner
+  LIME_BANNER: Lime Banner
+  PINK_BANNER: Pink Banner
+  GRAY_BANNER: Gray Banner
+  LIGHT_GRAY_BANNER: Light Gray Banner
+  CYAN_BANNER: Cyan Banner
+  PURPLE_BANNER: Purple Banner
+  BLUE_BANNER: Blue Banner
+  BROWN_BANNER: Brown Banner
+  GREEN_BANNER: Green Banner
+  RED_BANNER: Red Banner
+  BLACK_BANNER: Black Banner
+  LOOM: Loom
+  COMPOSTER: Composter
+  BARREL: Barrel
+  SMOKER: Smoker
+  BLAST_FURNACE: Blast Furnace
+  CARTOGRAPHY_TABLE: Cartography Table
+  FLETCHING_TABLE: Flecthing Table
+  GRINDSTONE: Grindstone
+  SMITHING_TABLE: Smithing Table
+  STONECUTTER: Stonecutter
+  BELL: Bell
+  LANTERN: Lantern
+  SOUL_LANTERN: Soul Lantern
+  CAMPFIRE: Campfire
+  SOUL_CAMPFIRE: Soul Campfire
+  SHROOMLIGHT: Shroomlight
+  BEE_NEST: Bee Nest
+  BEEHIVE: Beehive
+  HONEYCOMB_BLOCK: Honeycomb Block
+  LODESTONE: Lodestone
+  CRYING_OBSIDIAN: Crying Obsidian
+  BLACKSTONE: Blackstone
+  BLACKSTONE_SLAB: Blackstone Slab
+  BLACKSTONE_STAIRS: Blackstone Stairs
+  GILDED_BLACKSTONE: Gilded Blackstone
+  POLISHED_BLACKSTONE: Polished Blackstone
+  POLISHED_BLACKSTONE_SLAB: Polished Blackstone Slab
+  POLISHED_BLACKSTONE_STAIRS: Polished Blackstone Stairs
+  CHISELED_POLISHED_BLACKSTONE: Chiseled Polished Blackstone
+  POLISHED_BLACKSTONE_BRICKS: Polished Blackstone Bricks
+  POLISHED_BLACKSTONE_BRICK_SLAB: Polished Blackstone Brick Slab
+  POLISHED_BLACKSTONE_BRICK_STAIRS: Polished Blackstone Brick Stairs
+  CRACKED_POLISHED_BLACKSTONE_BRICKS: Cracked Polished Blackstone Bricks
+  RESPAWN_ANCHOR: Respawn Anchor
+  SMALL_AMETHYST_BUD: Small Amethyst Bud
+  MEDIUM_AMETHYST_BUD: Medium Amethyst Bud
+  LARGE_AMETHYST_BUD: Large Amethyst Bud
+  AMETHYST_CLUSTER: Amethyst Cluster
+  POINTED_DRIPSTONE: Pointed Dripstone
+  OCHRE_FROGLIGHT: Ochre Froglight
+  VERDANT_FROGLIGHT: Verdant Froglight
+  PEARLESCENT_FROGLIGHT: Pearlescent Froglight
+  COPPER_GRATE: Copper Grate
+  EXPOSED_COPPER_GRATE: Exposed Copper Grate
+  WEATHERED_COPPER_GRATE: Weathered Copper Grate
+  OXIDIZED_COPPER_GRATE: Oxidized Copper Grate
+  WAXED_COPPER_GRATE: Waxed Copper Grate
+  WAXED_EXPOSED_COPPER_GRATE: Waxed Exposed Copper Grate
+  WAXED_WEATHERED_COPPER_GRATE: Waxed Weathered Copper Grate
+  WAXED_OXIDIZED_COPPER_GRATE: Waxed Oxidized Copper Grate
+  COPPER_BULB: Copper Bulb
+  EXPOSED_COPPER_BULB: Exposed Copper Bulb
+  WEATHERED_COPPER_BULB: Weathered Copper Bulb
+  OXIDIZED_COPPER_BULB: Oxidized Copper Bulb
+  WAXED_COPPER_BULB: Waxed Copper Bulb
+  WAXED_EXPOSED_COPPER_BULB: Waxed Exposed Copper Bulb
+  WAXED_WEATHERED_COPPER_BULB: Waxed Weathered Copper Bulb
+  WAXED_OXIDIZED_COPPER_BULB: Waxed Oxidized Copper Bulb
+  TRIAL_SPAWNER: Trial Spawner
+  VAULT: Vault
+  PISTON_HEAD: Piston Head
+  MOVING_PISTON: Moving Piston
+  OAK_WALL_SIGN: Oak Wall Sign
+  SPRUCE_WALL_SIGN: Spruce Wall Sign
+  BIRCH_WALL_SIGN: Birch Wall Sign
+  ACACIA_WALL_SIGN: Acacia Wall Sign
+  CHERRY_WALL_SIGN: Cherry Wall Sign
+  JUNGLE_WALL_SIGN: Jungle Wall Sign
+  DARK_OAK_WALL_SIGN: Dark Oak Wall Sign
+  PALE_OAK_WALL_SIGN: Pale Oak Wall Sign
+  MANGROVE_WALL_SIGN: Mangrove Wall Sign
+  BAMBOO_WALL_SIGN: Bamboo Wall Sign
+  OAK_WALL_HANGING_SIGN: Oak Wall Hanging Sign
+  SPRUCE_WALL_HANGING_SIGN: Spruce Wall Hanging Sign
+  BIRCH_WALL_HANGING_SIGN: Birch Wall Hanging Sign
+  ACACIA_WALL_HANGING_SIGN: Acacia Wall Hanging Sign
+  CHERRY_WALL_HANGING_SIGN: Cherry Wall Hanging Sign
+  JUNGLE_WALL_HANGING_SIGN: Jungle Wall Hanging Sign
+  DARK_OAK_WALL_HANGING_SIGN: Dark Oak Wall Hanging Sign
+  PALE_OAK_WALL_HANGING_SIGN: Pale Oak Wall Hanging Sign
+  MANGROVE_WALL_HANGING_SIGN: Mangrove Wall Hanging Sign
+  CRIMSON_WALL_HANGING_SIGN: Crimson Wall Hanging Sign
+  WARPED_WALL_HANGING_SIGN: Warped Wall Hanging Sign
+  BAMBOO_WALL_HANGING_SIGN: Bamboo Wall Hanging Sign
+  WATER_CAULDRON: Water Cauldron
+  LAVA_CAULDRON: Lava Cauldron
+  POWDER_SNOW_CAULDRON: Powder Snow Cauldron
+  WHITE_WALL_BANNER: White Wall Banner
+  ORANGE_WALL_BANNER: Orange Wall Banner
+  MAGENTA_WALL_BANNER: Magenta Wall Banner
+  LIGHT_BLUE_WALL_BANNER: Light Blue Wall Banner
+  YELLOW_WALL_BANNER: Yellow Wall Banner
+  LIME_WALL_BANNER: Lime Wall Banner
+  PINK_WALL_BANNER: Pink Wall Banner
+  GRAY_WALL_BANNER: Gray Wall Banner
+  LIGHT_GRAY_WALL_BANNER: Light Gray Wall Banner
+  CYAN_WALL_BANNER: Cyan Wall Banner
+  PURPLE_WALL_BANNER: Purple Wall Banner
+  BLUE_WALL_BANNER: Blue Wall Banner
+  BROWN_WALL_BANNER: Brown Wall Banner
+  GREEN_WALL_BANNER: Green Wall Banner
+  RED_WALL_BANNER: Red Wall Banner
+  BLACK_WALL_BANNER: Black Wall Banner
+  FROSTED_ICE: Frosted Ice
+  DEAD_TUBE_CORAL_WALL_FAN: Dead Tube Coral Wall Fan
+  DEAD_BRAIN_CORAL_WALL_FAN: Dead Brain Coral Wall Fan
+  DEAD_BUBBLE_CORAL_WALL_FAN: Dead Bubble Coral Wall Fan
+  DEAD_FIRE_CORAL_WALL_FAN: Dead Fire Corak Wall Fan
+  DEAD_HORN_CORAL_WALL_FAN: Dead Horn Coral Wall Fan
+  CRIMSON_WALL_SIGN: Crimson Wall Sign
+  WARPED_WALL_SIGN: Warped Wall Sign
+  CANDLE_CAKE: Candle Cake
+  WHITE_CANDLE_CAKE: White Candle Cake
+  ORANGE_CANDLE_CAKE: Orange Candle Cake
+  MAGENTA_CANDLE_CAKE: Magenta Candle Cake
+  LIGHT_BLUE_CANDLE_CAKE: Light Blue Candle Cake
+  YELLOW_CANDLE_CAKE: Yellow Candle Cake
+  LIME_CANDLE_CAKE: Lime Candle Cake
+  PINK_CANDLE_CAKE: Pink Candle Cake
+  GRAY_CANDLE_CAKE: Gray Candle Cake
+  LIGHT_GRAY_CANDLE_CAKE: Light Gray Candle Cake
+  CYAN_CANDLE_CAKE: Cyan Candle Cake
+  PURPLE_CANDLE_CAKE: Purple Candle Cake
+  BLUE_CANDLE_CAKE: Blue Candle Cake
+  BROWN_CANDLE_CAKE: Brown Candle Cake
+  GREEN_CANDLE_CAKE: Green Candle Cake
+  RED_CANDLE_CAKE: Red Candle Cake
+  BLACK_CANDLE_CAKE: Black Candle Cake
