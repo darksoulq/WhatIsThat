@@ -1,1 +1,1 @@
-<img src="imgs/WIT.png" alt="Description" width="100%">
+<img src="imgs/WIT.png" alt="Description" width="auto">
