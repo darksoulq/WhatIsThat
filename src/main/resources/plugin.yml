@@ -5,3 +5,11 @@ api-version: '1.21'
 
 softdepend:
   - Minetorio
+
+commands:
+  wit:
+    description: Main command for WhatIsThat plugin.
+    usage: /wit [disable|enable]
+    permission: wit.toggledisplay
+    aliases:
+      - whatisthat

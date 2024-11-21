@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,10 +31,14 @@ public class WAILAListener implements Listener {
     private MTMachines mtMachines;
     private YamlConfiguration mtLang;
     private YamlConfiguration vanillaLang;
+    private static File PREF_FOLDER = new File(WhatIsThat.getInstance().getDataFolder(), "cache/players");
 
     public WAILAListener() {
         mtLang = LanguageUtils.loadMTLang();
         vanillaLang = LanguageUtils.loadVanillaBlocksLang();
+        if (!PREF_FOLDER.exists()) {
+            PREF_FOLDER.mkdirs();
+        }
 
         new BukkitRunnable() {
             @Override
@@ -50,6 +55,14 @@ public class WAILAListener implements Listener {
     }
 
     private void updateWAILA(Player player) {
+        File playerFile = new File(PREF_FOLDER + "/" + player.getName() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+        boolean disableBossBar = config.getBoolean("disableBossBar", false);
+
+        if (disableBossBar) {
+            return;
+        }
+
         WAILAManager.createBossBar(player);
         Block block = MathUtils.getLookingAtBlock(player, 50);
         Entity entity = MathUtils.isLookingAtEntity(player, 50);
@@ -131,5 +144,9 @@ public class WAILAListener implements Listener {
         }
 
         return "";
+    }
+
+    public static File getPrefFolder() {
+        return PREF_FOLDER;
     }
 }
