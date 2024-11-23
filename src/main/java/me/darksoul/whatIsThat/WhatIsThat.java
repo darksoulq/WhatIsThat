@@ -1,20 +1,16 @@
 package me.darksoul.whatIsThat;
 
 import me.darksoul.whatIsThat.commands.WITCommand;
-import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
+import me.darksoul.whatIsThat.compatibility.Minetorio;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public final class WhatIsThat extends JavaPlugin {
     private static WhatIsThat instance;
-    private static boolean isMTinstaled;
 
     @Override
     public void onEnable() {
         instance = this;
-        isMTinstaled = checkMT();
+        Minetorio.checkMT();
 
         getCommand("wit").setExecutor(new WITCommand());
         getServer().getPluginManager().registerEvents(new WAILAListener(), this);
@@ -24,14 +20,6 @@ public final class WhatIsThat extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
-
-    private boolean checkMT() {
-        return getServer().getPluginManager().getPlugin("Minetorio") != null;
-    }
-
-    public static boolean getIsMTInstalled() {
-        return isMTinstaled;
     }
 
     public static WhatIsThat getInstance() {

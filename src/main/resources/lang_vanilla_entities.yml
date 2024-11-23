@@ -1,0 +1,94 @@
+entity:
+  ALLAY: Allay
+  ARMADILLO: Armadillo
+  ARMOR_STAND: Armor Stand
+  AXOLOTL: Axolotl
+  BLAZE: Blaze
+  BEE: Bee
+  BOAT: Boat
+  BOGGED: Bogged
+  BREEZE: Breeze
+  CAMEL: Camel
+  CAT: Cat
+  CAVE_SPIDER: Cave Spider
+  CHEST_BOAT: Boat With Chest
+  CHEST_MINECART: Minecart With Chest
+  CHICKEN: Chicken
+  COD: Cod
+  COMMAND_BLOCK_MINECART: Minecart With Command Block
+  COW: Cow
+  CREEPER: Creeper
+  DOLPHIN: Dolphin
+  DONKEY: Donkey
+  DROWNED: Drowned
+  ELDER_GUARDIAN: Elder Guardian
+  ENDERMAN: Enderman
+  ENDERMITE: Endermite
+  EVOKER: Evoker
+  FOX: Fox
+  FROG: Frog
+  FURNACE_MINECART: Minecart With Furnace
+  GHAST: Ghast
+  GIANT_ZOMBIE: Giant Zombie
+  GLOW_ITEM_FRAME: Glow Item Frame
+  GLOW_SQUID: Glow Squid
+  GOAT: Goat
+  GUARDIAN: Guardian
+  HOPPER_MINECART: Minecart With Hopper
+  HORSE: Horse
+  HUSK: Husk
+  ILLUSIONER: Illusioner
+  IRON_GOLEM: Iron Golem
+  ITEM_FRAME: Item Frame
+  LEAD: Lead
+  LLAMA: Llama
+  LLAMA_SPIT: Llama Spit
+  MAGMA_CUBE: Magma Cube
+  MINECART: Minecart
+  MOOSHROOM: Mooshroom
+  MULE: Mule
+  OCELOT: Ocelot
+  PAINTING: Painting
+  PANDA: Panda
+  PARROT: Parrot
+  PHANTOM: Phantom
+  PIG: Pig
+  PIGLIN: Piglin
+  PIGLIN_BRUTE: Piglin Brute
+  PILLAGER: Pillager
+  POLAR_BEAR: Polar Bear
+  PUFFERFISH: Pufferfish
+  RABBIT: Rabbit
+  RAVAGER: Ravager
+  SALMON: Salmon
+  SHEEP: Sheep
+  SHULKER: Shulker
+  SILVERFISH: Silverfish
+  SKELETON: Skeleton
+  SKELETON_HORSE: Skeleton Horse
+  SLIME: Slime
+  SNIFFER: Sniffer
+  SNOW_GOLEM: Snow Golem
+  SPAWNER_MINECART: Minecart With Spawner
+  SPIDER: Spider
+  SQUID: Squid
+  STRAY: Stray
+  STRIDER: Strider
+  TADPOLE: Tadpole
+  TNT: TNT
+  TNT_MINECART: Minecart With TNT
+  TRADER_LLAMA: Trader Llama
+  TROPICAL_FISH: Tropical Fish
+  TURTLE: Turtle
+  VEX: Vex
+  VILLAGER: Villager
+  VINDICATOR: Vindicator
+  WITCH: Witch
+  WITHER_SKELETON: Wither Skeleton
+  WITHER_SKULL: Wither Skull
+  WOLF: Wolf
+  ZOGLIN: Zoglin
+  ZOMBIE: Zombie
+  ZOMBIE_HORSE: Zombie Horse
+  ZOMBIE_VILLAGER: Zombie Villager
+  ZOMBIFIED_PIGLIN: Zombified Piglin

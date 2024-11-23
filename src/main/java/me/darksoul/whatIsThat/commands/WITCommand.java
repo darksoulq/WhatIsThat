@@ -46,7 +46,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
     }
 
     private void disableBossBar(Player player) {
-        File playerFile = new File( WAILAListener.getPrefFolder() + "/" + player.getName() + ".yml");
+        File playerFile = new File(WAILAListener.getPrefFolder() + "/" + player.getName() + ".yml");
         try {
             if (!playerFile.exists()) {
                 playerFile.createNewFile();
@@ -60,6 +60,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        WAILAListener.removePlayer(player);
         WAILAManager.removeBossBar(player);
         player.sendMessage("Boss bar disabled.");
     }
@@ -79,6 +80,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        WAILAListener.addPlayer(player);
         WAILAManager.createBossBar(player);
         player.sendMessage("Boss bar enabled.");
     }

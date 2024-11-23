@@ -1,0 +1,26 @@
+# In this config file you can toggle specific information features
+# more options will be added in the future
+blocks:
+  enabled: true
+  redstoneinfo: true # Show RedStone power/status
+  cropinfo: true # Show Crop age
+  beehiveinfo: true # Show Honey in BeeHive/Nest
+  smeltinfo: true # Show Smelt time
+  containerinfo: true # Show Items in a container
+  beaconinfo: true # Show Beacon effects
+  spawnerinfo: true # Show Current spawning entity in spawner
+  noteblockinfo: true # Show Instrument, tone and octave of NoteBlock
+  farmlandinfo: true # Show Whether farmland is hydrated or not
+
+entities:
+  ageinfo: true # Show Time left for entity to become adult
+  ownerinfo: true # Show Name of the player who tamed the animal
+  leashinfo: true # Show Whether entity is leashed or not
+  healthinfo: true # Show health of entity
+  professioninfo: true # Show profession of villager
+
+# Minetorio compatibility
+# You don't need to disable even if you don't have the plugin!
+minetorio:
+  enabled: true
+  powerinfo: true # Show Power status/values
