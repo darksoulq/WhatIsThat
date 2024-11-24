@@ -1,7 +1,6 @@
 package me.darksoul.whatIsThat;
 
 import dev.lone.itemsadder.api.CustomEntity;
-import dev.lone.itemsadder.api.CustomFurniture;
 import me.darksoul.whatIsThat.compatibility.ItemsAdderCompat;
 import me.darksoul.whatIsThat.compatibility.MinecraftCompat;
 import me.darksoul.whatIsThat.compatibility.MinetorioCompat;
@@ -48,17 +47,13 @@ public class WAILAListener implements Listener {
         Block block = MathUtils.getLookingAtBlock(player, 50);
         Entity entity = MathUtils.isLookingAtEntity(player, 50);
         if (entity != null) {
-            EntityType type = entity.getType();
-            if (config.getBoolean("itemsadder.entities.enabled", true)) {
-                CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
-                if (IAEntity != null) {
-                    if (ItemsAdderCompat.handleIAEntity(entity, IAEntity, player)) {
-                        return;
-                    }
+            if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {;
+                if (ItemsAdderCompat.handleIAEntity(entity, player)) {
+                    return;
                 }
             }
             if (config.getBoolean("entities.enabled", true)) {
-                MinecraftCompat.handleMinecraftEntityDisplay(entity, type, player);
+                MinecraftCompat.handleMinecraftEntityDisplay(entity, player);
                 return;
             }
         }

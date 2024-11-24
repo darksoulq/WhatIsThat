@@ -208,6 +208,7 @@ public class ItemGroups {
 
         // Entities to not render for
         notRender.add(EntityType.ITEM);
+        notRender.add(EntityType.ITEM);
         notRender.add(EntityType.ITEM_DISPLAY);
         notRender.add(EntityType.BLOCK_DISPLAY);
         notRender.add(EntityType.INTERACTION);

@@ -2,7 +2,7 @@ package me.darksoul.whatIsThat.compatibility;
 
 import com.MT.xxxtrigger50xxx.Devices.Device;
 import com.MT.xxxtrigger50xxx.Devices.Mover;
-import me.darksoul.whatIsThat.Informations;
+import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
@@ -42,10 +42,10 @@ public class MinetorioCompat {
             StringBuilder MTBlockSInfo = new StringBuilder();
             StringBuilder MTBlockPInfo = new StringBuilder();
             StringBuilder info = new StringBuilder();
-            for (Function<Block, String> func : Informations.getSuffixMTBlocks()) {
+            for (Function<Block, String> func : Information.getSuffixMTBlocks()) {
                 MTBlockSInfo.append(func.apply(block));
             }
-            for (Function<Block, String> func : Informations.getPrefixMTBlocks()) {
+            for (Function<Block, String> func : Information.getPrefixMTBlocks()) {
                 MTBlockPInfo.append(func.apply(block));
             }
             info.append(MTBlockPInfo).append(deviceName).append(MTBlockSInfo);

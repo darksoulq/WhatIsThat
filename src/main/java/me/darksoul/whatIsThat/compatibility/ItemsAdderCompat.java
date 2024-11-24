@@ -1,7 +1,8 @@
 package me.darksoul.whatIsThat.compatibility;
 
 import dev.lone.itemsadder.api.*;
-import me.darksoul.whatIsThat.Informations;
+import me.darksoul.whatIsThat.Information;
+import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.block.Block;
@@ -9,15 +10,27 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 /*
 Experimental compatibility
 */
 public class ItemsAdderCompat {
     private static boolean isIAInstalled;
+    private static final List<Function<CustomCrop, String>> suffixIACrop = new ArrayList<>();
+
+    private static void setup() {
+        if (WAILAListener.getConfig().getBoolean("itemsadder.blocks.cropinfo", true)) {
+            suffixIACrop.add(ItemsAdderCompat::getIAHarvestInfo);
+        }
+    }
 
     public static boolean checkIA() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ItemsAdder");
+        if (pl != null && pl.isEnabled()) {
+            setup();
+        }
         return pl != null && pl.isEnabled();
     }
     public static void setIsIAInstalled(boolean isIAInstalled) {
@@ -51,7 +64,8 @@ public class ItemsAdderCompat {
         }
         return false;
     }
-    public static boolean handleIAEntity(Entity entity, CustomEntity IAEntity, Player player) {
+    public static boolean handleIAEntity(Entity entity, Player player) {
+        CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
         CustomFurniture furniture = CustomFurniture.byAlreadySpawned(entity);
         if (furniture != null) {
             handleFurniture(furniture, player);
@@ -65,7 +79,7 @@ public class ItemsAdderCompat {
             StringBuilder IAEntitySInfo = new StringBuilder();
             String IAEntityPInfo = "";
             StringBuilder info = new StringBuilder();
-            for (Function<Entity, String> func : Informations.getSuffixIAEntity()) {
+            for (Function<Entity, String> func : Information.getSuffixIAEntity()) {
                 IAEntitySInfo.append(func.apply(entity));
             }
             info.append(IAEntityPInfo).append(name).append(IAEntitySInfo);
@@ -85,7 +99,7 @@ public class ItemsAdderCompat {
         StringBuilder IACropSInfo = new StringBuilder();
         String IACropPInfo = "";
         StringBuilder info = new StringBuilder();
-        for (Function<CustomCrop, String> func : Informations.getSuffixIACrop()) {
+        for (Function<CustomCrop, String> func : ItemsAdderCompat.getSuffixIACrop()) {
             IACropSInfo.append(func.apply(crop));
         }
         info.append(IACropPInfo).append(name).append(IACropSInfo);
@@ -94,5 +108,25 @@ public class ItemsAdderCompat {
     private static void handleIAFire(CustomFire fire, Player player) {
         String name = fire.getDisplayName();
         WAILAManager.updateBossBar(player, name);
+    }
+    private static String getIAHarvestInfo(CustomCrop crop) {
+        int age = crop.getAge();
+        int maxAge = crop.getMaxAge();
+        int percentage = (age / (int) maxAge) * 100;
+
+        if (percentage >= 0 && percentage <= 25) {
+            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
+        } else if (percentage > 25 && percentage <= 50) {
+            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
+        } else if (percentage > 50 && percentage <= 75) {
+            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
+        } else if (percentage > 75) {
+            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
+        }
+        return "";
+    }
+
+    public static List<Function<CustomCrop, String>> getSuffixIACrop() {
+        return suffixIACrop;
     }
 }

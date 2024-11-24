@@ -2,7 +2,6 @@ package me.darksoul.whatIsThat;
 
 import com.MT.xxxtrigger50xxx.Devices.Battery2;
 import com.MT.xxxtrigger50xxx.Devices.Device;
-import dev.lone.LoneLibs.S;
 import dev.lone.itemsadder.api.CustomCrop;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import org.bukkit.Instrument;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class Informations {
+public class Information {
     private static final YamlConfiguration config = WAILAListener.getConfig();
     private static final List<Function<Block, String>> suffixMTBlocks = new ArrayList<>();
     private static final List<Function<Block, String>> prefixMTBlocks = new ArrayList<>();
@@ -43,61 +42,57 @@ public class Informations {
     private static final List<Function<Entity, String>> suffixVEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> prefixIAEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> suffixIAEntity = new ArrayList<>();
-    private static final List<Function<CustomCrop, String>> suffixIACrop = new ArrayList<>();
 
     static {
         // Blocks
         if (config.getBoolean("minetorio.powerinfo", true)) {
-            suffixMTBlocks.add(Informations::getPower);
-        }
-        if (config.getBoolean("itemsadder.blocks.cropinfo", true)) {
-            suffixIACrop.add(Informations::getIAHarvestInfo);
+            suffixMTBlocks.add(Information::getPower);
         }
         if (config.getBoolean("blocks.redstoneinfo", true)) {
-            suffixVBlocks.add(Informations::getRedstoneInfo);
+            suffixVBlocks.add(Information::getRedstoneInfo);
         }
         if (config.getBoolean("blocks.cropinfo", true)) {
-            suffixVBlocks.add(Informations::getHarvestInfo);
+            suffixVBlocks.add(Information::getHarvestInfo);
         }
         if (config.getBoolean("blocks.beehiveinfo", true)) {
-            suffixVBlocks.add(Informations::getHoneyInfo);
+            suffixVBlocks.add(Information::getHoneyInfo);
         }
         if (config.getBoolean("blocks.smeltinfo", true)) {
-            suffixVBlocks.add(Informations::getRemainingSmeltTime);
-            suffixMTBlocks.add(Informations::getRemainingSmeltTime);
+            suffixVBlocks.add(Information::getRemainingSmeltTime);
+            suffixMTBlocks.add(Information::getRemainingSmeltTime);
         }
         if (config.getBoolean("blocks.containerinfo", true)) {
-            prefixVBlocks.add(Informations::getTotalItemsInContainer);
-            prefixMTBlocks.add(Informations::getTotalItemsInContainer);
+            prefixVBlocks.add(Information::getTotalItemsInContainer);
+            prefixMTBlocks.add(Information::getTotalItemsInContainer);
         }
         if (config.getBoolean("blocks.beaconinfo", true)) {
-            suffixVBlocks.add(Informations::getBeaconEffect);
+            suffixVBlocks.add(Information::getBeaconEffect);
         }
         if (config.getBoolean("blocks.spawnerinfo", true)) {
-            suffixVBlocks.add(Informations::getSpawnerInfo);
+            suffixVBlocks.add(Information::getSpawnerInfo);
         }
         if (config.getBoolean("blocks.noteblockinfo", true)) {
-            suffixVBlocks.add(Informations::getNoteblockInfo);
+            suffixVBlocks.add(Information::getNoteblockInfo);
         }
         if (config.getBoolean("blocks.farmlandinfo", true)) {
-            suffixVBlocks.add(Informations::getFarmlandHydration);
+            suffixVBlocks.add(Information::getFarmlandHydration);
         }
         // Entities
         if (config.getBoolean("entities.ageinfo", true)) {
-            suffixVEntity.add(Informations::getEntityAgeLeft);
+            suffixVEntity.add(Information::getEntityAgeLeft);
         }
         if (config.getBoolean("entities.healthinfo", true)) {
-            suffixVEntity.add(Informations::getHealth);
-            suffixIAEntity.add(Informations::getHealth);
+            suffixVEntity.add(Information::getHealth);
+            suffixIAEntity.add(Information::getHealth);
         }
         if (config.getBoolean("entities.ownerinfo", true)) {
-            prefixVEntity.add(Informations::getEntityOwner);
+            prefixVEntity.add(Information::getEntityOwner);
         }
         if (config.getBoolean("entities.leashinfo", true)) {
-            prefixVEntity.add(Informations::getIsLeashed);
+            prefixVEntity.add(Information::getIsLeashed);
         }
         if (config.getBoolean("entities.professioninfo", true)) {
-            suffixVEntity.add(Informations::getVillagerProfession);
+            suffixVEntity.add(Information::getVillagerProfession);
         }
     }
 
@@ -175,22 +170,6 @@ public class Informations {
                     }
                 }
             }
-        }
-        return "";
-    }
-    private static String getIAHarvestInfo(CustomCrop crop) {
-        int age = crop.getAge();
-        int maxAge = crop.getMaxAge();
-        int percentage = (age / (int) maxAge) * 100;
-
-        if (percentage >= 0 && percentage <= 25) {
-            return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
-        } else if (percentage > 25 && percentage <= 50) {
-            return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
-        } else if (percentage > 50 && percentage <= 75) {
-            return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
-        } else if (percentage > 75) {
-            return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
         }
         return "";
     }
@@ -362,7 +341,7 @@ public class Informations {
         return "";
     }
     // Utility
-    private static String getColorForPercent(float percent) {
+    public static String getColorForPercent(float percent) {
         if (percent >= 0 && percent <= 25) {
             return "§c";
         } else if (percent > 25 && percent <= 50) {
@@ -441,8 +420,5 @@ public class Informations {
     }
     public static List<Function<Entity, String>> getSuffixIAEntity() {
         return suffixIAEntity;
-    }
-    public static List<Function<CustomCrop, String>> getSuffixIACrop() {
-        return suffixIACrop;
     }
 }

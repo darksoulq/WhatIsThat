@@ -13,7 +13,6 @@ public final class WhatIsThat extends JavaPlugin {
         instance = this;
         MinetorioCompat.setIsMTInstalled(MinetorioCompat.checkMT());
         ItemsAdderCompat.setIsIAInstalled(ItemsAdderCompat.checkIA());
-
         getCommand("wit").setExecutor(new WITCommand());
         getServer().getPluginManager().registerEvents(new WAILAListener(), this);
     }

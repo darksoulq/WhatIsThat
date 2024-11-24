@@ -22,7 +22,7 @@ device:
             WindTurbine: com.MT.xxxtrigger50xxx.Devices.Generators.WindTurbine
           Battery2: com.MT.xxxtrigger50xxx.Devices.Battery2
           BatteryMonitor: com.MT.xxxtrigger50xxx.Devices.BatteryMonitor
-          Mover: com.MT.xxxtrigger50xxx.Devices.Mover
+          Mover: Mover
           OverDriver: com.MT.xxxtrigger50xxx.Devices.OverDriver
           PowerPylon: com.MT.xxxtrigger50xxx.Devices.PowerPylon
           PowerPylonMk2: com.MT.xxxtrigger50xxx.Devices.PowerPylonMk2
