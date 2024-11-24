@@ -1,7 +1,6 @@
 package me.darksoul.whatIsThat.misc;
 
 import me.darksoul.whatIsThat.WhatIsThat;
-import me.darksoul.whatIsThat.compatibility.Minetorio;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -16,7 +15,8 @@ public class ConfigUtils {
     private static final File VANILLA_ENTITIES_FILE = new File(LANG_FOLDER, "lang_vanilla_entities.yml");
     private static final File CONFIG_FILE = new File(WhatIsThat.getInstance().getDataFolder(), "config.yml");
 
-    private static File mtLangFile;
+    private static final File MT_LANG_FILE = new File(LANG_FOLDER, "lang_mt.yml");
+    private static final File IA_LANG_FILE = new File(LANG_FOLDER, "lang_IA.yml");
 
     static {
         if (!LANG_FOLDER.exists()) {
@@ -26,11 +26,7 @@ public class ConfigUtils {
         copyTemplate("lang_vanilla.yml", VANILLA_BLOCKS_FILE);
         copyTemplate("lang_vanilla_entities.yml", VANILLA_ENTITIES_FILE);
         copyTemplate("config.yml", CONFIG_FILE);
-
-        if (Minetorio.getIsMTInstalled()) {
-            mtLangFile = new File(LANG_FOLDER, "lang_mt.yml");
-            copyTemplate("lang_mt.yml", mtLangFile);
-        }
+        copyTemplate("lang_mt.yml", MT_LANG_FILE);
     }
 
     /**
@@ -110,6 +106,6 @@ public class ConfigUtils {
      * @return YamlConfiguration for the MT language file, or null if MT is not installed
      */
     public static YamlConfiguration loadMTLang() {
-        return mtLangFile != null ? YamlConfiguration.loadConfiguration(mtLangFile) : null;
+        return MT_LANG_FILE != null ? YamlConfiguration.loadConfiguration(MT_LANG_FILE) : null;
     }
 }

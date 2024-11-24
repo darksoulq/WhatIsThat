@@ -1,14 +1,16 @@
 package me.darksoul.whatIsThat;
 
-import me.darksoul.whatIsThat.compatibility.Minetorio;
+import dev.lone.itemsadder.api.CustomEntity;
+import dev.lone.itemsadder.api.CustomFurniture;
+import me.darksoul.whatIsThat.compatibility.ItemsAdderCompat;
+import me.darksoul.whatIsThat.compatibility.MinecraftCompat;
+import me.darksoul.whatIsThat.compatibility.MinetorioCompat;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
-import me.darksoul.whatIsThat.misc.ItemGroups;
 import me.darksoul.whatIsThat.misc.MathUtils;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,8 +24,6 @@ import java.util.List;
 
 
 public class WAILAListener implements Listener {
-    private static final YamlConfiguration vanillaLang = ConfigUtils.loadVanillaBlocksLang();
-    private static final YamlConfiguration vanillaEntitiesLang = ConfigUtils.loadVanillaEntitiesLang();
     private static final YamlConfiguration config = ConfigUtils.loadConfig();
     private static final File PREF_FOLDER = new File(WhatIsThat.getInstance().getDataFolder(), "cache/players");
     private static final List<Player> players = new ArrayList<>();
@@ -49,42 +49,32 @@ public class WAILAListener implements Listener {
         Entity entity = MathUtils.isLookingAtEntity(player, 50);
         if (entity != null) {
             EntityType type = entity.getType();
-            // Entities
-            if (config.getBoolean("entities.enabled", true)) {
-                for (EntityType not : ItemGroups.getNotRender()) {
-                    if (type != not) {
-                        String entityName = vanillaEntitiesLang.getString("entity." + entity.getType(), entity.getType().name());
-                        WAILAManager.updateBossBar(player, Informations.getEntityOwner(entity)
-                                + Informations.getVillagerProfession(entity)
-                                + entityName
-                                + Informations.getHealth(entity)
-                                + Informations.getEntityAgeLeft(entity)
-                                + Informations.getIsLeashed(entity));
+            if (config.getBoolean("itemsadder.entities.enabled", true)) {
+                CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
+                if (IAEntity != null) {
+                    if (ItemsAdderCompat.handleIAEntity(entity, IAEntity, player)) {
                         return;
                     }
                 }
             }
+            if (config.getBoolean("entities.enabled", true)) {
+                MinecraftCompat.handleMinecraftEntityDisplay(entity, type, player);
+                return;
+            }
         }
         if (block != null) {
-            // Minetorio Blocks
-            if (config.getBoolean("minetorio.enabled", true)) {
-                if (Minetorio.getDeviceBlock(block, player)) {
+            if (config.getBoolean("minetorio.enabled", true) && MinetorioCompat.getIsMTInstalled()) {
+                if (MinetorioCompat.handleMTDisplay(block, player)) {
                     return;
                 }
             }
-            // Vanilla Blocks
+            if (config.getBoolean("itemsadder.blocks.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
+                if (ItemsAdderCompat.handleIABlocks(block, player)) {
+                    return;
+                }
+            }
             if (config.getBoolean("blocks.enabled", true)) {
-                String blockName = vanillaLang.getString("block." + block.getType().name(), block.getType().name());
-                WAILAManager.updateBossBar(player, Informations.getTotalItemsInContainer(block)
-                        + blockName
-                        + Informations.getRedstoneInfo(block)
-                        + Informations.getHarvestInfo(block)
-                        + Informations.getHoneyInfo(block)
-                        + Informations.getBeaconEffect(block)
-                        + Informations.getSpawnerInfo(block)
-                        + Informations.getNoteblockInfo(block)
-                        + Informations.getFarmlandHydration(block)
-                        + Informations.getRemainingSmeltTime(block));
+                MinecraftCompat.handleMinecraftBlockDisplay(block, player);
                 return;
             }
         }
@@ -107,18 +97,15 @@ public class WAILAListener implements Listener {
         }
     }
 
-    public static File getPrefFolder() {
-        return PREF_FOLDER;
-    }
-
     public static void removePlayer(Player player) {
         players.remove(player);
     }
-
     public static void addPlayer(Player player) {
         players.add(player);
     }
-
+    public static File getPrefFolder() {
+        return PREF_FOLDER;
+    }
     public static YamlConfiguration getConfig() {
         return config;
     }

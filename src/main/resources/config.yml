@@ -13,14 +13,26 @@ blocks:
   farmlandinfo: true # Show Whether farmland is hydrated or not
 
 entities:
+  enabled: true
   ageinfo: true # Show Time left for entity to become adult
   ownerinfo: true # Show Name of the player who tamed the animal
   leashinfo: true # Show Whether entity is leashed or not
   healthinfo: true # Show health of entity
   professioninfo: true # Show profession of villager
 
-# Minetorio compatibility
+# Compatibilities
 # You don't need to disable even if you don't have the plugin!
+
+# Minetorio compatibility
+# https://www.spigotmc.org/resources/minetorio-%E2%9A%99%EF%B8%8Fautomation-%E2%9C%94%EF%B8%8F-autogather-%EF%B8%8F%E2%9C%94%EF%B8%8F-autosort-%E2%9C%94%EF%B8%8F-automove.112737/
 minetorio:
   enabled: true
   powerinfo: true # Show Power status/values
+
+# [!EXPERIMENTAL] Items Adder compatibility
+# https://www.spigotmc.org/resources/%E2%9C%A8itemsadder%E2%AD%90emotes-mobs-items-armors-hud-gui-emojis-blocks-wings-hats-liquids.73355/
+itemsadder:
+  blocks:
+    enabled: true
+  entities:
+    enabled: true

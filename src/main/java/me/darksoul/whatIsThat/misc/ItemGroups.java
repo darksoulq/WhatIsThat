@@ -11,7 +11,7 @@ import com.MT.xxxtrigger50xxx.Devices.Producers.*;
 import com.MT.xxxtrigger50xxx.Devices.Transport.*;
 import com.MT.xxxtrigger50xxx.Devices.Utility.*;
 import com.MT.xxxtrigger50xxx.Technology.ResearchLab;
-import me.darksoul.whatIsThat.compatibility.Minetorio;
+import me.darksoul.whatIsThat.compatibility.MinetorioCompat;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
@@ -102,7 +102,7 @@ public class ItemGroups {
         containers.add(Material.HOPPER);
 
         // Minetorio
-        if (Minetorio.getIsMTInstalled()) {
+        if (MinetorioCompat.getIsMTInstalled()) {
             generators.add(CrankGenerator.class);
             generators.add(MoonlightPanel.class);
             generators.add(CombustionGenerator.class);

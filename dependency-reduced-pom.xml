@@ -45,6 +45,14 @@
       <id>sonatype</id>
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
+    <repository>
+      <id>jitpack-repo</id>
+      <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>matteodev</id>
+      <url>https://www.matteodev.it/spigot/public/maven/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -54,11 +62,23 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.github.LoneDev6</groupId>
+      <artifactId>api-itemsadder</artifactId>
+      <version>3.6.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>dev.lone</groupId>
+      <artifactId>LoneLibs</artifactId>
+      <version>1.0.58</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.MT</groupId>
       <artifactId>Minetorio</artifactId>
-      <version>0.8</version>
+      <version>0.81</version>
       <scope>system</scope>
-      <systemPath>D:\TestServer\plugins\MTP-0.8.jar</systemPath>
+      <systemPath>D:\TestServer\plugins\MTP-0.81.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
