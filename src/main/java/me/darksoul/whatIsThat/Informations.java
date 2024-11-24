@@ -104,25 +104,27 @@ public class Informations {
     // Blocks
     private static String getPower(Block block) {
         Device device = Device.getDevice(block);
-        if (!device.isNeedsPower()) {
-            return "";
-        }
-        if (ItemGroups.isGenerator(device)) {
-            if (device.isProducingPower()) {
-                return " | §a⚡ " + device.getPowerGen();
-            } else {
-                return " | §8⚡ 0";
+        if (device != null) {
+            if (!device.isNeedsPower()) {
+                return "";
             }
-        } else if (device instanceof Battery2) {
-            float fillPercentage = ((float) ((Battery2) device).getStored() / ((Battery2) device).getCapacity()) * 100;
-            String color = getColorForPercent(fillPercentage);
-            return color + "⚡ " + ((Battery2) device).getStored();
-        } else {
-            if (device.isPowered()) {
-                if (device.getIdlePower() == 0) {
-                    return " | §c⚡ " + device.getActionPower();
+            if (ItemGroups.isGenerator(device)) {
+                if (device.isProducingPower()) {
+                    return " | §a⚡ " + device.getPowerGen();
+                } else {
+                    return " | §8⚡ 0";
                 }
-                return " | §c⚡ " + device.getActionPower() / device.getIdlePower();
+            } else if (device instanceof Battery2) {
+                float fillPercentage = ((float) ((Battery2) device).getStored() / ((Battery2) device).getCapacity()) * 100;
+                String color = getColorForPercent(fillPercentage);
+                return color + "⚡ " + ((Battery2) device).getStored();
+            } else {
+                if (device.isPowered()) {
+                    if (device.getIdlePower() == 0) {
+                        return " | §c⚡ " + device.getActionPower();
+                    }
+                    return " | §c⚡ " + device.getActionPower() / device.getIdlePower();
+                }
             }
         }
         return "";
