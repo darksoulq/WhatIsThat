@@ -1,11 +1,10 @@
 package me.darksoul.whatIsThat;
 
 import dev.lone.itemsadder.api.CustomEntity;
-import me.darksoul.whatIsThat.compatibility.ItemsAdderCompat;
-import me.darksoul.whatIsThat.compatibility.MinecraftCompat;
-import me.darksoul.whatIsThat.compatibility.MinetorioCompat;
+import me.darksoul.whatIsThat.compatibility.*;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.MathUtils;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -26,6 +25,8 @@ public class WAILAListener implements Listener {
     private static final YamlConfiguration config = ConfigUtils.loadConfig();
     private static final File PREF_FOLDER = new File(WhatIsThat.getInstance().getDataFolder(), "cache/players");
     private static final List<Player> players = new ArrayList<>();
+    private static final int entityDistance = config.getInt("core.entitydistance", 25);
+    private static final int blockDistance = config.getInt("core.blockdistance", 25);
 
     public WAILAListener() {
         if (!PREF_FOLDER.exists()) {
@@ -43,12 +44,21 @@ public class WAILAListener implements Listener {
     }
 
     private void updateWAILA(Player player) {
-        WAILAManager.createBossBar(player);
-        Block block = MathUtils.getLookingAtBlock(player, 50);
-        Entity entity = MathUtils.isLookingAtEntity(player, 50);
+        Block block = MathUtils.getLookingAtBlock(player, blockDistance);
+        Entity entity = MathUtils.isLookingAtEntity(player, entityDistance);
         if (entity != null) {
             if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {;
                 if (ItemsAdderCompat.handleIAEntity(entity, player)) {
+                    return;
+                }
+            }
+            if (config.getBoolean("elitemobs.enabled", true) && EliteMobsCompat.isEMInstalled()) {
+                if (EliteMobsCompat.handleEMEntity(entity, player)) {
+                    return;
+                }
+            }
+            if (config.getBoolean("auramobs.enabled", true) && AuraMobsCompat.getIsAuraMobsInstalled()) {
+                if (AuraMobsCompat.handleAuraMobs(entity, player)) {
                     return;
                 }
             }
@@ -89,6 +99,7 @@ public class WAILAListener implements Listener {
         boolean disableBossBar = config.getBoolean("disableBossBar", false);
         if (!disableBossBar) {
             players.add(event.getPlayer());
+            WAILAManager.createBossBar(event.getPlayer());
         }
     }
 
@@ -103,5 +114,9 @@ public class WAILAListener implements Listener {
     }
     public static YamlConfiguration getConfig() {
         return config;
+    }
+
+    private boolean isUSingSpyglass(Player player) {
+        return (player.isHandRaised() && player.getActiveItem().getType() == Material.SPYGLASS);
     }
 }

@@ -37,6 +37,11 @@
       <option name="url" value="https://repo.oraxen.com/releases" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="magmaguy-repo-releases" />
+      <option name="name" value="MagmaGuy's Repository" />
+      <option name="url" value="https://repo.magmaguy.com/releases" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="jitpack-repo" />
       <option name="name" value="jitpack-repo" />
       <option name="url" value="https://jitpack.io" />

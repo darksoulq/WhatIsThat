@@ -28,10 +28,11 @@ public class ItemsAdderCompat {
 
     public static boolean checkIA() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ItemsAdder");
-        if (pl != null && pl.isEnabled()) {
+        boolean isEnabled = pl != null && pl.isEnabled();
+        if (isEnabled) {
             setup();
         }
-        return pl != null && pl.isEnabled();
+        return isEnabled;
     }
     public static void setIsIAInstalled(boolean isIAInstalled) {
         ItemsAdderCompat.isIAInstalled = isIAInstalled;

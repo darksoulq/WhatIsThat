@@ -1,5 +1,10 @@
-# In this config file you can toggle specific information features
+# In this config file you can toggle specific features
 # more options will be added in the future
+core:
+  # These values cannot be in decimal form!
+  entitydistance: 25 # The max distance the plugin will show entity bossbar in (in blocks)
+  blockdistance: 25 # The max distance the plugin will show block bossbar in (in blocks)
+
 blocks:
   enabled: true
   redstoneinfo: true # Show RedStone power/status
@@ -27,12 +32,33 @@ entities:
 # https://www.spigotmc.org/resources/minetorio-%E2%9A%99%EF%B8%8Fautomation-%E2%9C%94%EF%B8%8F-autogather-%EF%B8%8F%E2%9C%94%EF%B8%8F-autosort-%E2%9C%94%EF%B8%8F-automove.112737/
 minetorio:
   enabled: true
+  smeltinfo: true
+  containerinfo: true
   powerinfo: true # Show Power status/values
 
 # [!EXPERIMENTAL] Items Adder compatibility
 # https://www.spigotmc.org/resources/%E2%9C%A8itemsadder%E2%AD%90emotes-mobs-items-armors-hud-gui-emojis-blocks-wings-hats-liquids.73355/
 itemsadder:
   blocks:
-    enabled: true
+    enabled: true # Shows Block/Fire/Crop/Furniture
   entities:
-    enabled: true
+    enabled: true # Shows Entity/Furniture
+    healthinfo: true
+
+# [!EXPERIMENTAL] Elite Mobs compatibility
+# https://www.spigotmc.org/resources/elitemobs.40090/
+elitemobs:
+  enabled: true
+  healthifo: true
+
+# [!EXPERIMENTAL] Aura Skills compatibility
+# https://www.spigotmc.org/resources/auraskills.81069/
+auraskills:
+  enabled: true
+  powerlevelinfo: true # Show the powerLevel of the player
+
+# [!EXPERIMENTAL] Aura Mobs compatibility
+#https://www.spigotmc.org/resources/auramobs-a-mob-levels-add-on-for-auraskills.94168/
+auramobs:
+  enabled: true
+  levelinfo: true # Show the level of the Aura Mob

@@ -1,5 +1,5 @@
 name: WhatIsThat
-version: '1.3.2'
+version: '1.3.3'
 main: me.darksoul.whatIsThat.WhatIsThat
 api-version: '1.21'
 

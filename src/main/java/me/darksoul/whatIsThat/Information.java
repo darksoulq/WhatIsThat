@@ -2,6 +2,7 @@ package me.darksoul.whatIsThat;
 
 import com.MT.xxxtrigger50xxx.Devices.Battery2;
 import com.MT.xxxtrigger50xxx.Devices.Device;
+import dev.aurelium.auramobs.api.AuraMobsAPI;
 import dev.lone.itemsadder.api.CustomCrop;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import org.bukkit.Instrument;
@@ -42,6 +43,8 @@ public class Information {
     private static final List<Function<Entity, String>> suffixVEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> prefixIAEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> suffixIAEntity = new ArrayList<>();
+    private static final List<Function<Entity, String>> suffixASEntity = new ArrayList<>();
+    private static final List<Function<Entity, String>> prefixASEntity = new ArrayList<>();
 
     static {
         // Blocks
@@ -59,10 +62,14 @@ public class Information {
         }
         if (config.getBoolean("blocks.smeltinfo", true)) {
             suffixVBlocks.add(Information::getRemainingSmeltTime);
+        }
+        if (config.getBoolean("minetorio.smeltinfo", true)) {
             suffixMTBlocks.add(Information::getRemainingSmeltTime);
         }
         if (config.getBoolean("blocks.containerinfo", true)) {
             prefixVBlocks.add(Information::getTotalItemsInContainer);
+        }
+        if (config.getBoolean("minetorio.containerinfo", true)) {
             prefixMTBlocks.add(Information::getTotalItemsInContainer);
         }
         if (config.getBoolean("blocks.beaconinfo", true)) {
@@ -83,7 +90,6 @@ public class Information {
         }
         if (config.getBoolean("entities.healthinfo", true)) {
             suffixVEntity.add(Information::getHealth);
-            suffixIAEntity.add(Information::getHealth);
         }
         if (config.getBoolean("entities.ownerinfo", true)) {
             prefixVEntity.add(Information::getEntityOwner);
@@ -93,6 +99,12 @@ public class Information {
         }
         if (config.getBoolean("entities.professioninfo", true)) {
             suffixVEntity.add(Information::getVillagerProfession);
+        }
+        if (config.getBoolean("auramobs.levelinfo", true)) {
+            prefixASEntity.add(Information::getAuraMobLevel);
+        }
+        if (config.getBoolean("itemsadder.entities.healthinfo", true)) {
+            suffixIAEntity.add(Information::getHealth);
         }
     }
 
@@ -340,6 +352,15 @@ public class Information {
         }
         return "";
     }
+    private static String getAuraMobLevel(Entity entity) {
+        int level = AuraMobsAPI.getMobLevel(entity);
+        return "§cLv:";
+    }
+    private static String getAuraMobHealth(Entity entity) {
+        int health = (int) AuraMobsAPI.getMobHealth(entity);
+        int maxHealth = (int) AuraMobsAPI.getMobMaxHealth(entity);
+        return " §c❤ " + health + "/" + maxHealth;
+    }
     // Utility
     public static String getColorForPercent(float percent) {
         if (percent >= 0 && percent <= 25) {
@@ -420,5 +441,11 @@ public class Information {
     }
     public static List<Function<Entity, String>> getSuffixIAEntity() {
         return suffixIAEntity;
+    }
+    public static List<Function<Entity, String>> getPrefixASEntity() {
+        return prefixASEntity;
+    }
+    public static List<Function<Entity, String>> getSuffixASEntity() {
+        return suffixASEntity;
     }
 }

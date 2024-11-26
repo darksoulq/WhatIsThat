@@ -34,6 +34,9 @@ public class MinecraftCompat {
         for (EntityType not : ItemGroups.getNotRender()) {
             if (entity.getType() != not) {
                 String entityName = vanillaEntitiesLang.getString("entity." + entity.getType(), entity.getName());
+                if (entity.getCustomName() != null) {
+                    entityName = entity.getCustomName();
+                }
                 StringBuilder vEntitySInfo = new StringBuilder();
                 StringBuilder vEntityPInfo = new StringBuilder();
                 StringBuilder info = new StringBuilder();
@@ -48,5 +51,9 @@ public class MinecraftCompat {
                 return;
             }
         }
+    }
+
+    public static YamlConfiguration getVanillaEntitiesLang() {
+        return vanillaEntitiesLang;
     }
 }
