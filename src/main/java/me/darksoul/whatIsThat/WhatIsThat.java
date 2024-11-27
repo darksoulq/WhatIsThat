@@ -15,6 +15,7 @@ public final class WhatIsThat extends JavaPlugin {
         EliteMobsCompat.setEMInstalled(EliteMobsCompat.checkEM());
         AuraSkillsCompat.setIsAuraSkillsInstalled(AuraSkillsCompat.checkAuraSkills());
         AuraMobsCompat.setIsAuraMobsInstalled(AuraMobsCompat.checkAuraMobs());
+        ValhallaMMOCompat.setIsVMMOInstalled(ValhallaMMOCompat.checkVMMO());
 
         getCommand("wit").setExecutor(new WITCommand());
         getServer().getPluginManager().registerEvents(new WAILAListener(), this);

@@ -1,7 +1,6 @@
 package me.darksoul.whatIsThat.compatibility;
 
 import dev.aurelium.auramobs.api.AuraMobsAPI;
-import dev.lone.LoneLibs.S;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
@@ -18,9 +17,11 @@ public class AuraMobsCompat {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraMobs");
         return pl != null && pl.isEnabled();
     }
+
     public static boolean getIsAuraMobsInstalled() {
         return isAuraMobsInstalled;
     }
+
     public static void setIsAuraMobsInstalled(boolean isAuraMobsInstalled) {
         AuraMobsCompat.isAuraMobsInstalled = isAuraMobsInstalled;
     }
@@ -31,14 +32,11 @@ public class AuraMobsCompat {
             if (entity.getCustomName() != null) {
                 entityName = entity.getCustomName();
             }
-            StringBuilder ASEntitySInfo = new StringBuilder();
+            String ASEntitySInfo = "";
             StringBuilder ASEntityPInfo = new StringBuilder();
             StringBuilder info = new StringBuilder();
             for (Function<Entity, String> func : Information.getPrefixASEntity()) {
                 ASEntityPInfo.append(func.apply(entity));
-            }
-            for (Function<Entity, String> func : Information.getSuffixASEntity()) {
-                ASEntitySInfo.append(func.apply(entity));
             }
             info.append(ASEntityPInfo).append(entityName).append(ASEntitySInfo);
             WAILAManager.updateBossBar(player, info.toString());

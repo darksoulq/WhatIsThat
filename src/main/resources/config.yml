@@ -61,4 +61,8 @@ auraskills:
 #https://www.spigotmc.org/resources/auramobs-a-mob-levels-add-on-for-auraskills.94168/
 auramobs:
   enabled: true
-  levelinfo: true # Show the level of the Aura Mob
+
+valhallammo:
+  enabled: true
+  levelinfo: true # Show player level
+  newgameinfo: false # Show player NG+ level

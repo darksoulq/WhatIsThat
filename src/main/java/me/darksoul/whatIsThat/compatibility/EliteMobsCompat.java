@@ -2,7 +2,6 @@ package me.darksoul.whatIsThat.compatibility;
 
 import com.magmaguy.elitemobs.entitytracker.EntityTracker;
 import com.magmaguy.elitemobs.mobconstructor.EliteEntity;
-import dev.lone.LoneLibs.S;
 import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
@@ -16,7 +15,6 @@ import java.util.function.Function;
 
 public class EliteMobsCompat {
     private static final List<Function<EliteEntity, String>> suffixEMEntity = new ArrayList<>();
-    private static final List<Function<EliteEntity, String>> prefixEMEntity = new ArrayList<>();
     private static boolean isEMInstalled;
 
     private static void setup() {
@@ -47,13 +45,10 @@ public class EliteMobsCompat {
         if (eliteEntity != null) {
             String name = eliteEntity.getName();
             StringBuilder EMEntitySInfo = new StringBuilder();
-            StringBuilder EMEntityPInfo = new StringBuilder();
+            String EMEntityPInfo = "";
             StringBuilder info = new StringBuilder();
             for (Function<EliteEntity, String> func : suffixEMEntity) {
                 EMEntitySInfo.append(func.apply(eliteEntity));
-            }
-            for (Function<EliteEntity, String> func : prefixEMEntity) {
-                EMEntityPInfo.append(func.apply(eliteEntity));
             }
             info.append(EMEntityPInfo).append(name).append(EMEntitySInfo);
             WAILAManager.updateBossBar(player, info.toString());

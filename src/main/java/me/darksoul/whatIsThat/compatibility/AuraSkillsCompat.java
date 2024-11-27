@@ -2,18 +2,12 @@ package me.darksoul.whatIsThat.compatibility;
 
 import dev.aurelium.auraskills.api.AuraSkillsApi;
 import dev.aurelium.auraskills.api.user.SkillsUser;
-import dev.lone.LoneLibs.S;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 
 public class AuraSkillsCompat {
     private static boolean isAuraSkillsInstalled;
@@ -27,6 +21,7 @@ public class AuraSkillsCompat {
             }
         }
     }
+
     public static boolean checkAuraSkills() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraSkills");
         boolean isEnabled = pl != null && pl.isEnabled();
@@ -35,6 +30,7 @@ public class AuraSkillsCompat {
         }
         return isEnabled;
     }
+
     public static void setIsAuraSkillsInstalled(boolean isAuraSkillsInstalled) {
         AuraSkillsCompat.isAuraSkillsInstalled = isAuraSkillsInstalled;
     }

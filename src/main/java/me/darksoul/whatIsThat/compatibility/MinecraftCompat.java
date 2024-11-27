@@ -1,7 +1,7 @@
 package me.darksoul.whatIsThat.compatibility;
 
-import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.Information;
+import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import org.bukkit.block.Block;
@@ -30,6 +30,7 @@ public class MinecraftCompat {
         info.append(vBlockPInfo).append(blockName).append(vBlockSInfo);
         WAILAManager.updateBossBar(player, info.toString());
     }
+
     public static void handleMinecraftEntityDisplay(Entity entity, Player player) {
         for (EntityType not : ItemGroups.getNotRender()) {
             if (entity.getType() != not) {

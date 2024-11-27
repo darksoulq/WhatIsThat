@@ -22,9 +22,11 @@ public class MinetorioCompat {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("Minetorio");
         return pl != null && pl.isEnabled();
     }
+
     public static boolean getIsMTInstalled() {
         return MinetorioCompat.isMTInstalled;
     }
+
     public static void setIsMTInstalled(boolean isMTInstalled) {
         MinetorioCompat.isMTInstalled = isMTInstalled;
     }

@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
 /*
 Experimental compatibility
 */
@@ -34,9 +35,11 @@ public class ItemsAdderCompat {
         }
         return isEnabled;
     }
+
     public static void setIsIAInstalled(boolean isIAInstalled) {
         ItemsAdderCompat.isIAInstalled = isIAInstalled;
     }
+
     public static boolean getIsIAInstalled() {
         return isIAInstalled;
     }
@@ -65,6 +68,7 @@ public class ItemsAdderCompat {
         }
         return false;
     }
+
     public static boolean handleIAEntity(Entity entity, Player player) {
         CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
         CustomFurniture furniture = CustomFurniture.byAlreadySpawned(entity);
@@ -89,12 +93,14 @@ public class ItemsAdderCompat {
         }
         return false;
     }
+
     // Internal methods
     private static void handleFurniture(CustomFurniture furniture, Player player) {
         String name = furniture.getNamespacedID();
         CustomStack stack = CustomStack.getInstance(name);
         WAILAManager.updateBossBar(player, stack.getDisplayName());
     }
+
     private static void handleIACrop(CustomCrop crop, Player player) {
         String name = crop.getSeed().getDisplayName();
         StringBuilder IACropSInfo = new StringBuilder();
@@ -106,10 +112,12 @@ public class ItemsAdderCompat {
         info.append(IACropPInfo).append(name).append(IACropSInfo);
         WAILAManager.updateBossBar(player, info.toString());
     }
+
     private static void handleIAFire(CustomFire fire, Player player) {
         String name = fire.getDisplayName();
         WAILAManager.updateBossBar(player, name);
     }
+
     private static String getIAHarvestInfo(CustomCrop crop) {
         int age = crop.getAge();
         int maxAge = crop.getMaxAge();

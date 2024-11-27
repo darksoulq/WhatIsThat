@@ -3,7 +3,6 @@ package me.darksoul.whatIsThat;
 import com.MT.xxxtrigger50xxx.Devices.Battery2;
 import com.MT.xxxtrigger50xxx.Devices.Device;
 import dev.aurelium.auramobs.api.AuraMobsAPI;
-import dev.lone.itemsadder.api.CustomCrop;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -43,7 +42,6 @@ public class Information {
     private static final List<Function<Entity, String>> suffixVEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> prefixIAEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> suffixIAEntity = new ArrayList<>();
-    private static final List<Function<Entity, String>> suffixASEntity = new ArrayList<>();
     private static final List<Function<Entity, String>> prefixASEntity = new ArrayList<>();
 
     static {
@@ -89,7 +87,7 @@ public class Information {
             suffixVEntity.add(Information::getEntityAgeLeft);
         }
         if (config.getBoolean("entities.healthinfo", true)) {
-            suffixVEntity.add(Information::getHealth);
+            suffixVEntity.add(Information::getEntityHealth);
         }
         if (config.getBoolean("entities.ownerinfo", true)) {
             prefixVEntity.add(Information::getEntityOwner);
@@ -100,11 +98,8 @@ public class Information {
         if (config.getBoolean("entities.professioninfo", true)) {
             suffixVEntity.add(Information::getVillagerProfession);
         }
-        if (config.getBoolean("auramobs.levelinfo", true)) {
-            prefixASEntity.add(Information::getAuraMobLevel);
-        }
         if (config.getBoolean("itemsadder.entities.healthinfo", true)) {
-            suffixIAEntity.add(Information::getHealth);
+            suffixIAEntity.add(Information::getEntityHealth);
         }
     }
 
@@ -334,7 +329,7 @@ public class Information {
         }
         return "";
     }
-    private static String getHealth(Entity entity) {
+    public static String getEntityHealth(Entity entity) {
         if (entity instanceof LivingEntity data) {
             int health = (int) data.getHealth();
             int maxHealth = (int) Objects.requireNonNull(data.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
@@ -351,15 +346,6 @@ public class Information {
             return "§8" + getProfessionString(profession) + " §f| ";
         }
         return "";
-    }
-    private static String getAuraMobLevel(Entity entity) {
-        int level = AuraMobsAPI.getMobLevel(entity);
-        return "§cLv:";
-    }
-    private static String getAuraMobHealth(Entity entity) {
-        int health = (int) AuraMobsAPI.getMobHealth(entity);
-        int maxHealth = (int) AuraMobsAPI.getMobMaxHealth(entity);
-        return " §c❤ " + health + "/" + maxHealth;
     }
     // Utility
     public static String getColorForPercent(float percent) {
@@ -444,8 +430,5 @@ public class Information {
     }
     public static List<Function<Entity, String>> getPrefixASEntity() {
         return prefixASEntity;
-    }
-    public static List<Function<Entity, String>> getSuffixASEntity() {
-        return suffixASEntity;
     }
 }

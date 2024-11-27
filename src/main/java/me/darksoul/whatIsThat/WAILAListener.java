@@ -1,6 +1,5 @@
 package me.darksoul.whatIsThat;
 
-import dev.lone.itemsadder.api.CustomEntity;
 import me.darksoul.whatIsThat.compatibility.*;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.MathUtils;
@@ -8,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,12 +40,17 @@ public class WAILAListener implements Listener {
             }
         }.runTaskTimer(WhatIsThat.getInstance(), 0, 5);
     }
-
     private void updateWAILA(Player player) {
         Block block = MathUtils.getLookingAtBlock(player, blockDistance);
         Entity entity = MathUtils.isLookingAtEntity(player, entityDistance);
         if (entity != null) {
-            if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {;
+            if (config.getBoolean("valhallammo.enabled", true) && ValhallaMMOCompat.getIsVMMOInstalled()) {
+                if (ValhallaMMOCompat.handleVMMOEntity(entity, player)) {
+                    return;
+                }
+            }
+            if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
+                ;
                 if (ItemsAdderCompat.handleIAEntity(entity, player)) {
                     return;
                 }
@@ -91,7 +94,6 @@ public class WAILAListener implements Listener {
         WAILAManager.removeBossBar(event.getPlayer());
         players.remove(event.getPlayer());
     }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         File playerFile = new File(PREF_FOLDER + "/" + event.getPlayer().getName() + ".yml");
@@ -102,7 +104,6 @@ public class WAILAListener implements Listener {
             WAILAManager.createBossBar(event.getPlayer());
         }
     }
-
     public static void removePlayer(Player player) {
         players.remove(player);
     }
@@ -114,9 +115,5 @@ public class WAILAListener implements Listener {
     }
     public static YamlConfiguration getConfig() {
         return config;
-    }
-
-    private boolean isUSingSpyglass(Player player) {
-        return (player.isHandRaised() && player.getActiveItem().getType() == Material.SPYGLASS);
     }
 }
