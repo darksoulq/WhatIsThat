@@ -28,7 +28,8 @@ public class ItemGroups {
     private static final List<Class<?>> generators = new ArrayList<>();
     private static final List<Class<?>> devices = new ArrayList<>();
     private static final List<EntityType> pets = new ArrayList<>();
-    private static final List<EntityType> notRender = new ArrayList<>();
+    private static final List<EntityType> notRenderEntities = new ArrayList<>();
+    private static final List<Material> operatorBlocks = new ArrayList<>();
 
     static {
         // RedStone
@@ -197,6 +198,12 @@ public class ItemGroups {
             devices.add(ResearchLab.class);
         }
 
+        // Operator Blocks
+        operatorBlocks.add(Material.BARRIER);
+        operatorBlocks.add(Material.LIGHT);
+        operatorBlocks.add(Material.STRUCTURE_BLOCK);
+        operatorBlocks.add(Material.STRUCTURE_VOID);
+
         // Pets
         pets.add(EntityType.CAT);
         pets.add(EntityType.WOLF);
@@ -207,61 +214,57 @@ public class ItemGroups {
         pets.add(EntityType.LLAMA);
 
         // Entities to not render for
-        notRender.add(EntityType.ITEM);
-        notRender.add(EntityType.ITEM);
-        notRender.add(EntityType.ITEM_DISPLAY);
-        notRender.add(EntityType.BLOCK_DISPLAY);
-        notRender.add(EntityType.INTERACTION);
-        notRender.add(EntityType.EVOKER_FANGS);
-        notRender.add(EntityType.EXPERIENCE_BOTTLE);
-        notRender.add(EntityType.EXPERIENCE_ORB);
-        notRender.add(EntityType.FALLING_BLOCK);
-        notRender.add(EntityType.LIGHTNING_BOLT);
-        notRender.add(EntityType.MARKER);
-        notRender.add(EntityType.POTION);
-        notRender.add(EntityType.FIREBALL);
-        notRender.add(EntityType.SMALL_FIREBALL);
-        notRender.add(EntityType.SHULKER_BULLET);
-        notRender.add(EntityType.FIREWORK_ROCKET);
-        notRender.add(EntityType.EYE_OF_ENDER);
-        notRender.add(EntityType.SNOWBALL);
-        notRender.add(EntityType.ENDER_PEARL);
-        notRender.add(EntityType.DRAGON_FIREBALL);
-        notRender.add(EntityType.SPECTRAL_ARROW);
-        notRender.add(EntityType.ARROW);
-        notRender.add(EntityType.TRIDENT);
-        notRender.add(EntityType.WITHER);
-        notRender.add(EntityType.ENDER_DRAGON);
+        notRenderEntities.add(EntityType.ITEM);
+        notRenderEntities.add(EntityType.ITEM);
+        notRenderEntities.add(EntityType.ITEM_DISPLAY);
+        notRenderEntities.add(EntityType.BLOCK_DISPLAY);
+        notRenderEntities.add(EntityType.INTERACTION);
+        notRenderEntities.add(EntityType.EVOKER_FANGS);
+        notRenderEntities.add(EntityType.EXPERIENCE_BOTTLE);
+        notRenderEntities.add(EntityType.EXPERIENCE_ORB);
+        notRenderEntities.add(EntityType.FALLING_BLOCK);
+        notRenderEntities.add(EntityType.LIGHTNING_BOLT);
+        notRenderEntities.add(EntityType.MARKER);
+        notRenderEntities.add(EntityType.POTION);
+        notRenderEntities.add(EntityType.FIREBALL);
+        notRenderEntities.add(EntityType.SMALL_FIREBALL);
+        notRenderEntities.add(EntityType.SHULKER_BULLET);
+        notRenderEntities.add(EntityType.FIREWORK_ROCKET);
+        notRenderEntities.add(EntityType.EYE_OF_ENDER);
+        notRenderEntities.add(EntityType.SNOWBALL);
+        notRenderEntities.add(EntityType.ENDER_PEARL);
+        notRenderEntities.add(EntityType.DRAGON_FIREBALL);
+        notRenderEntities.add(EntityType.SPECTRAL_ARROW);
+        notRenderEntities.add(EntityType.ARROW);
+        notRenderEntities.add(EntityType.TRIDENT);
+        notRenderEntities.add(EntityType.WITHER);
+        notRenderEntities.add(EntityType.ENDER_DRAGON);
     }
 
     public static List<Material> getRedstoneProviders() {
         return redstoneProviders;
     }
-
     public static List<Material> getRedstoneComponents() {
         return redstoneComponents;
     }
-
     public static List<Material> getCrops() {
         return crops;
     }
-
     public static List<Material> getHoneyProducers() {
         return honeyProducers;
     }
-
     public static List<Material> getFurnaces() {
         return furnaces;
     }
-
     public static List<Material> getContainers() {
         return containers;
     }
-
+    public static List<Material> getOperatorBlocks() {
+        return operatorBlocks;
+    }
     public static List<Class<?>> getDevices() {
         return devices;
     }
-
     public static List<Class<?>> getGenerators() {
         return generators;
     }
@@ -269,9 +272,8 @@ public class ItemGroups {
     public static List<EntityType> getPets() {
         return pets;
     }
-
-    public static List<EntityType> getNotRender() {
-        return notRender;
+    public static List<EntityType> getNotRenderEntities() {
+        return notRenderEntities;
     }
 
     public static boolean isGenerator(Device device) {

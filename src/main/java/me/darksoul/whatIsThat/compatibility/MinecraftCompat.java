@@ -32,7 +32,7 @@ public class MinecraftCompat {
     }
 
     public static void handleMinecraftEntityDisplay(Entity entity, Player player) {
-        for (EntityType not : ItemGroups.getNotRender()) {
+        for (EntityType not : ItemGroups.getNotRenderEntities()) {
             if (entity.getType() != not) {
                 String entityName = vanillaEntitiesLang.getString("entity." + entity.getType(), entity.getName());
                 if (entity.getCustomName() != null) {

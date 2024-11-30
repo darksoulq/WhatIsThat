@@ -27,6 +27,15 @@ public class MathUtils {
             Location checkLocation = eyeLocation.clone().add(direction.clone().multiply(i));
             Collection<Entity> nearbyEntities = checkLocation.getWorld().getNearbyEntities(checkLocation, 0.5, 0.5, 0.5);
 
+            Block block = checkLocation.getBlock();
+            if (block.isEmpty()) continue;
+
+            BoundingBox blockBoundingBox = getBlockBoundingBox(block);
+
+            if (blockBoundingBox != null && blockBoundingBox.contains(checkLocation.toVector())) {
+                return null;
+            }
+
             for (Entity entity : nearbyEntities) {
                 if (entity != player && entity.getBoundingBox().contains(checkLocation.toVector())) {
                     return entity;

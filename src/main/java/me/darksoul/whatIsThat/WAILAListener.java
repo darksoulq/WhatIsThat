@@ -2,6 +2,7 @@ package me.darksoul.whatIsThat;
 
 import me.darksoul.whatIsThat.compatibility.*;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
+import me.darksoul.whatIsThat.misc.ItemGroups;
 import me.darksoul.whatIsThat.misc.MathUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -81,7 +82,7 @@ public class WAILAListener implements Listener {
                     return;
                 }
             }
-            if (config.getBoolean("blocks.enabled", true)) {
+            if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getOperatorBlocks().contains(block.getType())) {
                 MinecraftCompat.handleMinecraftBlockDisplay(block, player);
                 return;
             }
