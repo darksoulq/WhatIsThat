@@ -67,8 +67,9 @@ public class WAILAListener implements Listener {
                 }
             }
             if (config.getBoolean("entities.enabled", true)) {
-                MinecraftCompat.handleMinecraftEntityDisplay(entity, player);
-                return;
+                if (MinecraftCompat.handleMinecraftEntityDisplay(entity, player)) {
+                    return;
+                }
             }
         }
         if (block != null) {
@@ -83,8 +84,9 @@ public class WAILAListener implements Listener {
                 }
             }
             if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getOperatorBlocks().contains(block.getType())) {
-                MinecraftCompat.handleMinecraftBlockDisplay(block, player);
-                return;
+                if (MinecraftCompat.handleMinecraftBlockDisplay(block, player)) {
+                    return;
+                }
             }
         }
         WAILAManager.updateBossBar(player, "");

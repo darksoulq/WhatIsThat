@@ -16,7 +16,7 @@ public class MinecraftCompat {
     private static final YamlConfiguration vanillaLang = ConfigUtils.loadVanillaBlocksLang();
     private static final YamlConfiguration vanillaEntitiesLang = ConfigUtils.loadVanillaEntitiesLang();
 
-    public static void handleMinecraftBlockDisplay(Block block, Player player) {
+    public static boolean handleMinecraftBlockDisplay(Block block, Player player) {
         String blockName = vanillaLang.getString("block." + block.getType().name(), block.getType().name());
         StringBuilder vBlockSInfo = new StringBuilder();
         StringBuilder vBlockPInfo = new StringBuilder();
@@ -24,14 +24,15 @@ public class MinecraftCompat {
         for (Function<Block, String> func : Information.getSuffixVBlocks()) {
             vBlockSInfo.append(func.apply(block));
         }
+        info.append(Information.getToolToBreak(block, player));
         for (Function<Block, String> func : Information.getPrefixVBlocks()) {
             vBlockPInfo.append(func.apply(block));
         }
         info.append(vBlockPInfo).append(blockName).append(vBlockSInfo);
         WAILAManager.updateBossBar(player, info.toString());
+        return true;
     }
-
-    public static void handleMinecraftEntityDisplay(Entity entity, Player player) {
+    public static boolean handleMinecraftEntityDisplay(Entity entity, Player player) {
         for (EntityType not : ItemGroups.getNotRenderEntities()) {
             if (entity.getType() != not) {
                 String entityName = vanillaEntitiesLang.getString("entity." + entity.getType(), entity.getName());
@@ -49,9 +50,10 @@ public class MinecraftCompat {
                 }
                 info.append(vEntityPInfo).append(entityName).append(vEntitySInfo);
                 WAILAManager.updateBossBar(player, info.toString());
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public static YamlConfiguration getVanillaEntitiesLang() {

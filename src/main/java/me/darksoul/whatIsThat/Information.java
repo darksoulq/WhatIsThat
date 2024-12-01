@@ -4,9 +4,7 @@ import com.MT.xxxtrigger50xxx.Devices.Battery2;
 import com.MT.xxxtrigger50xxx.Devices.Device;
 import dev.aurelium.auramobs.api.AuraMobsAPI;
 import me.darksoul.whatIsThat.misc.ItemGroups;
-import org.bukkit.Instrument;
-import org.bukkit.Material;
-import org.bukkit.Note;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
@@ -26,7 +24,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.spawner.Spawner;
+import org.jetbrains.annotations.Nullable;
 
+import javax.tools.Tool;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -97,6 +97,9 @@ public class Information {
         }
         if (config.getBoolean("entities.professioninfo", true)) {
             suffixVEntity.add(Information::getVillagerProfession);
+        }
+        if (config.getBoolean("entities.tntinfo", true)) {
+            suffixVEntity.add(Information::getTNTFuseTime);
         }
         if (config.getBoolean("itemsadder.entities.healthinfo", true)) {
             suffixIAEntity.add(Information::getEntityHealth);
@@ -299,6 +302,37 @@ public class Information {
         }
         return "";
     }
+    public static String getToolToBreak(Block block, Player player) {
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        ToolType prefTool = getPrefferedTool(block.getType());
+        Material prefMat;
+        switch (prefTool) {
+            case HOE -> prefMat = Material.WOODEN_HOE;
+            case AXE -> prefMat = Material.WOODEN_AXE;
+            case PICKAXE -> prefMat = Material.WOODEN_PICKAXE;
+            case SHOVEL -> prefMat = Material.WOODEN_SHOVEL;
+            case null, default -> prefMat = Material.AIR;
+        }
+        if (ItemGroups.getContainers().contains(block.getType())) {
+            if (heldItem.getType().isAir()) {
+                return "§c" + getEmojiForTool(prefMat) + " ";
+            }
+            if (canToolBreakBlock(heldItem.getType(), block.getType())) {
+                return "§a" + getEmojiForTool(prefMat) + " ";
+            } else {
+                return "§c" + getEmojiForTool(prefMat) + " ";
+            }
+        } else {
+            if (heldItem.getType().isAir()) {
+                return "§c" + getEmojiForTool(prefMat) + " §f| ";
+            }
+            if (canToolBreakBlock(heldItem.getType(), block.getType())) {
+                return "§a" + getEmojiForTool(prefMat) + " §f| ";
+            } else {
+                return "§c" + getEmojiForTool(prefMat) + " §f| ";
+            }
+        }
+    }
     // Entities
     private static String getEntityAgeLeft(Entity entity) {
         if (entity instanceof org.bukkit.entity.Ageable data) {
@@ -344,6 +378,13 @@ public class Information {
             Profession profession = villager.getProfession();
 
             return "§8" + getProfessionString(profession) + " §f| ";
+        }
+        return "";
+    }
+    private static String getTNTFuseTime(Entity entity) {
+        if (entity.getType() == EntityType.TNT) {
+            int tntFuseTime = ((TNTPrimed) entity).getFuseTicks() / 20;
+            return " | §4\uD83D\uDCA3" + tntFuseTime;
         }
         return "";
     }
@@ -403,6 +444,54 @@ public class Information {
         }
         return "";
     }
+    private static ToolType getPrefferedTool(Material mat) {
+        if (Tag.MINEABLE_AXE.isTagged(mat)) {
+            return ToolType.AXE;
+        } else if (Tag.MINEABLE_PICKAXE.isTagged(mat)) {
+            return ToolType.PICKAXE;
+        } else if (Tag.MINEABLE_SHOVEL.isTagged(mat)) {
+            return ToolType.SHOVEL;
+        } else if (Tag.MINEABLE_HOE.isTagged(mat)) {
+            return ToolType.HOE;
+        } else {
+            return null;
+        }
+    }
+    private static boolean canToolBreakBlock(Material iMat, Material bMat) {
+        ToolType prefferedTool = getPrefferedTool(bMat);
+
+        switch (prefferedTool) {
+            case AXE -> {
+                return iMat.name().contains("AXE");
+            }
+            case PICKAXE -> {
+                return iMat.name().contains("PICKAXE");
+            }
+            case SHOVEL -> {
+                return iMat.name().contains("SHOVEL");
+            }
+            case HOE -> {
+                return iMat.name().contains("HOE");
+            }
+            case null, default -> {
+                return false;
+            }
+        }
+    }
+    private static String getEmojiForTool(@Nullable Material mat) {
+        if (mat != null) {
+            if (mat.name().endsWith("_AXE")) {
+                return "\uD83E\uDE93";
+            } else if (mat.name().endsWith("_PICKAXE")) {
+                return "⛏";
+            } else if (mat.name().endsWith("_SHOVEL")) {
+                return "\uD83E\uDD44";
+            } else if (mat.name().endsWith("_HOE")) {
+                return "\uD83D\uDD2A";
+            }
+        }
+        return "";
+    }
     // Getters
     public static List<Function<Block, String>> getPrefixMTBlocks() {
         return prefixMTBlocks;
@@ -430,5 +519,12 @@ public class Information {
     }
     public static List<Function<Entity, String>> getPrefixASEntity() {
         return prefixASEntity;
+    }
+
+    public enum ToolType {
+        AXE,
+        PICKAXE,
+        SHOVEL,
+        HOE,
     }
 }

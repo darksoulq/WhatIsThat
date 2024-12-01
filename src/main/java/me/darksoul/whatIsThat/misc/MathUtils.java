@@ -28,12 +28,12 @@ public class MathUtils {
             Collection<Entity> nearbyEntities = checkLocation.getWorld().getNearbyEntities(checkLocation, 0.5, 0.5, 0.5);
 
             Block block = checkLocation.getBlock();
-            if (block.isEmpty()) continue;
+            if (block.getType().isSolid()) {
+                BoundingBox blockBoundingBox = getBlockBoundingBox(block);
 
-            BoundingBox blockBoundingBox = getBlockBoundingBox(block);
-
-            if (blockBoundingBox != null && blockBoundingBox.contains(checkLocation.toVector())) {
-                return null;
+                if (blockBoundingBox != null && blockBoundingBox.contains(checkLocation.toVector())) {
+                    return null;
+                }
             }
 
             for (Entity entity : nearbyEntities) {

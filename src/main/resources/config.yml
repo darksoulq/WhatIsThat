@@ -24,6 +24,7 @@ entities:
   leashinfo: true # Show Whether entity is leashed or not
   healthinfo: true # Show health of entity
   professioninfo: true # Show profession of villager
+  tntinfo: true # Show tnt time till explosion
 
 # Compatibilities
 # You don't need to disable even if you don't have the plugin!
