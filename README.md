@@ -1,3 +1,4 @@
+[<img src="imgs/wikiBanner.png" alt="wiki">](https://github.com/darksoulq/WhatIsThat/wiki)
 <img src="imgs/WIT2.png" alt="Description" style="width: 100%; height : 99%;">
 
 ## Note:
