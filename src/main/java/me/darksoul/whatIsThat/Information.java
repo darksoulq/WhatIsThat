@@ -107,7 +107,7 @@ public class Information {
     }
 
     // Blocks
-    private static String getPower(Block block) {
+    public static String getPower(Block block) {
         Device device = Device.getDevice(block);
         if (device != null) {
             if (!device.isNeedsPower()) {
@@ -134,114 +134,104 @@ public class Information {
         }
         return "";
     }
-    private static String getRedstoneInfo(Block block) {
+    public static String getRedstoneInfo(Block block) {
         boolean isPowerSource = block.isBlockIndirectlyPowered();
         int power = block.getBlockPower();
         //RedStone components
-        for (Material type : ItemGroups.getRedstoneComponents()) {
-            if (block.getType() == type) {
-                if (power > 0 || isPowerSource) {
-                    return " | §c● " + power;
-                } else if (power == 0) {
-                    return " | §8● ";
-                }
+        if (ItemGroups.getRedstoneComponents().contains(block.getType())) {
+            if (power > 0 || isPowerSource) {
+                return " | §c● " + power;
+            } else if (power == 0) {
+                return " | §8● ";
             }
         }
         // Redstone Providers
-        for (Material type : ItemGroups.getRedstoneProviders()) {
-            if (block.getType() == type) {
-                if (power > 0 || isPowerSource) {
-                    return " | §c● ";
-                } else if (power == 0) {
-                    return " | §8● ";
-                }
+        // Redstone Block
+        if (block.getType() == Material.REDSTONE_BLOCK) {
+            return " | §c● ";
+        }
+        if (ItemGroups.getRedstoneProviders().contains(block.getType())) {
+            if (power > 0 || isPowerSource) {
+                return " | §c● ";
+            } else if (power == 0) {
+                return " | §8● ";
             }
         }
         return "";
     }
-    private static String getHarvestInfo(Block block) {
-        for (Material type : ItemGroups.getCrops()) {
-            if (block.getType() == type) {
-                BlockData data = block.getBlockData();
-                if (data instanceof Ageable) {
-                    int age = ((Ageable) data).getAge();
-                    int maxAge = ((Ageable) data).getMaximumAge();
+    public static String getHarvestInfo(Block block) {
+        if (ItemGroups.getCrops().contains(block.getType())) {
+            BlockData data = block.getBlockData();
+            int age = ((Ageable) data).getAge();
+            int maxAge = ((Ageable) data).getMaximumAge();
 
-                    int percentage = (age / (int) maxAge) * 100;
+            int percentage = (age / (int) maxAge) * 100;
 
-                    if (percentage >= 0 && percentage <= 25) {
-                        return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
-                    } else if (percentage > 25 && percentage <= 50) {
-                        return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
-                    } else if (percentage > 50 && percentage <= 75) {
-                        return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
-                    } else if (percentage > 75) {
-                        return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
-                    }
-                }
+            if (percentage >= 0 && percentage <= 25) {
+                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
+            } else if (percentage > 25 && percentage <= 50) {
+                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
+            } else if (percentage > 50 && percentage <= 75) {
+                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
+            } else if (percentage > 75) {
+                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
             }
         }
         return "";
     }
-    private static String getHoneyInfo(Block block) {
-        for (Material type : ItemGroups.getHoneyProducers()) {
-            if (block.getType() == type) {
-                BlockData data = block.getBlockData();
-                if (data instanceof Beehive) {
-                    int honeyLevel = ((Beehive) data).getHoneyLevel();
-                    int maxHoneyLevel = ((Beehive) data).getMaximumHoneyLevel();
+    public static String getHoneyInfo(Block block) {
+        if (ItemGroups.getHoneyProducers().contains(block.getType())) {
+            BlockData data = block.getBlockData();
+            if (data instanceof Beehive) {
+                int honeyLevel = ((Beehive) data).getHoneyLevel();
+                int maxHoneyLevel = ((Beehive) data).getMaximumHoneyLevel();
 
-                    double percentage = (honeyLevel / (double) maxHoneyLevel) * 100;
+                double percentage = (honeyLevel / (double) maxHoneyLevel) * 100;
 
-                    return " | " + getColorForPercent((float) percentage) + "\uD83D\uDC1D "
+                return " | " + getColorForPercent((float) percentage) + "\uD83D\uDC1D "
                             + honeyLevel + "/"
                             + maxHoneyLevel;
-                }
             }
         }
         return "";
     }
-    private static String getRemainingSmeltTime(Block block) {
-        for (Material type : ItemGroups.getFurnaces()) {
-            if (block.getType() == type) {
-                BlockState state = block.getState();
-                InventoryHolder ih = (InventoryHolder) state;
-                FurnaceInventory inventory = (FurnaceInventory) ih.getInventory();
+    public static String getRemainingSmeltTime(Block block) {
+        if (ItemGroups.getFurnaces().contains(block.getType())) {
+            BlockState state = block.getState();
+            InventoryHolder ih = (InventoryHolder) state;
+            FurnaceInventory inventory = (FurnaceInventory) ih.getInventory();
 
-                int cookTime = ((Furnace) state).getCookTime();
-                int cookTimeTotal = ((Furnace) state).getCookTimeTotal();
+            int cookTime = ((Furnace) state).getCookTime();
+            int cookTimeTotal = ((Furnace) state).getCookTimeTotal();
 
-                int ticksRemaining = cookTimeTotal - cookTime;
-                int secondsRemaining = ticksRemaining / 20;
-                float percentage = ((float) cookTime / cookTimeTotal) * 100;
-                if (inventory.getSmelting() != null && cookTime != 0) {
+            int ticksRemaining = cookTimeTotal - cookTime;
+            int secondsRemaining = ticksRemaining / 20;
+            float percentage = ((float) cookTime / cookTimeTotal) * 100;
+            if (inventory.getSmelting() != null && cookTime != 0) {
                     return " | " + getColorForPercent(percentage) + "⌛ " + secondsRemaining + "s";
                 }
-            }
         }
         return "";
     }
-    private static String getTotalItemsInContainer(Block block) {
-        for (Material type : ItemGroups.getContainers()) {
-            if (block.getType() == type) {
-                BlockState state = block.getState();
-                InventoryHolder ih = (InventoryHolder) state;
-                Inventory inventory = ih.getInventory();
+    public static String getTotalItemsInContainer(Block block) {
+        if (ItemGroups.getContainers().contains(block.getType())) {
+            BlockState state = block.getState();
+            InventoryHolder ih = (InventoryHolder) state;
+            Inventory inventory = ih.getInventory();
 
-                int totalItems = 0;
+            int totalItems = 0;
 
-                for (ItemStack item : inventory.getContents()) {
-                    if (item != null) {
+            for (ItemStack item : inventory.getContents()) {
+                if (item != null) {
                         totalItems += item.getAmount();
-                    }
                 }
-
-                return "§6\uD83D\uDCE6 " + totalItems + " §f| ";
             }
+
+            return "§6\uD83D\uDCE6 " + totalItems + " §f| ";
         }
         return "";
     }
-    private static String getBeaconEffect(Block block) {
+    public static String getBeaconEffect(Block block) {
         if (block.getType() == Material.BEACON) {
             Beacon state = (Beacon) block.getState();
             PotionEffect primaryEffect = state.getPrimaryEffect();
@@ -265,7 +255,7 @@ public class Information {
         }
         return "";
     }
-    private static String getSpawnerInfo(Block block) {
+    public static String getSpawnerInfo(Block block) {
         if (block.getType() == Material.SPAWNER) {
             Spawner state = (Spawner) block.getState();
             EntityType entity = state.getSpawnedType();
@@ -275,7 +265,7 @@ public class Information {
         }
         return "";
     }
-    private static String getNoteblockInfo(Block block) {
+    public static String getNoteblockInfo(Block block) {
         if (block.getType() == Material.NOTE_BLOCK) {
             NoteBlock data = (NoteBlock) block.getBlockData();
             Note note = data.getNote();
@@ -289,7 +279,7 @@ public class Information {
         }
         return "";
     }
-    private static String getFarmlandHydration(Block block) {
+    public static String getFarmlandHydration(Block block) {
         if (block.getType() == Material.FARMLAND) {
             Farmland data = (Farmland) block.getBlockData();
             int moisture = data.getMoisture();
@@ -313,6 +303,9 @@ public class Information {
             case SHOVEL -> prefMat = Material.WOODEN_SHOVEL;
             case null, default -> prefMat = Material.AIR;
         }
+        if (prefMat == Material.AIR) {
+            return "";
+        }
         if (ItemGroups.getContainers().contains(block.getType())) {
             if (heldItem.getType().isAir()) {
                 return "§c" + getEmojiForTool(prefMat) + " ";
@@ -334,7 +327,7 @@ public class Information {
         }
     }
     // Entities
-    private static String getEntityAgeLeft(Entity entity) {
+    public static String getEntityAgeLeft(Entity entity) {
         if (entity instanceof org.bukkit.entity.Ageable data) {
             int age = data.getAge();
             if (age < 0) {
@@ -344,18 +337,16 @@ public class Information {
         }
         return "";
     }
-    private static String getEntityOwner(Entity entity) {
-        for (EntityType type : ItemGroups.getPets()) {
-            if (entity.getType() == type) {
-                Tameable data = (Tameable) entity;
-                if (data.isTamed() && data.getOwner() != null) {
-                    return "§8" + data.getOwner().getName() + " §f| ";
-                }
+    public static String getEntityOwner(Entity entity) {
+        if (ItemGroups.getPets().contains(entity.getType())) {
+            Tameable data = (Tameable) entity;
+            if (data.isTamed() && data.getOwner() != null) {
+                return "§8" + data.getOwner().getName() + " §f| ";
             }
         }
         return "";
     }
-    private static String getIsLeashed(Entity entity) {
+    public static String getIsLeashed(Entity entity) {
         if (entity instanceof LivingEntity lEntity) {
             if (lEntity.isLeashed()) {
                 return " | §2\uD83D\uDD17";
@@ -372,7 +363,7 @@ public class Information {
         }
         return "";
     }
-    private static String getVillagerProfession(Entity entity) {
+    public static String getVillagerProfession(Entity entity) {
         if (entity.getType() == EntityType.VILLAGER) {
             Villager villager = (Villager) entity;
             Profession profession = villager.getProfession();
@@ -381,7 +372,7 @@ public class Information {
         }
         return "";
     }
-    private static String getTNTFuseTime(Entity entity) {
+    public static String getTNTFuseTime(Entity entity) {
         if (entity.getType() == EntityType.TNT) {
             int tntFuseTime = ((TNTPrimed) entity).getFuseTicks() / 20;
             return " | §4\uD83D\uDCA3" + tntFuseTime;
@@ -401,7 +392,7 @@ public class Information {
         }
         return "§8";
     }
-    private static String getEmojiForEffect(String effect) {
+    public static String getEmojiForEffect(String effect) {
         return switch (effect) {
             case "SPEED" -> "§b💨";
             case "FAST_DIGGING" -> "§e⛏";
@@ -412,7 +403,7 @@ public class Information {
             default -> "";
         };
     }
-    private static String getProfessionString(Profession profession) {
+    public static String getProfessionString(Profession profession) {
         if (profession == Profession.ARMORER) {
             return "Armorer";
         } else if (profession == Profession.BUTCHER) {
@@ -444,7 +435,7 @@ public class Information {
         }
         return "";
     }
-    private static ToolType getPrefferedTool(Material mat) {
+    public static ToolType getPrefferedTool(Material mat) {
         if (Tag.MINEABLE_AXE.isTagged(mat)) {
             return ToolType.AXE;
         } else if (Tag.MINEABLE_PICKAXE.isTagged(mat)) {
@@ -457,7 +448,7 @@ public class Information {
             return null;
         }
     }
-    private static boolean canToolBreakBlock(Material iMat, Material bMat) {
+    public static boolean canToolBreakBlock(Material iMat, Material bMat) {
         ToolType prefferedTool = getPrefferedTool(bMat);
 
         switch (prefferedTool) {
@@ -478,7 +469,7 @@ public class Information {
             }
         }
     }
-    private static String getEmojiForTool(@Nullable Material mat) {
+    public static String getEmojiForTool(@Nullable Material mat) {
         if (mat != null) {
             if (mat.name().endsWith("_AXE")) {
                 return "\uD83E\uDE93";

@@ -1,6 +1,7 @@
 package me.darksoul.whatIsThat.compatibility;
 
 import me.darksoul.whatIsThat.Information;
+import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.ItemGroups;
@@ -24,7 +25,9 @@ public class MinecraftCompat {
         for (Function<Block, String> func : Information.getSuffixVBlocks()) {
             vBlockSInfo.append(func.apply(block));
         }
-        info.append(Information.getToolToBreak(block, player));
+        if (WAILAListener.getConfig().getBoolean("block.toolinfo", true)) {
+            info.append(Information.getToolToBreak(block, player));
+        }
         for (Function<Block, String> func : Information.getPrefixVBlocks()) {
             vBlockPInfo.append(func.apply(block));
         }

@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 
 public class WAILAListener implements Listener {
@@ -45,24 +46,8 @@ public class WAILAListener implements Listener {
         Block block = MathUtils.getLookingAtBlock(player, blockDistance);
         Entity entity = MathUtils.isLookingAtEntity(player, entityDistance);
         if (entity != null) {
-            if (config.getBoolean("valhallammo.enabled", true) && ValhallaMMOCompat.getIsVMMOInstalled()) {
-                if (ValhallaMMOCompat.handleVMMOEntity(entity, player)) {
-                    return;
-                }
-            }
-            if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
-                ;
-                if (ItemsAdderCompat.handleIAEntity(entity, player)) {
-                    return;
-                }
-            }
-            if (config.getBoolean("elitemobs.enabled", true) && EliteMobsCompat.isEMInstalled()) {
-                if (EliteMobsCompat.handleEMEntity(entity, player)) {
-                    return;
-                }
-            }
-            if (config.getBoolean("auramobs.enabled", true) && AuraMobsCompat.getIsAuraMobsInstalled()) {
-                if (AuraMobsCompat.handleAuraMobs(entity, player)) {
+            for (BiFunction<Entity, Player, Boolean> eHandler : Handlers.getEntityHandlers()) {
+                if (eHandler.apply(entity, player)) {
                     return;
                 }
             }
@@ -73,13 +58,8 @@ public class WAILAListener implements Listener {
             }
         }
         if (block != null) {
-            if (config.getBoolean("minetorio.enabled", true) && MinetorioCompat.getIsMTInstalled()) {
-                if (MinetorioCompat.handleMTDisplay(block, player)) {
-                    return;
-                }
-            }
-            if (config.getBoolean("itemsadder.blocks.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
-                if (ItemsAdderCompat.handleIABlocks(block, player)) {
+            for (BiFunction<Block, Player, Boolean> bHandler : Handlers.getBlockHandlers()) {
+                if (bHandler.apply(block, player)) {
                     return;
                 }
             }

@@ -17,6 +17,8 @@ public final class WhatIsThat extends JavaPlugin {
         AuraMobsCompat.setIsAuraMobsInstalled(AuraMobsCompat.checkAuraMobs());
         ValhallaMMOCompat.setIsVMMOInstalled(ValhallaMMOCompat.checkVMMO());
 
+        Handlers.setup();
+
         getCommand("wit").setExecutor(new WITCommand());
         getServer().getPluginManager().registerEvents(new WAILAListener(), this);
     }

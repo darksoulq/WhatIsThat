@@ -16,6 +16,7 @@ blocks:
   spawnerinfo: true # Show Current spawning entity in spawner
   noteblockinfo: true # Show Instrument, tone and octave of NoteBlock
   farmlandinfo: true # Show Whether farmland is hydrated or not
+  toolinfo: true # Show what the preferred tool to break the block is
 
 entities:
   enabled: true

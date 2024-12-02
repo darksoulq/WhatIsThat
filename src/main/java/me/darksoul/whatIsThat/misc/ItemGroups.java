@@ -35,7 +35,6 @@ public class ItemGroups {
         // RedStone
         redstoneProviders.add(Material.OBSERVER);
         redstoneProviders.add(Material.TARGET);
-        redstoneProviders.add(Material.REDSTONE_BLOCK);
         redstoneProviders.add(Material.REPEATER);
         for (Material type : Material.values()) {
             String typeString = type.toString();
