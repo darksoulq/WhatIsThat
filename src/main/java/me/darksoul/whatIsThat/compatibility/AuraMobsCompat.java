@@ -4,6 +4,7 @@ import dev.aurelium.auramobs.api.AuraMobsAPI;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
+import me.darksoul.whatIsThat.misc.ConfigUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -26,7 +27,8 @@ public class AuraMobsCompat {
 
     public static boolean handleAuraMobs(Entity entity, Player player) {
         if (AuraMobsAPI.isAuraMob(entity)) {
-            String entityName = MinecraftCompat.getVanillaEntitiesLang().getString("entity." + entity.getType(), entity.getName());
+            String key = "entity.minecraft." + entity.getType().toString().toLowerCase();
+            String entityName = ConfigUtils.getTranslatedVName(key);
             if (entity.getCustomName() != null) {
                 entityName = entity.getCustomName();
             }

@@ -14,11 +14,10 @@ import org.bukkit.entity.Player;
 import java.util.function.Function;
 
 public class MinecraftCompat {
-    private static final YamlConfiguration vanillaLang = ConfigUtils.loadVanillaBlocksLang();
-    private static final YamlConfiguration vanillaEntitiesLang = ConfigUtils.loadVanillaEntitiesLang();
 
     public static boolean handleMinecraftBlockDisplay(Block block, Player player) {
-        String blockName = vanillaLang.getString("block." + block.getType().name(), block.getType().name());
+        String key = "block.minecraft." + block.getType().toString().toLowerCase();
+        String blockName = ConfigUtils.getTranslatedVName(key);
         StringBuilder vBlockSInfo = new StringBuilder();
         StringBuilder vBlockPInfo = new StringBuilder();
         StringBuilder info = new StringBuilder();
@@ -44,7 +43,8 @@ public class MinecraftCompat {
     public static boolean handleMinecraftEntityDisplay(Entity entity, Player player) {
         for (EntityType not : ItemGroups.getNotRenderEntities()) {
             if (entity.getType() != not) {
-                String entityName = vanillaEntitiesLang.getString("entity." + entity.getType(), entity.getName());
+                String key = "entity.minecraft." + entity.getType().toString().toLowerCase();
+                String entityName = ConfigUtils.getTranslatedVName(key);
                 if (entity.getCustomName() != null) {
                     entityName = entity.getCustomName();
                 }
@@ -69,9 +69,5 @@ public class MinecraftCompat {
             }
         }
         return false;
-    }
-
-    public static YamlConfiguration getVanillaEntitiesLang() {
-        return vanillaEntitiesLang;
     }
 }

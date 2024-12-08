@@ -4,6 +4,7 @@ core:
   # These values cannot be in decimal form!
   entitydistance: 25 # The max distance the plugin will show entity bossbar in (in blocks)
   blockdistance: 25 # The max distance the plugin will show block bossbar in (in blocks)
+  vanilla_lang: "en_us" # The language file to use (lang files are vanilla_ + name_here + .json, in this case vanilla_en_us.json
 
 blocks:
   enabled: true
