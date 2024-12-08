@@ -22,7 +22,6 @@ public class EliteMobsCompat {
             suffixEMEntity.add(EliteMobsCompat::getHealth);
         }
     }
-
     public static boolean checkEM() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("EliteMobs");
         boolean isEnabled = pl != null && pl.isEnabled();
@@ -31,11 +30,9 @@ public class EliteMobsCompat {
         }
         return isEnabled;
     }
-
     public static boolean isEMInstalled() {
         return isEMInstalled;
     }
-
     public static void setEMInstalled(boolean EMInstalled) {
         isEMInstalled = EMInstalled;
     }
@@ -50,7 +47,10 @@ public class EliteMobsCompat {
             for (Function<EliteEntity, String> func : suffixEMEntity) {
                 EMEntitySInfo.append(func.apply(eliteEntity));
             }
-            info.append(EMEntityPInfo).append(name).append(EMEntitySInfo);
+            info.append(EMEntityPInfo).append(name);
+            if (!EMEntitySInfo.isEmpty()) {
+                info.append(" §f| ").append(EMEntitySInfo);
+            }
             WAILAManager.updateBossBar(player, info.toString());
             return true;
         }

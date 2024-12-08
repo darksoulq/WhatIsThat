@@ -21,7 +21,6 @@ public class AuraSkillsCompat {
             }
         }
     }
-
     public static boolean checkAuraSkills() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraSkills");
         boolean isEnabled = pl != null && pl.isEnabled();
@@ -30,7 +29,6 @@ public class AuraSkillsCompat {
         }
         return isEnabled;
     }
-
     public static void setIsAuraSkillsInstalled(boolean isAuraSkillsInstalled) {
         AuraSkillsCompat.isAuraSkillsInstalled = isAuraSkillsInstalled;
     }
@@ -39,7 +37,7 @@ public class AuraSkillsCompat {
         if (entity instanceof Player player) {
             SkillsUser user = skillsApi.getUser(player.getUniqueId());
             int level = user.getPowerLevel();
-            return "§c💪 " + level + " §f| ";
+            return "§c💪 " + level + " ";
         }
         return "";
     }

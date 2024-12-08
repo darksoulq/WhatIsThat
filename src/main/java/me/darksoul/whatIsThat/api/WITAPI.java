@@ -5,6 +5,7 @@ import me.darksoul.whatIsThat.WAILAManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
 import java.util.function.BiFunction;
 
 /**

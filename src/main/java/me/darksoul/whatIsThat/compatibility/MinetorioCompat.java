@@ -22,11 +22,9 @@ public class MinetorioCompat {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("Minetorio");
         return pl != null && pl.isEnabled();
     }
-
     public static boolean getIsMTInstalled() {
         return MinetorioCompat.isMTInstalled;
     }
-
     public static void setIsMTInstalled(boolean isMTInstalled) {
         MinetorioCompat.isMTInstalled = isMTInstalled;
     }
@@ -50,7 +48,13 @@ public class MinetorioCompat {
             for (Function<Block, String> func : Information.getPrefixMTBlocks()) {
                 MTBlockPInfo.append(func.apply(block));
             }
-            info.append(MTBlockPInfo).append(deviceName).append(MTBlockSInfo);
+            if (!MTBlockPInfo.isEmpty()) {
+                info.append(MTBlockPInfo).append(" §f| ");
+            }
+            info.append(deviceName);
+            if (!MTBlockSInfo.isEmpty()) {
+                info.append(" §f| ").append(MTBlockSInfo);
+            }
             WAILAManager.updateBossBar(player, info.toString());
             return true;
         }

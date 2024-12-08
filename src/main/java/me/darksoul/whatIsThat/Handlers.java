@@ -5,12 +5,10 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class Handlers {
     private static List<BiFunction<Block, Player, Boolean>> blockHandlers = new ArrayList<>();
@@ -37,6 +35,12 @@ public class Handlers {
         }
         if (config.getBoolean("itemsadder.blocks.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
             blockHandlers.add(ItemsAdderCompat::handleIABlocks);
+        }
+        if (config.getBoolean("slimefun.enabled", true) && SlimefunCompat.getIsSlimefunInstalled()) {
+            blockHandlers.add(SlimefunCompat::handleSlimefunMachines);
+        }
+        if (config.getBoolean("litefarm.enabled", true) && LiteFarmCompat.getIsLitefarmInstalled()) {
+            blockHandlers.add(LiteFarmCompat::handleLitefarmCrop);
         }
     }
 

@@ -1,10 +1,9 @@
 package me.darksoul.whatIsThat;
 
-import me.darksoul.whatIsThat.compatibility.*;
+import me.darksoul.whatIsThat.compatibility.MinecraftCompat;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import me.darksoul.whatIsThat.misc.MathUtils;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;

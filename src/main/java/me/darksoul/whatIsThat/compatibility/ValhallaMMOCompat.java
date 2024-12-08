@@ -1,9 +1,7 @@
 package me.darksoul.whatIsThat.compatibility;
 
-import dev.lone.LoneLibs.S;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
@@ -57,7 +55,13 @@ public class ValhallaMMOCompat {
             for (Function<PowerProfile, String> func : suffixVMMOEntity) {
                 suffixInfo.append(func.apply(plPowerProfile));
             }
-            info.append(prefixInfo).append(name).append(Information.getEntityHealth(pl)).append(suffixInfo);
+            if (!prefixInfo.toString().isEmpty()) {
+                info.append(prefixInfo).append(" §f| ");
+            }
+            info.append(name);
+            if (!suffixInfo.toString().isEmpty()) {
+                info.append(" §f| ").append(suffixInfo);
+            }
             WAILAManager.updateBossBar(player, info.toString());
         }
         return false;
@@ -65,10 +69,10 @@ public class ValhallaMMOCompat {
 
     private static String getLevel(PowerProfile profile) {
         int level = profile.getLevel();
-        return "§c💪 " + level + " §8| ";
+        return "§c💪 " + level + "§8 ";
     }
     private static String getNewGame(PowerProfile profile) {
         int newGamePlus = profile.getNewGamePlus();
-        return " §8| §6\uD83C\uDD96 " + newGamePlus;
+        return " §6\uD83C\uDD96 " + newGamePlus;
     }
 }

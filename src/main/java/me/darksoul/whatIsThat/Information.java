@@ -2,9 +2,11 @@ package me.darksoul.whatIsThat;
 
 import com.MT.xxxtrigger50xxx.Devices.Battery2;
 import com.MT.xxxtrigger50xxx.Devices.Device;
-import dev.aurelium.auramobs.api.AuraMobsAPI;
 import me.darksoul.whatIsThat.misc.ItemGroups;
-import org.bukkit.*;
+import org.bukkit.Instrument;
+import org.bukkit.Material;
+import org.bukkit.Note;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
@@ -26,7 +28,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.spawner.Spawner;
 import org.jetbrains.annotations.Nullable;
 
-import javax.tools.Tool;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -115,14 +116,14 @@ public class Information {
             }
             if (ItemGroups.isGenerator(device)) {
                 if (device.isProducingPower()) {
-                    return " | §a⚡ " + device.getPowerGen();
+                    return " §a⚡ " + device.getPowerGen();
                 } else {
                     return " | §8⚡ 0";
                 }
             } else if (device instanceof Battery2) {
                 float fillPercentage = ((float) ((Battery2) device).getStored() / ((Battery2) device).getCapacity()) * 100;
                 String color = getColorForPercent(fillPercentage);
-                return color + "⚡ " + ((Battery2) device).getStored();
+                return color + " ⚡ " + ((Battery2) device).getStored();
             } else {
                 if (device.isPowered()) {
                     if (device.getIdlePower() == 0) {
@@ -140,21 +141,21 @@ public class Information {
         //RedStone components
         if (ItemGroups.getRedstoneComponents().contains(block.getType())) {
             if (power > 0 || isPowerSource) {
-                return " | §c● " + power;
+                return " §c● " + power;
             } else if (power == 0) {
-                return " | §8● ";
+                return " §8●";
             }
         }
         // Redstone Providers
         // Redstone Block
         if (block.getType() == Material.REDSTONE_BLOCK) {
-            return " | §c● ";
+            return " §c●";
         }
         if (ItemGroups.getRedstoneProviders().contains(block.getType())) {
             if (power > 0 || isPowerSource) {
-                return " | §c● ";
+                return " §c●";
             } else if (power == 0) {
-                return " | §8● ";
+                return " §8●";
             }
         }
         return "";
@@ -168,13 +169,13 @@ public class Information {
             int percentage = (age / (int) maxAge) * 100;
 
             if (percentage >= 0 && percentage <= 25) {
-                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
+                return " " + getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
             } else if (percentage > 25 && percentage <= 50) {
-                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
+                return " " + getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
             } else if (percentage > 50 && percentage <= 75) {
-                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
+                return " " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
             } else if (percentage > 75) {
-                return " | " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
+                return " " + getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
             }
         }
         return "";
@@ -188,7 +189,7 @@ public class Information {
 
                 double percentage = (honeyLevel / (double) maxHoneyLevel) * 100;
 
-                return " | " + getColorForPercent((float) percentage) + "\uD83D\uDC1D "
+                return " " + getColorForPercent((float) percentage) + "\uD83D\uDC1D "
                             + honeyLevel + "/"
                             + maxHoneyLevel;
             }
@@ -208,7 +209,7 @@ public class Information {
             int secondsRemaining = ticksRemaining / 20;
             float percentage = ((float) cookTime / cookTimeTotal) * 100;
             if (inventory.getSmelting() != null && cookTime != 0) {
-                    return " | " + getColorForPercent(percentage) + "⌛ " + secondsRemaining + "s";
+                    return " " + getColorForPercent(percentage) + "⌛ " + secondsRemaining + "s";
                 }
         }
         return "";
@@ -227,7 +228,7 @@ public class Information {
                 }
             }
 
-            return "§6\uD83D\uDCE6 " + totalItems + " §f| ";
+            return "§6\uD83D\uDCE6 " + totalItems + "§f ";
         }
         return "";
     }
@@ -247,7 +248,7 @@ public class Information {
                             + ":"
                             + (secondaryEffect.getAmplifier() + 1);
                 }
-                return " | "
+                return " "
                         + getEmojiForEffect(primaryEffect.getType().getName())
                         + ":"
                         + primaryEffect.getAmplifier();
@@ -260,7 +261,7 @@ public class Information {
             Spawner state = (Spawner) block.getState();
             EntityType entity = state.getSpawnedType();
             if (entity != null) {
-                return " | §a\uD83E\uDDDF " + entity.name();
+                return " §a\uD83E\uDDDF " + entity.name();
             }
         }
         return "";
@@ -271,7 +272,7 @@ public class Information {
             Note note = data.getNote();
             Instrument instrument = data.getInstrument();
 
-            return " | §6🎹 " + instrument.name()
+            return " §6🎹 " + instrument.name()
                     + ": "
                     + note.getTone().name()
                     + " "
@@ -285,9 +286,9 @@ public class Information {
             int moisture = data.getMoisture();
 
             if (moisture > 0) {
-                return " | §9\uD83D\uDCA7 ";
+                return " §9\uD83D\uDCA7 ";
             } else {
-                return " | §8\uD83D\uDCA7";
+                return " §8\uD83D\uDCA7";
             }
         }
         return "";
@@ -317,12 +318,12 @@ public class Information {
             }
         } else {
             if (heldItem.getType().isAir()) {
-                return "§c" + getEmojiForTool(prefMat) + " §f| ";
+                return "§c" + getEmojiForTool(prefMat) + "§f ";
             }
             if (canToolBreakBlock(heldItem.getType(), block.getType())) {
-                return "§a" + getEmojiForTool(prefMat) + " §f| ";
+                return "§a" + getEmojiForTool(prefMat) + "§f ";
             } else {
-                return "§c" + getEmojiForTool(prefMat) + " §f| ";
+                return "§c" + getEmojiForTool(prefMat) + "§f ";
             }
         }
     }
@@ -332,7 +333,7 @@ public class Information {
             int age = data.getAge();
             if (age < 0) {
                 int secondsLeft = Math.abs(age) / 20;
-                return " | §e\uD83D\uDC25 " + secondsLeft + "s";
+                return " §e\uD83D\uDC25 " + secondsLeft + "s";
             }
         }
         return "";
@@ -341,7 +342,7 @@ public class Information {
         if (ItemGroups.getPets().contains(entity.getType())) {
             Tameable data = (Tameable) entity;
             if (data.isTamed() && data.getOwner() != null) {
-                return "§8" + data.getOwner().getName() + " §f| ";
+                return "§8" + data.getOwner().getName() + "§f ";
             }
         }
         return "";
@@ -349,7 +350,7 @@ public class Information {
     public static String getIsLeashed(Entity entity) {
         if (entity instanceof LivingEntity lEntity) {
             if (lEntity.isLeashed()) {
-                return " | §2\uD83D\uDD17";
+                return " §2\uD83D\uDD17";
             }
         }
         return "";
@@ -368,14 +369,14 @@ public class Information {
             Villager villager = (Villager) entity;
             Profession profession = villager.getProfession();
 
-            return "§8" + getProfessionString(profession) + " §f| ";
+            return "§8" + getProfessionString(profession) + "§f";
         }
         return "";
     }
     public static String getTNTFuseTime(Entity entity) {
         if (entity.getType() == EntityType.TNT) {
             int tntFuseTime = ((TNTPrimed) entity).getFuseTicks() / 20;
-            return " | §4\uD83D\uDCA3" + tntFuseTime;
+            return " §4\uD83D\uDCA3" + tntFuseTime;
         }
         return "";
     }

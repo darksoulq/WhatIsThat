@@ -17,11 +17,9 @@ public class AuraMobsCompat {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraMobs");
         return pl != null && pl.isEnabled();
     }
-
     public static boolean getIsAuraMobsInstalled() {
         return isAuraMobsInstalled;
     }
-
     public static void setIsAuraMobsInstalled(boolean isAuraMobsInstalled) {
         AuraMobsCompat.isAuraMobsInstalled = isAuraMobsInstalled;
     }
@@ -38,7 +36,10 @@ public class AuraMobsCompat {
             for (Function<Entity, String> func : Information.getPrefixASEntity()) {
                 ASEntityPInfo.append(func.apply(entity));
             }
-            info.append(ASEntityPInfo).append(entityName).append(ASEntitySInfo);
+            if (!ASEntityPInfo.isEmpty()) {
+                info.append(ASEntityPInfo).append(" §f| ");
+            }
+            info.append(entityName).append(ASEntitySInfo);
             WAILAManager.updateBossBar(player, info.toString());
             return true;
         }

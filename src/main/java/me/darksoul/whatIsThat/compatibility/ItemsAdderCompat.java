@@ -26,7 +26,6 @@ public class ItemsAdderCompat {
             suffixIACrop.add(ItemsAdderCompat::getIAHarvestInfo);
         }
     }
-
     public static boolean checkIA() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ItemsAdder");
         boolean isEnabled = pl != null && pl.isEnabled();
@@ -35,11 +34,9 @@ public class ItemsAdderCompat {
         }
         return isEnabled;
     }
-
     public static void setIsIAInstalled(boolean isIAInstalled) {
         ItemsAdderCompat.isIAInstalled = isIAInstalled;
     }
-
     public static boolean getIsIAInstalled() {
         return isIAInstalled;
     }
@@ -68,7 +65,6 @@ public class ItemsAdderCompat {
         }
         return false;
     }
-
     public static boolean handleIAEntity(Entity entity, Player player) {
         CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
         CustomFurniture furniture = CustomFurniture.byAlreadySpawned(entity);
@@ -100,7 +96,6 @@ public class ItemsAdderCompat {
         CustomStack stack = CustomStack.getInstance(name);
         WAILAManager.updateBossBar(player, stack.getDisplayName());
     }
-
     private static void handleIACrop(CustomCrop crop, Player player) {
         String name = crop.getSeed().getDisplayName();
         StringBuilder IACropSInfo = new StringBuilder();
@@ -112,29 +107,26 @@ public class ItemsAdderCompat {
         info.append(IACropPInfo).append(name).append(IACropSInfo);
         WAILAManager.updateBossBar(player, info.toString());
     }
-
     private static void handleIAFire(CustomFire fire, Player player) {
         String name = fire.getDisplayName();
         WAILAManager.updateBossBar(player, name);
     }
-
     private static String getIAHarvestInfo(CustomCrop crop) {
         int age = crop.getAge();
         int maxAge = crop.getMaxAge();
         int percentage = (age / (int) maxAge) * 100;
 
         if (percentage >= 0 && percentage <= 25) {
-            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
+            return " " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
         } else if (percentage > 25 && percentage <= 50) {
-            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
+            return " " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
         } else if (percentage > 50 && percentage <= 75) {
-            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
+            return " " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
         } else if (percentage > 75) {
             return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
         }
         return "";
     }
-
     public static List<Function<CustomCrop, String>> getSuffixIACrop() {
         return suffixIACrop;
     }

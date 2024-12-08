@@ -47,7 +47,7 @@ itemsadder:
     enabled: true # Shows Entity/Furniture
     healthinfo: true
 
-# [!EXPERIMENTAL] Elite Mobs compatibility
+# Elite Mobs compatibility
 # https://www.spigotmc.org/resources/elitemobs.40090/
 elitemobs:
   enabled: true
@@ -59,12 +59,27 @@ auraskills:
   enabled: true
   powerlevelinfo: true # Show the powerLevel of the player
 
-# [!EXPERIMENTAL] Aura Mobs compatibility
-#https://www.spigotmc.org/resources/auramobs-a-mob-levels-add-on-for-auraskills.94168/
+# Aura Mobs compatibility
+# https://www.spigotmc.org/resources/auramobs-a-mob-levels-add-on-for-auraskills.94168/
 auramobs:
   enabled: true
 
+# [!EXPERIMENTAL] ValhallaMMMO Compatibility
+# https://www.spigotmc.org/resources/valhallammo-1-19-1-21-4.94921/
 valhallammo:
   enabled: true
   levelinfo: true # Show player level
   newgameinfo: false # Show player NG+ level
+
+# Slimefun compatibility
+# https://github.com/Slimefun/Slimefun4
+slimefun:
+  enabled: true
+  storedenergyinfo: true # Show the stored energy inside machine
+  energygeninfo: true # Show how much energy generators are generating
+
+# LiteFarm compatibility
+# https://www.spigotmc.org/resources/%E2%AD%90litefarm%E2%AD%90-1-16-1-21-%E2%9A%A1level-system-new-update%E2%9A%A1.112359/
+litefarm:
+  enabled: true
+  growthinfo: true # Show time till grown

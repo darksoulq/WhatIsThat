@@ -31,7 +31,13 @@ public class MinecraftCompat {
         for (Function<Block, String> func : Information.getPrefixVBlocks()) {
             vBlockPInfo.append(func.apply(block));
         }
-        info.append(vBlockPInfo).append(blockName).append(vBlockSInfo);
+        if (!vBlockPInfo.isEmpty()) {
+            info.append(vBlockPInfo).append(" §f| ");
+        }
+        info.append(blockName);
+        if (!vBlockSInfo.isEmpty()) {
+            info.append(" §f| ").append(vBlockSInfo);
+        }
         WAILAManager.updateBossBar(player, info.toString());
         return true;
     }
@@ -51,7 +57,13 @@ public class MinecraftCompat {
                 for (Function<Entity, String> func : Information.getPrefixVEntity()) {
                     vEntityPInfo.append(func.apply(entity));
                 }
-                info.append(vEntityPInfo).append(entityName).append(vEntitySInfo);
+                if (!vEntityPInfo.isEmpty()) {
+                    info.append(vEntityPInfo).append(" §f| ");
+                }
+                info.append(entityName);
+                if (!vEntitySInfo.isEmpty()) {
+                    info.append(" §f| ").append(vEntitySInfo);
+                }
                 WAILAManager.updateBossBar(player, info.toString());
                 return true;
             }
