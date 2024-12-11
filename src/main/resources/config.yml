@@ -84,3 +84,11 @@ slimefun:
 litefarm:
   enabled: true
   growthinfo: true # Show time till grown
+
+# [!EXPERIMENTAL] Nexo compatibility
+# https://polymart.org/resource/nexo.6901
+nexo:
+  blocks:
+    enabled: true
+  entities:
+    enabled: true

@@ -18,6 +18,7 @@ public final class WhatIsThat extends JavaPlugin {
         ValhallaMMOCompat.setIsVMMOInstalled(ValhallaMMOCompat.checkVMMO());
         SlimefunCompat.setIsSlimefunInstalled(SlimefunCompat.checkSlimefun());
         LiteFarmCompat.setIsLitefarmInstalled(LiteFarmCompat.checkLitefarm());
+        NexoCompat.setIsNexoInstalled(NexoCompat.checkNexo());
 
         Handlers.setup();
 

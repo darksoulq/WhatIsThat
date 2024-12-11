@@ -29,6 +29,9 @@ public class Handlers {
         if (config.getBoolean("auramobs.enabled", true) && AuraMobsCompat.getIsAuraMobsInstalled()) {
             entityHandlers.add(AuraMobsCompat::handleAuraMobs);
         }
+        if (config.getBoolean("nexo.entities.enabled", true) && NexoCompat.getIsNexoInstalled()) {
+            entityHandlers.add(NexoCompat::handleNexoEntity);
+        }
         // Block Handlers
         if (config.getBoolean("minetorio.enabled", true) && MinetorioCompat.getIsMTInstalled()) {
             blockHandlers.add(MinetorioCompat::handleMTDisplay);
@@ -41,6 +44,9 @@ public class Handlers {
         }
         if (config.getBoolean("litefarm.enabled", true) && LiteFarmCompat.getIsLitefarmInstalled()) {
             blockHandlers.add(LiteFarmCompat::handleLitefarmCrop);
+        }
+        if (config.getBoolean("nexo.blocks.enabled", true) && NexoCompat.getIsNexoInstalled()) {
+            blockHandlers.add(NexoCompat::handleNexoBlock);
         }
     }
 

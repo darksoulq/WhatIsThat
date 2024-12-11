@@ -95,6 +95,11 @@ public class ConfigUtils {
     }
 
     public static String getTranslatedVName(String key) {
-        return vTranslations.get(key).getAsString();
+        String name = key;
+        String naame = vTranslations.get(key).getAsString();
+        if (naame != null) {
+            name = naame;
+        }
+        return name;
     }
 }
