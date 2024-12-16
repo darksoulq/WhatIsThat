@@ -70,7 +70,7 @@ auramobs:
 valhallammo:
   enabled: true
   levelinfo: true # Show player level
-  newgameinfo: false # Show player NG+ level
+  raceinfo: true # Show player race (If Valhalla Races is installed: https://www.spigotmc.org/resources/valhallaraces-valhallammo-add-on-fantasy-roleplay-create-your-own-races-and-classes.103321/)
 
 # Slimefun compatibility
 # https://github.com/Slimefun/Slimefun4

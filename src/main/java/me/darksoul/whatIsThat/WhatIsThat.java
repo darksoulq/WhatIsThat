@@ -15,6 +15,7 @@ public final class WhatIsThat extends JavaPlugin {
         EliteMobsCompat.setEMInstalled(EliteMobsCompat.checkEM());
         AuraSkillsCompat.setIsAuraSkillsInstalled(AuraSkillsCompat.checkAuraSkills());
         AuraMobsCompat.setIsAuraMobsInstalled(AuraMobsCompat.checkAuraMobs());
+        ValhallaMMOCompat.setIsVRacesInstalled(ValhallaMMOCompat.checkVRaces());
         ValhallaMMOCompat.setIsVMMOInstalled(ValhallaMMOCompat.checkVMMO());
         SlimefunCompat.setIsSlimefunInstalled(SlimefunCompat.checkSlimefun());
         LiteFarmCompat.setIsLitefarmInstalled(LiteFarmCompat.checkLitefarm());

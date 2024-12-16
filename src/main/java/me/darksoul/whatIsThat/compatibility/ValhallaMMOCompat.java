@@ -2,6 +2,8 @@ package me.darksoul.whatIsThat.compatibility;
 
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
+import me.athlaeos.valhallaraces.Race;
+import me.athlaeos.valhallaraces.RaceManager;
 import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
@@ -15,15 +17,16 @@ import java.util.function.Function;
 
 public class ValhallaMMOCompat {
     private static boolean isVMMOInstalled;
-    private static final List<Function<PowerProfile, String>> suffixVMMOEntity = new ArrayList<>();
-    private static final List<Function<PowerProfile, String>> prefixVMMOEntity = new ArrayList<>();
+    private static boolean isVRacesInstalled;
+    private static final List<Function<Player, String>> suffixVMMOEntity = new ArrayList<>();
+    private static final List<Function<Player, String>> prefixVMMOEntity = new ArrayList<>();
 
     private static void setup() {
         if (WAILAListener.getConfig().getBoolean("valhallammo.levelinfo", true)) {
-            prefixVMMOEntity.add(ValhallaMMOCompat::getLevel);
+             suffixVMMOEntity.add(ValhallaMMOCompat::getLevel);
         }
-        if (WAILAListener.getConfig().getBoolean("valhallammo.newgameinfo", false)) {
-            prefixVMMOEntity.add(ValhallaMMOCompat::getNewGame);
+        if (WAILAListener.getConfig().getBoolean("valhallammo.raceinfo", true)) {
+            prefixVMMOEntity.add(ValhallaMMOCompat::getRace);
         }
     }
 
@@ -35,25 +38,38 @@ public class ValhallaMMOCompat {
         }
         return isEnabled;
     }
+    public static boolean checkVRaces() {
+        Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ValhallaRaces");
+        boolean isEnabled = pl != null && pl.isEnabled();
+        if (isEnabled) {
+            ValhallaMMOCompat.setup();
+        }
+        return isEnabled;
+    }
     public static boolean getIsVMMOInstalled() {
         return isVMMOInstalled;
+    }
+    public static boolean getIsVRacesInstalled() {
+        return isVRacesInstalled;
     }
     public static void setIsVMMOInstalled(boolean isVMMOInstalled) {
         ValhallaMMOCompat.isVMMOInstalled = isVMMOInstalled;
     }
+    public static void setIsVRacesInstalled(boolean isVRacesInstalled) {
+        ValhallaMMOCompat.isVRacesInstalled = isVRacesInstalled;
+    }
 
     public static boolean handleVMMOEntity(Entity entity, Player player) {
         if (entity instanceof Player pl) {
-            PowerProfile plPowerProfile = ProfileCache.getOrCache(pl, PowerProfile.class);
             String name = pl.getDisplayName();
             StringBuilder prefixInfo = new StringBuilder();
             StringBuilder suffixInfo = new StringBuilder();
             StringBuilder info = new StringBuilder();
-            for (Function<PowerProfile, String> func : prefixVMMOEntity) {
-                prefixInfo.append(func.apply(plPowerProfile));
+            for (Function<Player, String> func : prefixVMMOEntity) {
+                prefixInfo.append(func.apply(player));
             }
-            for (Function<PowerProfile, String> func : suffixVMMOEntity) {
-                suffixInfo.append(func.apply(plPowerProfile));
+            for (Function<Player, String> func : suffixVMMOEntity) {
+                suffixInfo.append(func.apply(player));
             }
             if (!prefixInfo.toString().isEmpty()) {
                 info.append(prefixInfo).append(" §f| ");
@@ -67,12 +83,17 @@ public class ValhallaMMOCompat {
         return false;
     }
 
-    private static String getLevel(PowerProfile profile) {
+    private static String getLevel(Player player) {
+        PowerProfile profile = ProfileCache.getOrCache(player, PowerProfile.class);
         int level = profile.getLevel();
         return "§c💪 " + level + "§8 ";
     }
-    private static String getNewGame(PowerProfile profile) {
-        int newGamePlus = profile.getNewGamePlus();
-        return " §6\uD83C\uDD96 " + newGamePlus;
+    private static String getRace(Player player) {
+        Race race = RaceManager.getRace(player);
+        if (race != null) {
+            String name = race.getDisplayName();
+            return name;
+        }
+        return "";
     }
 }
