@@ -16,6 +16,10 @@ public class Handlers {
     private static YamlConfiguration config = WAILAListener.getConfig();
 
     public static void setup() {
+        //Litefarm
+        if (config.getBoolean("litefarm.enabled", true) && LiteFarmCompat.getIsLitefarmInstalled()) {
+            blockHandlers.add(LiteFarmCompat::handleLitefarmCrop);
+        }
         // Entities Handlers
         if (config.getBoolean("valhallammo.enabled", true) && ValhallaMMOCompat.getIsVMMOInstalled()) {
             entityHandlers.add(ValhallaMMOCompat::handleVMMOEntity);
@@ -42,14 +46,17 @@ public class Handlers {
         if (config.getBoolean("slimefun.enabled", true) && SlimefunCompat.getIsSlimefunInstalled()) {
             blockHandlers.add(SlimefunCompat::handleSlimefunMachines);
         }
-        if (config.getBoolean("litefarm.enabled", true) && LiteFarmCompat.getIsLitefarmInstalled()) {
-            blockHandlers.add(LiteFarmCompat::handleLitefarmCrop);
-        }
         if (config.getBoolean("nexo.blocks.enabled", true) && NexoCompat.getIsNexoInstalled()) {
             blockHandlers.add(NexoCompat::handleNexoBlock);
         }
     }
 
+    public static void removeBlockHandler(BiFunction<Block, Player, Boolean> handler) {
+        blockHandlers.remove(handler);
+    }
+    public static void removeEntityHandler(BiFunction<Entity, Player, Boolean> handler) {
+        entityHandlers.remove(handler);
+    }
     public static List<BiFunction<Block, Player, Boolean>> getBlockHandlers() {
         return blockHandlers;
     }

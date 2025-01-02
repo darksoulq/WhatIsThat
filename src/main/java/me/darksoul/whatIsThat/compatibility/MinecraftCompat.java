@@ -37,7 +37,8 @@ public class MinecraftCompat {
         if (!vBlockSInfo.isEmpty()) {
             info.append(" §f| ").append(vBlockSInfo);
         }
-        WAILAManager.updateBossBar(player, info.toString());
+        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                info.toString());
         return true;
     }
     public static boolean handleMinecraftEntityDisplay(Entity entity, Player player) {
@@ -64,7 +65,8 @@ public class MinecraftCompat {
                 if (!vEntitySInfo.isEmpty()) {
                     info.append(" §f| ").append(vEntitySInfo);
                 }
-                WAILAManager.updateBossBar(player, info.toString());
+                WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                        info.toString());
                 return true;
             }
         }

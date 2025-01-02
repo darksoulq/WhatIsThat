@@ -21,7 +21,7 @@ import java.util.function.BiFunction;
 
 
 public class WAILAListener implements Listener {
-    private static final YamlConfiguration config = ConfigUtils.loadConfig();
+    private static YamlConfiguration config = ConfigUtils.loadConfig();
     private static final File PREF_FOLDER = new File(WhatIsThat.getInstance().getDataFolder(), "cache/players");
     private static final List<Player> players = new ArrayList<>();
     private static final int entityDistance = config.getInt("core.entitydistance", 25);
@@ -68,22 +68,34 @@ public class WAILAListener implements Listener {
                 }
             }
         }
-        WAILAManager.updateBossBar(player, "");
+        WAILAManager.setBar(player, "bossbar", "");
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        WAILAManager.removeBossBar(event.getPlayer());
+        WAILAManager.removeBar(event.getPlayer(), "bossbar");
         players.remove(event.getPlayer());
     }
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         File playerFile = new File(PREF_FOLDER + "/" + event.getPlayer().getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-        boolean disableBossBar = config.getBoolean("disableBossBar", false);
+        YamlConfiguration config = new YamlConfiguration();
+        if (!playerFile.exists()) {
+            try {
+                playerFile.createNewFile();
+                config = YamlConfiguration.loadConfiguration(playerFile);
+                config.set("disableWAILA", false);
+                config.set("type", "bossbar");
+                config.save(playerFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            config = YamlConfiguration.loadConfiguration(playerFile);
+        }
+        boolean disableBossBar = config.getBoolean("disableWAILA", false);
         if (!disableBossBar) {
             players.add(event.getPlayer());
-            WAILAManager.createBossBar(event.getPlayer());
         }
     }
     public static void removePlayer(Player player) {
@@ -95,7 +107,13 @@ public class WAILAListener implements Listener {
     public static File getPrefFolder() {
         return PREF_FOLDER;
     }
+    public static YamlConfiguration getPlayerConfig(Player player) {
+        return YamlConfiguration.loadConfiguration(new File(PREF_FOLDER + "/" + player.getName() + ".yml"));
+    }
     public static YamlConfiguration getConfig() {
         return config;
+    }
+    public static void reloadConfig() {
+        config = ConfigUtils.loadConfig();
     }
 }

@@ -7,6 +7,7 @@ import com.nexomc.nexo.items.ItemBuilder;
 import com.nexomc.nexo.mechanics.custom_block.noteblock.NoteBlockMechanic;
 import com.nexomc.nexo.mechanics.custom_block.stringblock.StringBlockMechanic;
 import com.nexomc.nexo.mechanics.furniture.FurnitureMechanic;
+import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import net.kyori.adventure.text.TextComponent;
@@ -39,7 +40,8 @@ public class NexoCompat {
             if (name.isEmpty()) {
                 name = handleFurniture(block);
             }
-            WAILAManager.updateBossBar(player, name);
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    name);
             return true;
         }
         return false;
@@ -47,7 +49,8 @@ public class NexoCompat {
     public static boolean handleNexoEntity(Entity entity, Player player) {
         if (NexoFurniture.isFurniture(entity)) {
             String name = handleFurniture(entity);
-            WAILAManager.updateBossBar(player, name);
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    name);;
             return true;
         }
         return false;

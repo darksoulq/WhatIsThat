@@ -2,6 +2,7 @@ package me.darksoul.whatIsThat.compatibility;
 
 import dev.aurelium.auramobs.api.AuraMobsAPI;
 import me.darksoul.whatIsThat.Information;
+import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
@@ -42,7 +43,8 @@ public class AuraMobsCompat {
                 info.append(ASEntityPInfo).append(" §f| ");
             }
             info.append(entityName).append(ASEntitySInfo);
-            WAILAManager.updateBossBar(player, info.toString());
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    info.toString());
             return true;
         }
         return false;

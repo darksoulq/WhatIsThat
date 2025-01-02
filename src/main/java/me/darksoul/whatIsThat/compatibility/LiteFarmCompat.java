@@ -31,7 +31,8 @@ public class LiteFarmCompat {
             if (WAILAListener.getConfig().getBoolean("litefarm.growthinfo", true)) {
                 info = info + " §f| " + TimeManager.formatTime(plant.ht);
             }
-            WAILAManager.updateBossBar(player, info);
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    info);
             return true;
         }
         return false;

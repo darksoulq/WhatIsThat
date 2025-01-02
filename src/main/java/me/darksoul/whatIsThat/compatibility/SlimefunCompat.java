@@ -64,7 +64,8 @@ public class SlimefunCompat {
             if (!suffix.isEmpty()) {
                 info.append(" §f| ").append(suffix);
             }
-            WAILAManager.updateBossBar(player, info.toString());
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    info.toString());
             return true;
         }
         return false;

@@ -1,5 +1,6 @@
 package me.darksoul.whatIsThat;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -12,34 +13,54 @@ import java.util.Map;
 public class WAILAManager {
     private static final Map<Player, BossBar> playerBossBars = new HashMap<>();
 
-    public static void createBossBar(Player player) {
-        if (playerBossBars.containsKey(player)) return;
-
-        BossBar bossBar = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
-        bossBar.setVisible(false);
-        bossBar.addPlayer(player);
-        playerBossBars.put(player, bossBar);
+    public static void setBar(Player player, String type, String text) {
+        if ("bossbar".equalsIgnoreCase(type)) {
+            setBossBar(player, text);
+        } else if ("actionbar".equalsIgnoreCase(type)) {
+            setActionBar(player, text);
+        }
     }
 
-    public static void removeBossBar(Player player) {
+    private static void setBossBar(Player player, String text) {
+        BossBar bossBar = playerBossBars.get(player);
+        if (bossBar == null) {
+            bossBar = Bukkit.createBossBar(text, BarColor.WHITE, BarStyle.SOLID);
+            bossBar.addPlayer(player);
+            playerBossBars.put(player, bossBar);
+        }
+
+        if (text == null || text.isEmpty()) {
+            bossBar.setVisible(false);
+        } else if (!text.equals(bossBar.getTitle())) {
+            bossBar.setTitle(text);
+            bossBar.setVisible(true);
+        }
+    }
+
+    private static void setActionBar(Player player, String text) {
+        if (text == null || text.isEmpty()) {
+            player.sendActionBar(Component.text(""));
+        } else {
+            player.sendActionBar(Component.text(text));
+        }
+    }
+
+    public static void removeBar(Player player, String type) {
+        if ("bossbar".equalsIgnoreCase(type)) {
+            removeBossBar(player);
+        } else if ("actionbar".equalsIgnoreCase(type)) {
+            removeActionBar(player);
+        }
+    }
+
+    private static void removeBossBar(Player player) {
         BossBar bossBar = playerBossBars.remove(player);
         if (bossBar != null) {
             bossBar.removeAll();
         }
     }
 
-    public static void updateBossBar(Player player, String text) {
-        BossBar bossBar = playerBossBars.get(player);
-        if (bossBar == null) {
-            return;
-        }
-        ;
-
-        if (text == null || text.isEmpty()) {
-            bossBar.setVisible(false);
-        } else {
-            bossBar.setTitle(text);
-            bossBar.setVisible(true);
-        }
+    private static void removeActionBar(Player player) {
+        player.sendActionBar(Component.text(""));
     }
 }

@@ -1,5 +1,5 @@
 name: WhatIsThat
-version: '1.4.1'
+version: '1.4.2'
 main: me.darksoul.whatIsThat.WhatIsThat
 api-version: '1.20'
 author: DarkSoul
@@ -19,7 +19,15 @@ softdepend:
 commands:
   wit:
     description: Main command for WhatIsThat plugin.
-    usage: /wit [disable|enable]
-    permission: wit.toggledisplay
+    usage: /wit [disable|enable|type]
+    permission: wit.default
     aliases:
       - whatisthat
+
+permissions:
+  wit.default:
+    description: Default permission for WhatIsThat plugin.
+    default: true
+  wit.reload:
+    description: Permission to reload the plugin.
+    default: op

@@ -51,7 +51,8 @@ public class EliteMobsCompat {
             if (!EMEntitySInfo.isEmpty()) {
                 info.append(" §f| ").append(EMEntitySInfo);
             }
-            WAILAManager.updateBossBar(player, info.toString());
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    info.toString());
             return true;
         }
         return false;

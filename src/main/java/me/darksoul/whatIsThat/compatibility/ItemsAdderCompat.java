@@ -60,7 +60,8 @@ public class ItemsAdderCompat {
         }
         if (IABlock != null) {
             String name = IABlock.getDisplayName();
-            WAILAManager.updateBossBar(player, name);
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    name);
             return true;
         }
         return false;
@@ -84,7 +85,8 @@ public class ItemsAdderCompat {
                 IAEntitySInfo.append(func.apply(entity));
             }
             info.append(IAEntityPInfo).append(name).append(IAEntitySInfo);
-            WAILAManager.updateBossBar(player, info.toString());
+            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                    info.toString());
             return true;
         }
         return false;
@@ -94,7 +96,8 @@ public class ItemsAdderCompat {
     private static void handleFurniture(CustomFurniture furniture, Player player) {
         String name = furniture.getNamespacedID();
         CustomStack stack = CustomStack.getInstance(name);
-        WAILAManager.updateBossBar(player, stack.getDisplayName());
+        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                stack.getDisplayName());
     }
     private static void handleIACrop(CustomCrop crop, Player player) {
         String name = crop.getSeed().getDisplayName();
@@ -105,11 +108,13 @@ public class ItemsAdderCompat {
             IACropSInfo.append(func.apply(crop));
         }
         info.append(IACropPInfo).append(name).append(IACropSInfo);
-        WAILAManager.updateBossBar(player, info.toString());
+        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                info.toString());
     }
     private static void handleIAFire(CustomFire fire, Player player) {
         String name = fire.getDisplayName();
-        WAILAManager.updateBossBar(player, name);
+        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
+                name);
     }
     private static String getIAHarvestInfo(CustomCrop crop) {
         int age = crop.getAge();
