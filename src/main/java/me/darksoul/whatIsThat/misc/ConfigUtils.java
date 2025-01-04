@@ -12,7 +12,6 @@ public class ConfigUtils {
 
     private static final File VANILLA_FILE_EN = new File(LANG_FOLDER, "vanilla_en_us.json");
     private static final File CONFIG_FILE = new File(WhatIsThat.getInstance().getDataFolder(), "config.yml");
-    private static final File MT_LANG_FILE = new File(LANG_FOLDER, "lang_mt.yml");
 
     private static JsonObject vTranslations;
 
@@ -21,7 +20,6 @@ public class ConfigUtils {
             LANG_FOLDER.mkdirs();
         }
         copyTemplate("config.yml", CONFIG_FILE);
-        copyTemplate("lang_mt.yml", MT_LANG_FILE);
         copyTemplateJSON("vanilla_en_us.json", VANILLA_FILE_EN);
         loadVTranslation();
     }
@@ -74,15 +72,6 @@ public class ConfigUtils {
         return YamlConfiguration.loadConfiguration(CONFIG_FILE);
     }
 
-    /**
-     * Loads the MT language file if MT is installed
-     *
-     * @return YamlConfiguration for the MT language file, or null if MT is not installed
-     */
-    public static YamlConfiguration loadMTLang() {
-        return YamlConfiguration.loadConfiguration(MT_LANG_FILE);
-    }
-
     private static void loadVTranslation() {
         Gson gson = new Gson();
         try {
@@ -96,9 +85,9 @@ public class ConfigUtils {
 
     public static String getTranslatedVName(String key) {
         String name = key;
-        String naame = vTranslations.get(key).getAsString();
-        if (naame != null) {
-            name = naame;
+        JsonElement keyy = vTranslations.get(key);
+        if (keyy != null) {
+            name = keyy.getAsString();
         }
         return name;
     }

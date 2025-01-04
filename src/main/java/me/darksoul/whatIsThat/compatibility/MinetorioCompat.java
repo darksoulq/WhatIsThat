@@ -15,11 +15,9 @@ import org.bukkit.plugin.Plugin;
 import java.util.function.Function;
 
 public class MinetorioCompat {
-    private static YamlConfiguration mtLang;
     private static boolean isMTInstalled;
 
     public static boolean checkMT() {
-        mtLang = ConfigUtils.loadMTLang();
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("Minetorio");
         return pl != null && pl.isEnabled();
     }
@@ -33,12 +31,12 @@ public class MinetorioCompat {
     public static boolean handleMTDisplay(Block block, Player player) {
         Device device = Device.getDevice(block.getLocation());
         Mover mover = Mover.getMover(block.getLocation());
-        String deviceName = "";
+        String deviceName;
         if (device != null || mover != null) {
             if (mover != null) {
-                deviceName = mtLang.getString("device.com.MT.xxxtrigger50xxx.Devices.Mover", "Mover");
+                deviceName = "Mover";
             } else {
-                deviceName = mtLang.getString("device." + device.getName(), device.getName());
+                deviceName = device.getName();
             }
             StringBuilder MTBlockSInfo = new StringBuilder();
             StringBuilder MTBlockPInfo = new StringBuilder();
