@@ -29,7 +29,6 @@ public final class WhatIsThat extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
 
     public static WhatIsThat getInstance() {

@@ -7,6 +7,7 @@ import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -20,11 +21,14 @@ Experimental compatibility
 public class ItemsAdderCompat {
     private static boolean isIAInstalled;
     private static final List<Function<CustomCrop, String>> suffixIACrop = new ArrayList<>();
+    private static final List<EntityType> elligibleFurniture = new ArrayList<>();
 
     private static void setup() {
         if (WAILAListener.getConfig().getBoolean("itemsadder.blocks.cropinfo", true)) {
             suffixIACrop.add(ItemsAdderCompat::getIAHarvestInfo);
         }
+        elligibleFurniture.add(EntityType.ARMOR_STAND);
+        elligibleFurniture.add(EntityType.ITEM_DISPLAY);
     }
     public static boolean checkIA() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ItemsAdder");
@@ -68,7 +72,10 @@ public class ItemsAdderCompat {
     }
     public static boolean handleIAEntity(Entity entity, Player player) {
         CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
-        CustomFurniture furniture = CustomFurniture.byAlreadySpawned(entity);
+        CustomFurniture furniture = null;
+        if (elligibleFurniture.contains(entity.getType())) {
+            furniture = CustomFurniture.byAlreadySpawned(entity);
+        }
         if (furniture != null) {
             handleFurniture(furniture, player);
             return true;

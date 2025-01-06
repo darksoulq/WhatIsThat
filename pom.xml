@@ -6,7 +6,7 @@
 
     <groupId>me.darksoul</groupId>
     <artifactId>whatisthat</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <packaging>jar</packaging>
 
     <name>whatisthat</name>
@@ -138,21 +138,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Local Maven Repo Items Start -->
-        <dependency>
-            <groupId>com.MT</groupId>
-            <artifactId>Minetorio</artifactId>
-            <version>0.81</version>
-            <scope>system</scope>
-            <systemPath>C:\Users\amaan\Downloads\pluginLibs\MTP-0.81.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>dev.aurelium</groupId>
-            <artifactId>AuraMobs</artifactId>
-            <version>2.1.0</version>
-            <scope>system</scope>
-            <systemPath>C:\Users\amaan\Downloads\pluginLibs\AuraMobs-2.1.0.jar</systemPath>
-        </dependency>
+        <!-- Elite Mobs -->
         <dependency>
             <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
@@ -168,6 +154,21 @@
                     <artifactId>MagmaCore</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- Local Maven Repo Items Start -->
+        <dependency>
+            <groupId>com.MT</groupId>
+            <artifactId>Minetorio</artifactId>
+            <version>0.81</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\amaan\Downloads\pluginLibs\MTP-0.81.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>dev.aurelium</groupId>
+            <artifactId>AuraMobs</artifactId>
+            <version>2.1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\amaan\Downloads\pluginLibs\AuraMobs-2.1.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.athlaoes</groupId>

@@ -63,6 +63,10 @@
       <name>Reposilite Repository</name>
       <url>https://repo.nexomc.com/releases</url>
     </repository>
+    <repository>
+      <id>dmulloy2-repo</id>
+      <url>https://repo.dmulloy2.net/repository/public/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -129,6 +133,12 @@
           <groupId>com.magmaguy</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.comphenix.protocol</groupId>
+      <artifactId>ProtocolLib</artifactId>
+      <version>5.3.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.MT</groupId>
