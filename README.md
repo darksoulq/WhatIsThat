@@ -1,4 +1,4 @@
-[<img src="images/wiki.png" alt="wiki">](https://darksoulq.github.io/wit-docs/api.html)
+[<img src="imgs/wiki.png" alt="wiki">](https://darksoulq.github.io/wit-docs/api.html)
 <img src="imgs/WIT2.png" alt="Description" style="width: 100%; height : 99%;">
 
 ## Note:
