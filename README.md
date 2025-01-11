@@ -1,4 +1,4 @@
-[<img src="imgs/DiscordBttn.png" alt="discord">](https://discord.gg/FfAqNuGnas)[<img src="imgs/wikiBtn.png" alt="wiki">](https://darksoulq.github.io/wit-docs/api.html)
+[<img src="imgs/DiscordBttn.png" alt="discord">](https://discord.gg/FfAqNuGnas)[<img src="imgs/WikiBtn.png" alt="wiki">](https://darksoulq.github.io/wit-docs/api.html)
 <img src="imgs/witpage2.png" alt="Description" style="width: 100%; height : 99%;">
 
 ## Note:
