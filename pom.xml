@@ -81,6 +81,11 @@
             <name>Reposilite Repository</name>
             <url>https://repo.nexomc.com/releases</url>
         </repository>
+        <!-- PLaceholderAPI -->
+        <repository>
+            <id>placeholderapi-repo</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -155,13 +160,20 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- PlaceholderAPI -->
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Local Maven Repo Items Start -->
         <dependency>
             <groupId>com.MT</groupId>
             <artifactId>Minetorio</artifactId>
             <version>0.81</version>
             <scope>system</scope>
-            <systemPath>C:\Users\amaan\Downloads\pluginLibs\MTP-0.81.jar</systemPath>
+            <systemPath>C:\Users\amaan\Downloads\pluginLibs\MTP-0.83.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>dev.aurelium</groupId>

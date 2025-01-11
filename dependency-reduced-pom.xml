@@ -4,7 +4,7 @@
   <groupId>me.darksoul</groupId>
   <artifactId>whatisthat</artifactId>
   <name>whatisthat</name>
-  <version>1.4.3</version>
+  <version>1.4.4</version>
   <build>
     <defaultGoal>clean package</defaultGoal>
     <resources>
@@ -64,8 +64,8 @@
       <url>https://repo.nexomc.com/releases</url>
     </repository>
     <repository>
-      <id>dmulloy2-repo</id>
-      <url>https://repo.dmulloy2.net/repository/public/</url>
+      <id>placeholderapi-repo</id>
+      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
   </repositories>
   <dependencies>
@@ -135,9 +135,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.comphenix.protocol</groupId>
-      <artifactId>ProtocolLib</artifactId>
-      <version>5.3.0</version>
+      <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>2.11.6</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -145,7 +145,7 @@
       <artifactId>Minetorio</artifactId>
       <version>0.81</version>
       <scope>system</scope>
-      <systemPath>C:\Users\amaan\Downloads\pluginLibs\MTP-0.81.jar</systemPath>
+      <systemPath>C:\Users\amaan\Downloads\pluginLibs\MTP-0.83.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>dev.aurelium</groupId>
@@ -177,7 +177,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>21</java.version>
   </properties>
 </project>

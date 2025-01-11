@@ -28,20 +28,18 @@ public class SlimefunCompat {
     private static List<BiFunction<SlimefunItem, Block, String>> suffixFuncs = new ArrayList<>();
     private static List<MultiBlock> multiBlocks = new ArrayList<>();
 
-    public static boolean checkSlimefun() {
+    public static void checkSlimefun() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("Slimefun");
-        boolean isEnabled = pl != null && pl.isEnabled();
-        if (isEnabled) {
+        isSlimefunInstalled = pl != null && pl.isEnabled();
+        if (isSlimefunInstalled) {
             setupInfoFuncs();
-            loadMultiBlocks();
+            WhatIsThat.getInstance().getLogger().info("Hooked into Slimefun");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("Slimefun not found, skipping hook");
         }
-        return isEnabled;
     }
     public static boolean getIsSlimefunInstalled() {
         return isSlimefunInstalled;
-    }
-    public static void setIsSlimefunInstalled(boolean isSFInstalled) {
-        isSlimefunInstalled = isSFInstalled;
     }
 
     public static boolean handleSlimefunMachines(Block block, Player player) {
@@ -64,6 +62,10 @@ public class SlimefunCompat {
             if (!suffix.isEmpty()) {
                 info.append(" §f| ").append(suffix);
             }
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, prefix.toString());
+            WAILAListener.setLookingAtSuffix(player, suffix.toString());
+            WAILAListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     info.toString());
             return true;

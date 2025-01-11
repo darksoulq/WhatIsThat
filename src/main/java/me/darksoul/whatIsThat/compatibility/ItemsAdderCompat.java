@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-/*
-Experimental compatibility
-*/
 public class ItemsAdderCompat {
     private static boolean isIAInstalled;
     private static final List<Function<CustomCrop, String>> suffixIACrop = new ArrayList<>();
@@ -30,16 +27,15 @@ public class ItemsAdderCompat {
         elligibleFurniture.add(EntityType.ARMOR_STAND);
         elligibleFurniture.add(EntityType.ITEM_DISPLAY);
     }
-    public static boolean checkIA() {
+    public static void checkIA() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ItemsAdder");
-        boolean isEnabled = pl != null && pl.isEnabled();
-        if (isEnabled) {
+        isIAInstalled = pl != null && pl.isEnabled();
+        if (isIAInstalled) {
             setup();
+            WhatIsThat.getInstance().getLogger().info("Hooked into ItemsAdder");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("ItemsAdder not found, skipping hook");
         }
-        return isEnabled;
-    }
-    public static void setIsIAInstalled(boolean isIAInstalled) {
-        ItemsAdderCompat.isIAInstalled = isIAInstalled;
     }
     public static boolean getIsIAInstalled() {
         return isIAInstalled;
@@ -64,6 +60,10 @@ public class ItemsAdderCompat {
         }
         if (IABlock != null) {
             String name = IABlock.getDisplayName();
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, "");
+            WAILAListener.setLookingAtSuffix(player, "");
+            WAILAListener.setLookingAtInfo(player, name);
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     name);
             return true;
@@ -92,6 +92,10 @@ public class ItemsAdderCompat {
                 IAEntitySInfo.append(func.apply(entity));
             }
             info.append(IAEntityPInfo).append(name).append(IAEntitySInfo);
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, IAEntityPInfo);
+            WAILAListener.setLookingAtSuffix(player, IAEntitySInfo.toString());
+            WAILAListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     info.toString());
             return true;
@@ -103,6 +107,10 @@ public class ItemsAdderCompat {
     private static void handleFurniture(CustomFurniture furniture, Player player) {
         String name = furniture.getNamespacedID();
         CustomStack stack = CustomStack.getInstance(name);
+        WAILAListener.setLookingAt(player, stack.getDisplayName());
+        WAILAListener.setLookingAtPrefix(player, "");
+        WAILAListener.setLookingAtSuffix(player, "");
+        WAILAListener.setLookingAtInfo(player, stack.getDisplayName());
         WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                 stack.getDisplayName());
     }
@@ -115,11 +123,19 @@ public class ItemsAdderCompat {
             IACropSInfo.append(func.apply(crop));
         }
         info.append(IACropPInfo).append(name).append(IACropSInfo);
+        WAILAListener.setLookingAt(player, name);
+        WAILAListener.setLookingAtPrefix(player, IACropPInfo);
+        WAILAListener.setLookingAtSuffix(player, IACropSInfo.toString());
+        WAILAListener.setLookingAtInfo(player, info.toString());
         WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                 info.toString());
     }
     private static void handleIAFire(CustomFire fire, Player player) {
         String name = fire.getDisplayName();
+        WAILAListener.setLookingAt(player, name);
+        WAILAListener.setLookingAtPrefix(player, "");
+        WAILAListener.setLookingAtSuffix(player, "");
+        WAILAListener.setLookingAtInfo(player, name);
         WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                 name);
     }

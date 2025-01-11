@@ -10,21 +10,24 @@ public final class WhatIsThat extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        MinetorioCompat.setIsMTInstalled(MinetorioCompat.checkMT());
-        ItemsAdderCompat.setIsIAInstalled(ItemsAdderCompat.checkIA());
-        EliteMobsCompat.setEMInstalled(EliteMobsCompat.checkEM());
-        AuraSkillsCompat.setIsAuraSkillsInstalled(AuraSkillsCompat.checkAuraSkills());
-        AuraMobsCompat.setIsAuraMobsInstalled(AuraMobsCompat.checkAuraMobs());
-        ValhallaMMOCompat.setIsVRacesInstalled(ValhallaMMOCompat.checkVRaces());
-        ValhallaMMOCompat.setIsVMMOInstalled(ValhallaMMOCompat.checkVMMO());
-        SlimefunCompat.setIsSlimefunInstalled(SlimefunCompat.checkSlimefun());
-        LiteFarmCompat.setIsLitefarmInstalled(LiteFarmCompat.checkLitefarm());
-        NexoCompat.setIsNexoInstalled(NexoCompat.checkNexo());
+        MinetorioCompat.checkMT();
+        ItemsAdderCompat.checkIA();
+        EliteMobsCompat.checkEM();
+        AuraSkillsCompat.checkAuraSkills();
+        AuraMobsCompat.checkAuraMobs();
+        ValhallaMMOCompat.checkVRaces();
+        ValhallaMMOCompat.checkVMMO();
+        SlimefunCompat.checkSlimefun();
+        LiteFarmCompat.checkLitefarm();
+        NexoCompat.checkNexo();
 
         Handlers.setup();
 
         getCommand("wit").setExecutor(new WITCommand());
         getServer().getPluginManager().registerEvents(new WAILAListener(), this);
+        if (WITPAPI.checkWITPAPI()) {
+            new WITPAPI().register();
+        }
     }
 
     @Override

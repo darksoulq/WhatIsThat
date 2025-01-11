@@ -21,16 +21,15 @@ public class AuraSkillsCompat {
             }
         }
     }
-    public static boolean checkAuraSkills() {
+    public static void checkAuraSkills() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraSkills");
-        boolean isEnabled = pl != null && pl.isEnabled();
-        if (isEnabled) {
+        isAuraSkillsInstalled = pl != null && pl.isEnabled();
+        if (isAuraSkillsInstalled) {
             setup();
+            WhatIsThat.getInstance().getLogger().info("Hooked into AuraSkills");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("AuraSkills not found, skipping hook");
         }
-        return isEnabled;
-    }
-    public static void setIsAuraSkillsInstalled(boolean isAuraSkillsInstalled) {
-        AuraSkillsCompat.isAuraSkillsInstalled = isAuraSkillsInstalled;
     }
 
     private static String getPowerLevel(Entity entity) {

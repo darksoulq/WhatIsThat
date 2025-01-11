@@ -22,7 +22,6 @@ public class WAILAManager {
             setActionBar(player, text);
         }
     }
-
     private static void setBossBar(Player player, String text) {
         BossBar bossBar = playerBossBars.get(player);
         if (bossBar == null) {
@@ -38,7 +37,6 @@ public class WAILAManager {
             bossBar.setVisible(true);
         }
     }
-
     private static void setActionBar(Player player, String text) {
         if (text == null || text.isEmpty()) {
             player.sendActionBar(Component.text(""));
@@ -54,14 +52,12 @@ public class WAILAManager {
             removeActionBar(player);
         }
     }
-
     private static void removeBossBar(Player player) {
         BossBar bossBar = playerBossBars.remove(player);
         if (bossBar != null) {
             bossBar.removeAll();
         }
     }
-
     private static void removeActionBar(Player player) {
         player.sendActionBar(Component.text(""));
     }

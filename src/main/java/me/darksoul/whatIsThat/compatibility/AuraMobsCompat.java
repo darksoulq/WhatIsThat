@@ -15,15 +15,17 @@ import java.util.function.Function;
 public class AuraMobsCompat {
     private static boolean isAuraMobsInstalled;
 
-    public static boolean checkAuraMobs() {
+    public static void checkAuraMobs() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraMobs");
-        return pl != null && pl.isEnabled();
+        isAuraMobsInstalled = pl != null && pl.isEnabled();
+        if (isAuraMobsInstalled) {
+            WhatIsThat.getInstance().getLogger().info("Hooked into AuraMobs");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("AuraMobs not found, skipping hook");
+        }
     }
     public static boolean getIsAuraMobsInstalled() {
         return isAuraMobsInstalled;
-    }
-    public static void setIsAuraMobsInstalled(boolean isAuraMobsInstalled) {
-        AuraMobsCompat.isAuraMobsInstalled = isAuraMobsInstalled;
     }
 
     public static boolean handleAuraMobs(Entity entity, Player player) {
@@ -43,6 +45,10 @@ public class AuraMobsCompat {
                 info.append(ASEntityPInfo).append(" §f| ");
             }
             info.append(entityName).append(ASEntitySInfo);
+            WAILAListener.setLookingAt(player, entityName);
+            WAILAListener.setLookingAtPrefix(player, ASEntityPInfo.toString());
+            WAILAListener.setLookingAtSuffix(player, ASEntitySInfo);
+            WAILAListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     info.toString());
             return true;

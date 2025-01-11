@@ -24,7 +24,7 @@ public class MinecraftCompat {
             vBlockSInfo.append(func.apply(block));
         }
         if (WAILAListener.getConfig().getBoolean("block.toolinfo", true)) {
-            info.append(Information.getToolToBreak(block, player));
+            vBlockPInfo.append(Information.getToolToBreak(block, player));
         }
         for (Function<Block, String> func : Information.getPrefixVBlocks()) {
             vBlockPInfo.append(func.apply(block));
@@ -36,6 +36,10 @@ public class MinecraftCompat {
         if (!vBlockSInfo.isEmpty()) {
             info.append(" §f| ").append(vBlockSInfo);
         }
+        WAILAListener.setLookingAt(player, blockName);
+        WAILAListener.setLookingAtPrefix(player, vBlockPInfo.toString());
+        WAILAListener.setLookingAtSuffix(player, vBlockSInfo.toString());
+        WAILAListener.setLookingAtInfo(player, info.toString());
         WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                 info.toString());
         return true;
@@ -64,6 +68,9 @@ public class MinecraftCompat {
                 if (!vEntitySInfo.isEmpty()) {
                     info.append(" §f| ").append(vEntitySInfo);
                 }
+                WAILAListener.setLookingAt(player, entityName);
+                WAILAListener.setLookingAtPrefix(player, vEntityPInfo.toString());
+                WAILAListener.setLookingAtSuffix(player, vEntitySInfo.toString());
                 WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                         info.toString());
                 return true;

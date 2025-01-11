@@ -16,7 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 
@@ -24,19 +26,34 @@ public class WAILAListener implements Listener {
     private static YamlConfiguration config = ConfigUtils.loadConfig();
     private static final File PREF_FOLDER = new File(WhatIsThat.getInstance().getDataFolder(), "cache/players");
     private static final List<Player> players = new ArrayList<>();
+    private static final Map<Player, String> lookingAt = new HashMap<>();
+    private static final Map<Player, String> lookingAtPrefix = new HashMap<>();
+    private static final Map<Player, String> lookingAtSuffix = new HashMap<>();
+    private static final Map<Player, String> lookingAtInfo = new HashMap<>();
     private static final int entityDistance = config.getInt("core.entitydistance", 25);
     private static final int blockDistance = config.getInt("core.blockdistance", 25);
+    private static boolean isHidden = false;
 
     public WAILAListener() {
         if (!PREF_FOLDER.exists()) {
             PREF_FOLDER.mkdirs();
+        }
+        if (config.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
+            isHidden = true;
+        } else {
+            isHidden = false;
+        }
+        for (Player player : players) {
+            WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 for (Player player : players) {
-                    updateWAILA(player);
+                    if (!isHidden) {
+                        updateWAILA(player);
+                    }
                 }
             }
         }.runTaskTimer(WhatIsThat.getInstance(), 0, 5);
@@ -110,6 +127,34 @@ public class WAILAListener implements Listener {
     public static YamlConfiguration getPlayerConfig(Player player) {
         return YamlConfiguration.loadConfiguration(new File(PREF_FOLDER + "/" + player.getName() + ".yml"));
     }
+    public static boolean isHidden() {
+        return isHidden;
+    }
+    public static String getLookingAt(Player player) {
+        return lookingAt.get(player);
+    }
+    public static String getLookingAtPrefix(Player player) {
+        return lookingAtPrefix.get(player);
+    }
+    public static String getLookingAtSuffix(Player player) {
+        return lookingAtSuffix.get(player);
+    }
+    public static String getLookingAtInfo(Player player) {
+        return lookingAtInfo.get(player);
+    }
+    public static void setLookingAt(Player player, String value) {
+        lookingAt.put(player, value);
+    }
+    public static void setLookingAtPrefix(Player player, String value) {
+        lookingAtPrefix.put(player, value);
+    }
+    public static void setLookingAtSuffix(Player player, String value) {
+        lookingAtSuffix.put(player, value);
+    }
+    public static void setLookingAtInfo(Player player, String value) {
+        lookingAtInfo.put(player, value);
+    }
+
     public static YamlConfiguration getConfig() {
         return config;
     }

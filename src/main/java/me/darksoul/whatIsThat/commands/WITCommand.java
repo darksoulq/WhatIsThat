@@ -83,7 +83,6 @@ public class WITCommand implements CommandExecutor, TabCompleter {
         WAILAManager.removeBar(player, "bossbar");
         player.sendMessage("WAILA bar disabled.");
     }
-
     private void setType(Player player, String type) {
         File playerFile = new File(WAILAListener.getPrefFolder() + "/" + player.getName() + ".yml");
         try {
@@ -98,7 +97,6 @@ public class WITCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("An error occurred while saving your settings.");
         }
     }
-
     private void enableBossBar(Player player) {
         File playerFile = new File(WAILAListener.getPrefFolder() + "/" + player.getName() + ".yml");
         try {
@@ -124,7 +122,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
         List<String> suggestions = new ArrayList<>();
 
         if (args.length == 1) {
-            StringUtil.copyPartialMatches(args[0], List.of("disable", "enable", "type"), suggestions);
+            StringUtil.copyPartialMatches(args[0], List.of("disable", "enable", "type", "reload"), suggestions);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("type")) {
                 StringUtil.copyPartialMatches(args[1], List.of("bossbar", "actionbar"), suggestions);

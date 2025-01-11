@@ -22,19 +22,18 @@ public class EliteMobsCompat {
             suffixEMEntity.add(EliteMobsCompat::getHealth);
         }
     }
-    public static boolean checkEM() {
+    public static void checkEM() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("EliteMobs");
-        boolean isEnabled = pl != null && pl.isEnabled();
-        if (isEnabled) {
+        isEMInstalled = pl != null && pl.isEnabled();
+        if (isEMInstalled) {
             setup();
+            WhatIsThat.getInstance().getLogger().info("Hooked into EliteMobs");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("EliteMobs not found, skipping hook");
         }
-        return isEnabled;
     }
     public static boolean isEMInstalled() {
         return isEMInstalled;
-    }
-    public static void setEMInstalled(boolean EMInstalled) {
-        isEMInstalled = EMInstalled;
     }
 
     public static boolean handleEMEntity(Entity entity, Player player) {
@@ -51,6 +50,10 @@ public class EliteMobsCompat {
             if (!EMEntitySInfo.isEmpty()) {
                 info.append(" §f| ").append(EMEntitySInfo);
             }
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, EMEntityPInfo);
+            WAILAListener.setLookingAtSuffix(player, EMEntitySInfo.toString());
+            WAILAListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     info.toString());
             return true;

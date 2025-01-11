@@ -19,15 +19,17 @@ import org.bukkit.plugin.Plugin;
 public class NexoCompat {
     private static boolean isNexoInstalled;
 
-    public static boolean checkNexo() {
+    public static void checkNexo() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("Nexo");
-        return pl != null && pl.isEnabled();
+        isNexoInstalled = pl != null && pl.isEnabled();
+        if (isNexoInstalled) {
+            WhatIsThat.getInstance().getLogger().info("Hooked into Nexo");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("Nexo not found, skipping hook");
+        }
     }
     public static boolean getIsNexoInstalled() {
         return isNexoInstalled;
-    }
-    public static void setIsNexoInstalled(boolean isNexoInstalledd) {
-        isNexoInstalled = isNexoInstalledd;
     }
 
     public static boolean handleNexoBlock(Block block, Player player) {
@@ -40,6 +42,10 @@ public class NexoCompat {
             if (name.isEmpty()) {
                 name = handleFurniture(block);
             }
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, "");
+            WAILAListener.setLookingAtSuffix(player, "");
+            WAILAListener.setLookingAtInfo(player, name);
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     name);
             return true;
@@ -49,6 +55,10 @@ public class NexoCompat {
     public static boolean handleNexoEntity(Entity entity, Player player) {
         if (NexoFurniture.isFurniture(entity)) {
             String name = handleFurniture(entity);
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, "");
+            WAILAListener.setLookingAtSuffix(player, "");
+            WAILAListener.setLookingAtInfo(player, name);
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     name);;
             return true;

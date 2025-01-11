@@ -25,38 +25,36 @@ public class ValhallaMMOCompat {
         if (WAILAListener.getConfig().getBoolean("valhallammo.levelinfo", true)) {
              suffixVMMOEntity.add(ValhallaMMOCompat::getLevel);
         }
-        if (WAILAListener.getConfig().getBoolean("valhallammo.raceinfo", true)) {
+        if (WAILAListener.getConfig().getBoolean("valhallammo.raceinfo", true) && ValhallaMMOCompat.getIsVRacesInstalled()) {
             prefixVMMOEntity.add(ValhallaMMOCompat::getRace);
         }
     }
 
-    public static boolean checkVMMO() {
+    public static void checkVMMO() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ValhallaMMO");
-        boolean isEnabled = pl != null && pl.isEnabled();
-        if (isEnabled) {
+        isVMMOInstalled = pl != null && pl.isEnabled();
+        if (isVMMOInstalled) {
             ValhallaMMOCompat.setup();
+            WhatIsThat.getInstance().getLogger().info("Hooked into ValhallaMMO");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("ValhallaMMO not found, skipping hook");
         }
-        return isEnabled;
     }
-    public static boolean checkVRaces() {
+    public static void checkVRaces() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ValhallaRaces");
-        boolean isEnabled = pl != null && pl.isEnabled();
-        if (isEnabled) {
+        isVRacesInstalled = pl != null && pl.isEnabled();
+        if (isVRacesInstalled) {
             ValhallaMMOCompat.setup();
+            WhatIsThat.getInstance().getLogger().info("Hooked into ValhallaRaces");
+        } else {
+            WhatIsThat.getInstance().getLogger().info("ValhallaRaces not found, skipping hook");
         }
-        return isEnabled;
     }
     public static boolean getIsVMMOInstalled() {
         return isVMMOInstalled;
     }
     public static boolean getIsVRacesInstalled() {
         return isVRacesInstalled;
-    }
-    public static void setIsVMMOInstalled(boolean isVMMOInstalled) {
-        ValhallaMMOCompat.isVMMOInstalled = isVMMOInstalled;
-    }
-    public static void setIsVRacesInstalled(boolean isVRacesInstalled) {
-        ValhallaMMOCompat.isVRacesInstalled = isVRacesInstalled;
     }
 
     public static boolean handleVMMOEntity(Entity entity, Player player) {
@@ -78,6 +76,10 @@ public class ValhallaMMOCompat {
             if (!suffixInfo.toString().isEmpty()) {
                 info.append(" §f| ").append(suffixInfo);
             }
+            WAILAListener.setLookingAt(player, name);
+            WAILAListener.setLookingAtPrefix(player, prefixInfo.toString());
+            WAILAListener.setLookingAtSuffix(player, suffixInfo.toString());
+            WAILAListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     info.toString());
         }
@@ -92,8 +94,7 @@ public class ValhallaMMOCompat {
     private static String getRace(Player player) {
         Race race = RaceManager.getRace(player);
         if (race != null) {
-            String name = race.getDisplayName();
-            return name;
+            return race.getDisplayName();
         }
         return "";
     }
