@@ -2,6 +2,7 @@ package me.darksoul.whatIsThat.commands;
 
 import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.misc.ConfigUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,6 +53,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
         } else if ("reload".equalsIgnoreCase(args[0])) {
             if (player.hasPermission("wit.reload")) {
                 WAILAListener.reloadConfig();
+                ConfigUtils.loadVTranslation();
                 sender.sendMessage("§2WIT config reloaded.");
             } else {
                 sender.sendMessage("§cYou do not have permission to run this command.");

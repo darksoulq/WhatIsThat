@@ -72,12 +72,12 @@ public class ConfigUtils {
         return YamlConfiguration.loadConfiguration(CONFIG_FILE);
     }
 
-    private static void loadVTranslation() {
+    public static void loadVTranslation() {
         Gson gson = new Gson();
         try {
             vTranslations = gson.fromJson(new FileReader( new File(LANG_FOLDER, "vanilla_" +
                     YamlConfiguration.loadConfiguration(CONFIG_FILE)
-                            .getString("core.lang_file", "en_us") + ".json")), JsonObject.class);
+                            .getString("core.vanilla_lang", "en_us") + ".json")), JsonObject.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
