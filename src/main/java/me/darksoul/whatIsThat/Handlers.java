@@ -16,38 +16,40 @@ public class Handlers {
     private static YamlConfiguration config = WAILAListener.getConfig();
 
     public static void setup() {
+        blockHandlers.clear();
+        entityHandlers.clear();
         //Litefarm
-        if (config.getBoolean("litefarm.enabled", true) && LiteFarmCompat.getIsLitefarmInstalled()) {
-            blockHandlers.add(LiteFarmCompat::handleLitefarmCrop);
+        if (config.getBoolean("litefarm.enabled", true) && LiteFarmCompat.getIsInstalled()) {
+            blockHandlers.add(LiteFarmCompat::handleBlock);
         }
         // Entities Handlers
-        if (config.getBoolean("valhallammo.enabled", true) && ValhallaMMOCompat.getIsVMMOInstalled()) {
-            entityHandlers.add(ValhallaMMOCompat::handleVMMOEntity);
+        if (config.getBoolean("valhallammo.enabled", true) && ValhallaMMOCompat.getIsInstalled()) {
+            entityHandlers.add(ValhallaMMOCompat::handleEntity);
         }
-        if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
-            entityHandlers.add(ItemsAdderCompat::handleIAEntity);
+        if (config.getBoolean("itemsadder.entities.enabled", true) && ItemsAdderCompat.getIsInstalled()) {
+            entityHandlers.add(ItemsAdderCompat::handleEntity);
         }
-        if (config.getBoolean("elitemobs.enabled", true) && EliteMobsCompat.isEMInstalled()) {
-            entityHandlers.add(EliteMobsCompat::handleEMEntity);
+        if (config.getBoolean("elitemobs.enabled", true) && EliteMobsCompat.getIsInstalled()) {
+            entityHandlers.add(EliteMobsCompat::handleEntity);
         }
-        if (config.getBoolean("auramobs.enabled", true) && AuraMobsCompat.getIsAuraMobsInstalled()) {
-            entityHandlers.add(AuraMobsCompat::handleAuraMobs);
+        if (config.getBoolean("auramobs.enabled", true) && AuraMobsCompat.getIsInstalled()) {
+            entityHandlers.add(AuraMobsCompat::handleEntity);
         }
-        if (config.getBoolean("nexo.entities.enabled", true) && NexoCompat.getIsNexoInstalled()) {
-            entityHandlers.add(NexoCompat::handleNexoEntity);
+        if (config.getBoolean("nexo.entities.enabled", true) && NexoCompat.getIsInstalled()) {
+            entityHandlers.add(NexoCompat::handleEntity);
         }
         // Block Handlers
-        if (config.getBoolean("minetorio.enabled", true) && MinetorioCompat.getIsMTInstalled()) {
-            blockHandlers.add(MinetorioCompat::handleMTDisplay);
+        if (config.getBoolean("minetorio.enabled", true) && MinetorioCompat.getIsInstalled()) {
+            blockHandlers.add(MinetorioCompat::handleBlock);
         }
-        if (config.getBoolean("itemsadder.blocks.enabled", true) && ItemsAdderCompat.getIsIAInstalled()) {
-            blockHandlers.add(ItemsAdderCompat::handleIABlocks);
+        if (config.getBoolean("itemsadder.blocks.enabled", true) && ItemsAdderCompat.getIsInstalled()) {
+            blockHandlers.add(ItemsAdderCompat::handleBlock);
         }
-        if (config.getBoolean("slimefun.enabled", true) && SlimefunCompat.getIsSlimefunInstalled()) {
-            blockHandlers.add(SlimefunCompat::handleSlimefunMachines);
+        if (config.getBoolean("slimefun.enabled", true) && SlimefunCompat.getIsInstalled()) {
+            blockHandlers.add(SlimefunCompat::handleBlock);
         }
-        if (config.getBoolean("nexo.blocks.enabled", true) && NexoCompat.getIsNexoInstalled()) {
-            blockHandlers.add(NexoCompat::handleNexoBlock);
+        if (config.getBoolean("nexo.blocks.enabled", true) && NexoCompat.getIsInstalled()) {
+            blockHandlers.add(NexoCompat::handleBlock);
         }
     }
 

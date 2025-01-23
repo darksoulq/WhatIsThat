@@ -64,9 +64,9 @@ auraskills:
 # Aura Mobs compatibility
 # https://www.spigotmc.org/resources/auramobs-a-mob-levels-add-on-for-auraskills.94168/
 auramobs:
-  enabled: true
+  enabled: false
 
-# [!EXPERIMENTAL] ValhallaMMMO Compatibility
+# ValhallaMMMO Compatibility
 # https://www.spigotmc.org/resources/valhallammo-1-19-1-21-4.94921/
 valhallammo:
   enabled: true

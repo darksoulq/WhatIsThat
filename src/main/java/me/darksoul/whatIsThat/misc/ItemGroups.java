@@ -102,7 +102,7 @@ public class ItemGroups {
         containers.add(Material.HOPPER);
 
         // Minetorio
-        if (MinetorioCompat.getIsMTInstalled()) {
+        if (MinetorioCompat.getIsInstalled()) {
             generators.add(CrankGenerator.class);
             generators.add(MoonlightPanel.class);
             generators.add(CombustionGenerator.class);

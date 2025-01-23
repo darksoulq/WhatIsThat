@@ -10,44 +10,54 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 public class AuraMobsCompat {
-    private static boolean isAuraMobsInstalled;
+    private static boolean isInstalled;
+    private static final List<Function<Entity, String>> prefixEntity = new ArrayList<>();
 
-    public static void checkAuraMobs() {
+    public static void setup() {
+        prefixEntity.clear();
+        if (WAILAListener.getConfig().getBoolean("auramobs.enabled", false)) {
+            prefixEntity.add(Information::auraMobs_getEntityLevel);
+        }
+    }
+
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraMobs");
-        isAuraMobsInstalled = pl != null && pl.isEnabled();
-        if (isAuraMobsInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
             WhatIsThat.getInstance().getLogger().info("Hooked into AuraMobs");
         } else {
             WhatIsThat.getInstance().getLogger().info("AuraMobs not found, skipping hook");
         }
     }
-    public static boolean getIsAuraMobsInstalled() {
-        return isAuraMobsInstalled;
+    public static boolean getIsInstalled() {
+        return isInstalled;
     }
 
-    public static boolean handleAuraMobs(Entity entity, Player player) {
+    public static boolean handleEntity(Entity entity, Player player) {
         if (AuraMobsAPI.isAuraMob(entity)) {
             String key = "entity.minecraft." + entity.getType().toString().toLowerCase();
-            String entityName = ConfigUtils.getTranslatedVName(key);
+            String EntityName = ConfigUtils.getTranslatedName(key);
             if (entity.getCustomName() != null) {
-                entityName = entity.getCustomName();
+                EntityName = entity.getCustomName();
             }
-            String ASEntitySInfo = "";
-            StringBuilder ASEntityPInfo = new StringBuilder();
+            String EntitySuffix = "";
+            StringBuilder EntityPrefix = new StringBuilder();
             StringBuilder info = new StringBuilder();
-            for (Function<Entity, String> func : Information.getPrefixASEntity()) {
-                ASEntityPInfo.append(func.apply(entity));
+            for (Function<Entity, String> func : prefixEntity) {
+                EntityPrefix.append(func.apply(entity));
             }
-            if (!ASEntityPInfo.isEmpty()) {
-                info.append(ASEntityPInfo).append(" §f| ");
+            if (!EntityPrefix.isEmpty()) {
+                info.append(EntityPrefix).append(" §f| ");
             }
-            info.append(entityName).append(ASEntitySInfo);
-            WAILAListener.setLookingAt(player, entityName);
-            WAILAListener.setLookingAtPrefix(player, ASEntityPInfo.toString());
-            WAILAListener.setLookingAtSuffix(player, ASEntitySInfo);
+            info.append(EntityName).append(EntitySuffix);
+            WAILAListener.setLookingAt(player, EntityName);
+            WAILAListener.setLookingAtPrefix(player, EntityPrefix.toString());
+            WAILAListener.setLookingAtSuffix(player, EntitySuffix);
             WAILAListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                     info.toString());

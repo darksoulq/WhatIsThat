@@ -30,18 +30,13 @@ public class WAILAListener implements Listener {
     private static final Map<Player, String> lookingAtPrefix = new HashMap<>();
     private static final Map<Player, String> lookingAtSuffix = new HashMap<>();
     private static final Map<Player, String> lookingAtInfo = new HashMap<>();
-    private static final int entityDistance = config.getInt("core.entitydistance", 25);
-    private static final int blockDistance = config.getInt("core.blockdistance", 25);
+    private static int entityDistance = config.getInt("core.entitydistance", 25);
+    private static int blockDistance = config.getInt("core.blockdistance", 25);
     private static boolean isHidden = false;
 
     public WAILAListener() {
         if (!PREF_FOLDER.exists()) {
             PREF_FOLDER.mkdirs();
-        }
-        if (config.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
-            isHidden = true;
-        } else {
-            isHidden = false;
         }
         for (Player player : players) {
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
@@ -51,9 +46,7 @@ public class WAILAListener implements Listener {
             @Override
             public void run() {
                 for (Player player : players) {
-                    if (!isHidden) {
-                        updateWAILA(player);
-                    }
+                    updateWAILA(player);
                 }
             }
         }.runTaskTimer(WhatIsThat.getInstance(), 0, 5);
@@ -68,7 +61,7 @@ public class WAILAListener implements Listener {
                 }
             }
             if (config.getBoolean("entities.enabled", true)) {
-                if (MinecraftCompat.handleMinecraftEntityDisplay(entity, player)) {
+                if (MinecraftCompat.handleEntity(entity, player)) {
                     return;
                 }
             }
@@ -80,17 +73,34 @@ public class WAILAListener implements Listener {
                 }
             }
             if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getOperatorBlocks().contains(block.getType())) {
-                if (MinecraftCompat.handleMinecraftBlockDisplay(block, player)) {
+                if (MinecraftCompat.handleBlock(block, player)) {
                     return;
                 }
             }
         }
-        WAILAManager.setBar(player, "bossbar", "");
+        WAILAManager.setBar(player, getPlayerConfig(player).getString("type", "bossbar"), "");
+        lookingAt.put(player, "");
+        lookingAtPrefix.put(player, "");
+        lookingAtSuffix.put(player, "");
+        lookingAtInfo.put(player, "");
+    }
+    public static void setup() {
+        config = ConfigUtils.loadConfig();
+        if (config.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
+            isHidden = true;
+        } else if (config.getString("core.mode", "normal").equalsIgnoreCase("normal")) {
+            isHidden = false;
+        } else {
+            isHidden = false;
+            WhatIsThat.getInstance().getLogger().warning("Invalid mode in config.yml, defaulting to normal");
+        }
+        entityDistance = config.getInt("core.entitydistance", 25);
+        blockDistance = config.getInt("core.blockdistance", 25);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        WAILAManager.removeBar(event.getPlayer(), "bossbar");
+        WAILAManager.removeBar(event.getPlayer(), getPlayerConfig(event.getPlayer()).getString("type", "bossbar"));
         players.remove(event.getPlayer());
     }
     @EventHandler
@@ -157,8 +167,5 @@ public class WAILAListener implements Listener {
 
     public static YamlConfiguration getConfig() {
         return config;
-    }
-    public static void reloadConfig() {
-        config = ConfigUtils.loadConfig();
     }
 }

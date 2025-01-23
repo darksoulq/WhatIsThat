@@ -10,16 +10,17 @@ public final class WhatIsThat extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        MinetorioCompat.checkMT();
-        ItemsAdderCompat.checkIA();
-        EliteMobsCompat.checkEM();
-        AuraSkillsCompat.checkAuraSkills();
-        AuraMobsCompat.checkAuraMobs();
-        ValhallaMMOCompat.checkVRaces();
-        ValhallaMMOCompat.checkVMMO();
-        SlimefunCompat.checkSlimefun();
-        LiteFarmCompat.checkLitefarm();
-        NexoCompat.checkNexo();
+        WAILAListener.setup();
+        MinetorioCompat.hook();
+        ItemsAdderCompat.hook();
+        EliteMobsCompat.hook();
+        AuraSkillsCompat.hook();
+        AuraMobsCompat.hook();
+        ValhallaMMOCompat.hookRaces();
+        ValhallaMMOCompat.hook();
+        SlimefunCompat.hook();
+        LiteFarmCompat.hook();
+        NexoCompat.hook();
 
         Handlers.setup();
 
@@ -36,5 +37,29 @@ public final class WhatIsThat extends JavaPlugin {
 
     public static WhatIsThat getInstance() {
         return instance;
+    }
+    public static void resetHooks() {
+        if (AuraMobsCompat.getIsInstalled() && WAILAListener.getConfig().getBoolean("auramobs.enabled", false)) {
+            AuraMobsCompat.setup();
+        }
+        if (AuraSkillsCompat.getIsInstalled() && WAILAListener.getConfig().getBoolean("auraskills.enabled", true)) {
+            AuraSkillsCompat.setup();
+        }
+        if (EliteMobsCompat.getIsInstalled() && WAILAListener.getConfig().getBoolean("elitemobs.enabled", true)) {
+            EliteMobsCompat.setup();
+        }
+        if (ItemsAdderCompat.getIsInstalled()) {
+            ItemsAdderCompat.setup();
+        }
+        MinecraftCompat.setup();
+        if (MinetorioCompat.getIsInstalled() && WAILAListener.getConfig().getBoolean("minetorio.enabled", true)) {
+            MinetorioCompat.setup();
+        }
+        if (SlimefunCompat.getIsInstalled() && WAILAListener.getConfig().getBoolean("slimefun.enabled", true)) {
+            SlimefunCompat.setup();
+        }
+        if (ValhallaMMOCompat.getIsInstalled()) {
+            ValhallaMMOCompat.setup();
+        }
     }
 }

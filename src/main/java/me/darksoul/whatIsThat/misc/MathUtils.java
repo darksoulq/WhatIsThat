@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
@@ -31,7 +32,7 @@ public class MathUtils {
             if (block.getType().isSolid()) {
                 BoundingBox blockBoundingBox = getBlockBoundingBox(block);
 
-                if (blockBoundingBox != null && blockBoundingBox.contains(checkLocation.toVector())) {
+                if (blockBoundingBox.contains(checkLocation.toVector())) {
                     return null;
                 }
             }
@@ -58,7 +59,7 @@ public class MathUtils {
 
             BoundingBox blockBoundingBox = getBlockBoundingBox(block);
 
-            if (blockBoundingBox != null && blockBoundingBox.contains(checkLocation.toVector())) {
+            if (blockBoundingBox.contains(checkLocation.toVector())) {
                 return block;
             }
         }
@@ -74,12 +75,8 @@ public class MathUtils {
      */
     private static BoundingBox getBlockBoundingBox(Block block) {
         BlockData blockData = block.getBlockData();
-        BoundingBox box = block.getBoundingBox();
-        if (box != null) {
-            return box;
-        }
+        return block.getBoundingBox();
 
-        return BoundingBox.of(block);
     }
 
 }

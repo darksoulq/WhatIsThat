@@ -16,10 +16,14 @@ public class WAILAManager {
     private static final Map<Player, BossBar> playerBossBars = new HashMap<>();
 
     public static void setBar(Player player, String type, String text) {
-        if ("bossbar".equalsIgnoreCase(type)) {
-            setBossBar(player, text);
-        } else if ("actionbar".equalsIgnoreCase(type)) {
-            setActionBar(player, text);
+        if (!WAILAListener.isHidden()) {
+            if ("bossbar".equalsIgnoreCase(type)) {
+                setBossBar(player, text);
+            } else if ("actionbar".equalsIgnoreCase(type)) {
+                setActionBar(player, text);
+            }
+        } else {
+            removeBar(player, type);
         }
     }
     private static void setBossBar(Player player, String text) {

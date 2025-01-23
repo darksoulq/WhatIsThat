@@ -2,6 +2,7 @@ package me.darksoul.whatIsThat.compatibility;
 
 import com.magmaguy.elitemobs.entitytracker.EntityTracker;
 import com.magmaguy.elitemobs.mobconstructor.EliteEntity;
+import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
@@ -14,36 +15,37 @@ import java.util.List;
 import java.util.function.Function;
 
 public class EliteMobsCompat {
-    private static final List<Function<EliteEntity, String>> suffixEMEntity = new ArrayList<>();
-    private static boolean isEMInstalled;
+    private static final List<Function<EliteEntity, String>> suffixEntity = new ArrayList<>();
+    private static boolean isInstalled;
 
-    private static void setup() {
+    public static void setup() {
+        suffixEntity.clear();
         if (WAILAListener.getConfig().getBoolean("elitemobs.healthinfo", true)) {
-            suffixEMEntity.add(EliteMobsCompat::getHealth);
+            suffixEntity.add(Information::eliteMobs_getHealth);
         }
     }
-    public static void checkEM() {
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("EliteMobs");
-        isEMInstalled = pl != null && pl.isEnabled();
-        if (isEMInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
             setup();
             WhatIsThat.getInstance().getLogger().info("Hooked into EliteMobs");
         } else {
             WhatIsThat.getInstance().getLogger().info("EliteMobs not found, skipping hook");
         }
     }
-    public static boolean isEMInstalled() {
-        return isEMInstalled;
+    public static boolean getIsInstalled() {
+        return isInstalled;
     }
 
-    public static boolean handleEMEntity(Entity entity, Player player) {
+    public static boolean handleEntity(Entity entity, Player player) {
         EliteEntity eliteEntity = EntityTracker.getEliteMobEntity(entity);
         if (eliteEntity != null) {
             String name = eliteEntity.getName();
             StringBuilder EMEntitySInfo = new StringBuilder();
             String EMEntityPInfo = "";
             StringBuilder info = new StringBuilder();
-            for (Function<EliteEntity, String> func : suffixEMEntity) {
+            for (Function<EliteEntity, String> func : suffixEntity) {
                 EMEntitySInfo.append(func.apply(eliteEntity));
             }
             info.append(EMEntityPInfo).append(name);
@@ -59,12 +61,5 @@ public class EliteMobsCompat {
             return true;
         }
         return false;
-    }
-
-    private static String getHealth(EliteEntity entity) {
-        int health = (int) entity.getHealth();
-        int maxHealth = (int) entity.getMaxHealth();
-
-        return " §c❤ " + health + "/" + maxHealth;
     }
 }

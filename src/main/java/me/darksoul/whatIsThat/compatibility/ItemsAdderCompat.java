@@ -16,34 +16,44 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ItemsAdderCompat {
-    private static boolean isIAInstalled;
-    private static final List<Function<CustomCrop, String>> suffixIACrop = new ArrayList<>();
+    private static boolean isInstalled;
+    private static final List<Function<CustomCrop, String>> suffixCrop = new ArrayList<>();
+    private static final List<Function<Entity, String>> prefixEntity = new ArrayList<>();
+    private static final List<Function<Entity, String>> suffixEntity = new ArrayList<>();
     private static final List<EntityType> elligibleFurniture = new ArrayList<>();
 
-    private static void setup() {
-        if (WAILAListener.getConfig().getBoolean("itemsadder.blocks.cropinfo", true)) {
-            suffixIACrop.add(ItemsAdderCompat::getIAHarvestInfo);
+    public static void setup() {
+        // Clean Up
+        prefixEntity.clear();
+        suffixEntity.clear();
+        suffixCrop.clear();
+        // Entities
+        if (WAILAListener.getConfig().getBoolean("itemsadder.entities.healthinfo", true)) {
+            suffixEntity.add(Information::default_getEntityHealth);
         }
         elligibleFurniture.add(EntityType.ARMOR_STAND);
         elligibleFurniture.add(EntityType.ITEM_DISPLAY);
+        // Blocks
+        if (WAILAListener.getConfig().getBoolean("itemsadder.blocks.cropinfo", true)) {
+            suffixCrop.add(Information::itemsAdder_getCropAge);
+        }
     }
-    public static void checkIA() {
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ItemsAdder");
-        isIAInstalled = pl != null && pl.isEnabled();
-        if (isIAInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
             setup();
             WhatIsThat.getInstance().getLogger().info("Hooked into ItemsAdder");
         } else {
             WhatIsThat.getInstance().getLogger().info("ItemsAdder not found, skipping hook");
         }
     }
-    public static boolean getIsIAInstalled() {
-        return isIAInstalled;
+    public static boolean getIsInstalled() {
+        return isInstalled;
     }
 
-    public static boolean handleIABlocks(Block block, Player player) {
+    public static boolean handleBlock(Block block, Player player) {
         CustomBlock IABlock = CustomBlock.byAlreadyPlaced(block);
-        CustomFurniture furniture = CustomFurniture.byAlreadySpawned(block);
         CustomFire fire = CustomFire.byAlreadyPlaced(block);
         CustomCrop crop = CustomCrop.byAlreadyPlaced(block);
         if (crop != null) {
@@ -52,10 +62,6 @@ public class ItemsAdderCompat {
         }
         if (fire != null) {
             handleIAFire(fire, player);
-            return true;
-        }
-        if (furniture != null) {
-            handleFurniture(furniture, player);
             return true;
         }
         if (IABlock != null) {
@@ -70,7 +76,7 @@ public class ItemsAdderCompat {
         }
         return false;
     }
-    public static boolean handleIAEntity(Entity entity, Player player) {
+    public static boolean handleEntity(Entity entity, Player player) {
         CustomEntity IAEntity = CustomEntity.byAlreadySpawned(entity);
         CustomFurniture furniture = null;
         if (elligibleFurniture.contains(entity.getType())) {
@@ -88,7 +94,7 @@ public class ItemsAdderCompat {
             StringBuilder IAEntitySInfo = new StringBuilder();
             String IAEntityPInfo = "";
             StringBuilder info = new StringBuilder();
-            for (Function<Entity, String> func : Information.getSuffixIAEntity()) {
+            for (Function<Entity, String> func : suffixEntity) {
                 IAEntitySInfo.append(func.apply(entity));
             }
             info.append(IAEntityPInfo).append(name).append(IAEntitySInfo);
@@ -119,7 +125,7 @@ public class ItemsAdderCompat {
         StringBuilder IACropSInfo = new StringBuilder();
         String IACropPInfo = "";
         StringBuilder info = new StringBuilder();
-        for (Function<CustomCrop, String> func : ItemsAdderCompat.getSuffixIACrop()) {
+        for (Function<CustomCrop, String> func : ItemsAdderCompat.getSuffixCrop()) {
             IACropSInfo.append(func.apply(crop));
         }
         info.append(IACropPInfo).append(name).append(IACropSInfo);
@@ -139,23 +145,7 @@ public class ItemsAdderCompat {
         WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
                 name);
     }
-    private static String getIAHarvestInfo(CustomCrop crop) {
-        int age = crop.getAge();
-        int maxAge = crop.getMaxAge();
-        int percentage = (age / (int) maxAge) * 100;
-
-        if (percentage >= 0 && percentage <= 25) {
-            return " " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF31 " + age + "/" + maxAge;
-        } else if (percentage > 25 && percentage <= 50) {
-            return " " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3F " + age + "/" + maxAge;
-        } else if (percentage > 50 && percentage <= 75) {
-            return " " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
-        } else if (percentage > 75) {
-            return " | " + Information.getColorForPercent((float) percentage) + "\uD83C\uDF3D " + age + "/" + maxAge;
-        }
-        return "";
-    }
-    public static List<Function<CustomCrop, String>> getSuffixIACrop() {
-        return suffixIACrop;
+    public static List<Function<CustomCrop, String>> getSuffixCrop() {
+        return suffixCrop;
     }
 }

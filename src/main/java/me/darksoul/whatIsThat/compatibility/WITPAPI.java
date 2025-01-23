@@ -5,6 +5,7 @@ import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class WITPAPI extends PlaceholderExpansion {
     private static boolean isWITPAPIInstalled;
@@ -20,15 +21,15 @@ public class WITPAPI extends PlaceholderExpansion {
     }
 
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "wit";
     }
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return "DarkSoul";
     }
     @Override
-    public String getVersion() {
+    public @NotNull String getVersion() {
         return "1.4.4";
     }
     @Override
@@ -36,9 +37,9 @@ public class WITPAPI extends PlaceholderExpansion {
         return true;
     }
     @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
+    public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (player.getPlayer() == null) {
-            return "";
+            return null;
         }
         if (identifier.equalsIgnoreCase("looking_at")) {
             return WAILAListener.getLookingAt(player.getPlayer());

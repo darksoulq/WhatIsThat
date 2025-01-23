@@ -10,34 +10,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class AuraSkillsCompat {
-    private static boolean isAuraSkillsInstalled;
+    private static boolean isInstalled;
     private static AuraSkillsApi skillsApi;
 
-    private static void setup() {
-        skillsApi = AuraSkillsApi.get();
+    public static void setup() {
         if (WAILAListener.getConfig().getBoolean("auraskills.enabled", true)) {
             if (WAILAListener.getConfig().getBoolean("auraskills.powerlevelinfo", true)) {
-                Information.getPrefixVEntity().add(AuraSkillsCompat::getPowerLevel);
+                MinecraftCompat.getPrefixVEntity().add(Information::auraSkills_getPowerLevel);
             }
         }
     }
-    public static void checkAuraSkills() {
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("AuraSkills");
-        isAuraSkillsInstalled = pl != null && pl.isEnabled();
-        if (isAuraSkillsInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
+            skillsApi = AuraSkillsApi.get();
             setup();
             WhatIsThat.getInstance().getLogger().info("Hooked into AuraSkills");
         } else {
             WhatIsThat.getInstance().getLogger().info("AuraSkills not found, skipping hook");
         }
     }
+    public static boolean getIsInstalled() {
+        return isInstalled;
+    }
 
-    private static String getPowerLevel(Entity entity) {
-        if (entity instanceof Player player) {
-            SkillsUser user = skillsApi.getUser(player.getUniqueId());
-            int level = user.getPowerLevel();
-            return "§c💪 " + level + " ";
-        }
-        return "";
+    public static AuraSkillsApi getSkillsApi() {
+        return skillsApi;
     }
 }

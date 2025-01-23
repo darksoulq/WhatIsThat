@@ -1,9 +1,6 @@
 package me.darksoul.whatIsThat.compatibility;
 
-import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
-import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
-import me.athlaeos.valhallaraces.Race;
-import me.athlaeos.valhallaraces.RaceManager;
+import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
 import me.darksoul.whatIsThat.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
@@ -16,57 +13,57 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ValhallaMMOCompat {
-    private static boolean isVMMOInstalled;
-    private static boolean isVRacesInstalled;
-    private static final List<Function<Player, String>> suffixVMMOEntity = new ArrayList<>();
-    private static final List<Function<Player, String>> prefixVMMOEntity = new ArrayList<>();
+    private static boolean isInstalled;
+    private static boolean isRaceInstalled;
+    private static final List<Function<Player, String>> suffixEntity = new ArrayList<>();
+    private static final List<Function<Player, String>> prefixEntity = new ArrayList<>();
 
-    private static void setup() {
+    public static void setup() {
         if (WAILAListener.getConfig().getBoolean("valhallammo.levelinfo", true)) {
-             suffixVMMOEntity.add(ValhallaMMOCompat::getLevel);
+             suffixEntity.add(Information::vmmo_getLevel);
         }
-        if (WAILAListener.getConfig().getBoolean("valhallammo.raceinfo", true) && ValhallaMMOCompat.getIsVRacesInstalled()) {
-            prefixVMMOEntity.add(ValhallaMMOCompat::getRace);
+        if (WAILAListener.getConfig().getBoolean("valhallammo.raceinfo", true) && ValhallaMMOCompat.getIsRaceInstalled()) {
+            prefixEntity.add(Information::vmmo_getRace);
         }
     }
 
-    public static void checkVMMO() {
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ValhallaMMO");
-        isVMMOInstalled = pl != null && pl.isEnabled();
-        if (isVMMOInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
             ValhallaMMOCompat.setup();
             WhatIsThat.getInstance().getLogger().info("Hooked into ValhallaMMO");
         } else {
             WhatIsThat.getInstance().getLogger().info("ValhallaMMO not found, skipping hook");
         }
     }
-    public static void checkVRaces() {
+    public static void hookRaces() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("ValhallaRaces");
-        isVRacesInstalled = pl != null && pl.isEnabled();
-        if (isVRacesInstalled) {
+        isRaceInstalled = pl != null && pl.isEnabled();
+        if (isRaceInstalled) {
             ValhallaMMOCompat.setup();
             WhatIsThat.getInstance().getLogger().info("Hooked into ValhallaRaces");
         } else {
             WhatIsThat.getInstance().getLogger().info("ValhallaRaces not found, skipping hook");
         }
     }
-    public static boolean getIsVMMOInstalled() {
-        return isVMMOInstalled;
+    public static boolean getIsInstalled() {
+        return isInstalled;
     }
-    public static boolean getIsVRacesInstalled() {
-        return isVRacesInstalled;
+    public static boolean getIsRaceInstalled() {
+        return isRaceInstalled;
     }
 
-    public static boolean handleVMMOEntity(Entity entity, Player player) {
+    public static boolean handleEntity(Entity entity, Player player) {
         if (entity instanceof Player pl) {
             String name = pl.getDisplayName();
             StringBuilder prefixInfo = new StringBuilder();
             StringBuilder suffixInfo = new StringBuilder();
             StringBuilder info = new StringBuilder();
-            for (Function<Player, String> func : prefixVMMOEntity) {
+            for (Function<Player, String> func : prefixEntity) {
                 prefixInfo.append(func.apply(player));
             }
-            for (Function<Player, String> func : suffixVMMOEntity) {
+            for (Function<Player, String> func : suffixEntity) {
                 suffixInfo.append(func.apply(player));
             }
             if (!prefixInfo.toString().isEmpty()) {
@@ -84,18 +81,5 @@ public class ValhallaMMOCompat {
                     info.toString());
         }
         return false;
-    }
-
-    private static String getLevel(Player player) {
-        PowerProfile profile = ProfileCache.getOrCache(player, PowerProfile.class);
-        int level = profile.getLevel();
-        return "§c💪 " + level + "§8 ";
-    }
-    private static String getRace(Player player) {
-        Race race = RaceManager.getRace(player);
-        if (race != null) {
-            return race.getDisplayName();
-        }
-        return "";
     }
 }

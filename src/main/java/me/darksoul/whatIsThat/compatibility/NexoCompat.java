@@ -17,22 +17,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class NexoCompat {
-    private static boolean isNexoInstalled;
+    private static boolean isInstalled;
 
-    public static void checkNexo() {
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("Nexo");
-        isNexoInstalled = pl != null && pl.isEnabled();
-        if (isNexoInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
             WhatIsThat.getInstance().getLogger().info("Hooked into Nexo");
         } else {
             WhatIsThat.getInstance().getLogger().info("Nexo not found, skipping hook");
         }
     }
-    public static boolean getIsNexoInstalled() {
-        return isNexoInstalled;
+    public static boolean getIsInstalled() {
+        return isInstalled;
     }
 
-    public static boolean handleNexoBlock(Block block, Player player) {
+    public static boolean handleBlock(Block block, Player player) {
         if (NexoBlocks.isCustomBlock(block) || NexoFurniture.isFurniture(block.getLocation())) {
             String name;
             name = handleNoteBlockMechanic(block);
@@ -52,7 +52,7 @@ public class NexoCompat {
         }
         return false;
     }
-    public static boolean handleNexoEntity(Entity entity, Player player) {
+    public static boolean handleEntity(Entity entity, Player player) {
         if (NexoFurniture.isFurniture(entity)) {
             String name = handleFurniture(entity);
             WAILAListener.setLookingAt(player, name);

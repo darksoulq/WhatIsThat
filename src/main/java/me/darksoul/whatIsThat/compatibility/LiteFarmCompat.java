@@ -11,22 +11,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class LiteFarmCompat {
-    private static boolean isLitefarmInstalled;
+    private static boolean isInstalled;
 
-    public static void checkLitefarm() {
+    public static void hook() {
         Plugin pl = WhatIsThat.getInstance().getServer().getPluginManager().getPlugin("LiteFarm");
-        isLitefarmInstalled = pl != null && pl.isEnabled();
-        if (isLitefarmInstalled) {
+        isInstalled = pl != null && pl.isEnabled();
+        if (isInstalled) {
             WhatIsThat.getInstance().getLogger().info("Hooked into LiteFarm");
         } else {
             WhatIsThat.getInstance().getLogger().info("LiteFarm not found, skipping hook");
         }
     }
-    public static boolean getIsLitefarmInstalled() {
-        return isLitefarmInstalled;
+    public static boolean getIsInstalled() {
+        return isInstalled;
     }
 
-    public static boolean handleLitefarmCrop(Block block, Player player) {
+    public static boolean handleBlock(Block block, Player player) {
         if (API.isPlant(block.getLocation())) {
             SimplePlant plant = API.get_plant(block);
             String name = plant.getConfig().displayName;
