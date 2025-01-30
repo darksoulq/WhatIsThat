@@ -2,7 +2,8 @@ package me.darksoul.whatIsThat.api;
 
 import me.darksoul.whatIsThat.Handlers;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.InfoDisplay;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -66,6 +67,16 @@ public class WITAPI {
      * @param player the {@link Player} for whom the boss bar text is updated.
      */
     public static void updateBar(String text, Player player) {
-        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"), text);
+        WAILAManager.setBar(player, text);
+    }
+
+    /**
+     * Adds a custom display to the plugin.
+     * The display is an instance of {@link InfoDisplay} that provides information to be displayed.
+     *
+     * @param display the custom display to add to the plugin.
+     */
+    public static void addDisplay(InfoDisplay display) {
+        WAILAManager.addDisplay(display);
     }
 }

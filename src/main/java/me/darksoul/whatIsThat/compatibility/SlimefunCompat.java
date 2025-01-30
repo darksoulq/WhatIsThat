@@ -1,15 +1,10 @@
 package me.darksoul.whatIsThat.compatibility;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
-import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.items.electric.generators.SolarGenerator;
-import io.github.thebusybiscuit.slimefun4.implementation.operations.FuelOperation;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AGenerator;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -63,18 +58,17 @@ public class SlimefunCompat {
                 suffix.append(func.apply(item, block));
             }
             if (!prefix.isEmpty()) {
-                info.append(prefix).append(" §f| ");
+                info.append(prefix).append(Information.getValuesFile().getString("SPLITTER", " §f| "));
             }
             info.append(name);
             if (!suffix.isEmpty()) {
-                info.append(" §f| ").append(suffix);
+                info.append(Information.getValuesFile().getString("SPLITTER", " §f| ")).append(suffix);
             }
             WAILAListener.setLookingAt(player, name);
             WAILAListener.setLookingAtPrefix(player, prefix.toString());
             WAILAListener.setLookingAtSuffix(player, suffix.toString());
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
             return true;
         }
         return false;

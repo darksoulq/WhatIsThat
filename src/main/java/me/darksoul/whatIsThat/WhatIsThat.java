@@ -2,6 +2,9 @@ package me.darksoul.whatIsThat;
 
 import me.darksoul.whatIsThat.commands.WITCommand;
 import me.darksoul.whatIsThat.compatibility.*;
+import me.darksoul.whatIsThat.display.ActionBarDisplay;
+import me.darksoul.whatIsThat.display.BossBarDisplay;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WhatIsThat extends JavaPlugin {
@@ -10,6 +13,7 @@ public final class WhatIsThat extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        setupDisplays();
         WAILAListener.setup();
         MinetorioCompat.hook();
         ItemsAdderCompat.hook();
@@ -26,9 +30,7 @@ public final class WhatIsThat extends JavaPlugin {
 
         getCommand("wit").setExecutor(new WITCommand());
         getServer().getPluginManager().registerEvents(new WAILAListener(), this);
-        if (WITPAPI.checkWITPAPI()) {
-            new WITPAPI().register();
-        }
+        PlaceholderAPICompat.checkWITPAPI();
     }
 
     @Override
@@ -61,5 +63,9 @@ public final class WhatIsThat extends JavaPlugin {
         if (ValhallaMMOCompat.getIsInstalled()) {
             ValhallaMMOCompat.setup();
         }
+    }
+    private static void setupDisplays() {
+        WAILAManager.addDisplay(new ActionBarDisplay());
+        WAILAManager.addDisplay(new BossBarDisplay());
     }
 }

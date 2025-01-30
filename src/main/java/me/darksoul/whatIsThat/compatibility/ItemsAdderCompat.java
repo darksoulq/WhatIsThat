@@ -3,7 +3,7 @@ package me.darksoul.whatIsThat.compatibility;
 import dev.lone.itemsadder.api.*;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -70,8 +70,7 @@ public class ItemsAdderCompat {
             WAILAListener.setLookingAtPrefix(player, "");
             WAILAListener.setLookingAtSuffix(player, "");
             WAILAListener.setLookingAtInfo(player, name);
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    name);
+            WAILAManager.setBar(player, name);
             return true;
         }
         return false;
@@ -102,8 +101,7 @@ public class ItemsAdderCompat {
             WAILAListener.setLookingAtPrefix(player, IAEntityPInfo);
             WAILAListener.setLookingAtSuffix(player, IAEntitySInfo.toString());
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
             return true;
         }
         return false;
@@ -117,8 +115,7 @@ public class ItemsAdderCompat {
         WAILAListener.setLookingAtPrefix(player, "");
         WAILAListener.setLookingAtSuffix(player, "");
         WAILAListener.setLookingAtInfo(player, stack.getDisplayName());
-        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                stack.getDisplayName());
+        WAILAManager.setBar(player, stack.getDisplayName());
     }
     private static void handleIACrop(CustomCrop crop, Player player) {
         String name = crop.getSeed().getDisplayName();
@@ -133,8 +130,7 @@ public class ItemsAdderCompat {
         WAILAListener.setLookingAtPrefix(player, IACropPInfo);
         WAILAListener.setLookingAtSuffix(player, IACropSInfo.toString());
         WAILAListener.setLookingAtInfo(player, info.toString());
-        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                info.toString());
+        WAILAManager.setBar(player, info.toString());
     }
     private static void handleIAFire(CustomFire fire, Player player) {
         String name = fire.getDisplayName();
@@ -142,8 +138,7 @@ public class ItemsAdderCompat {
         WAILAListener.setLookingAtPrefix(player, "");
         WAILAListener.setLookingAtSuffix(player, "");
         WAILAListener.setLookingAtInfo(player, name);
-        WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                name);
+        WAILAManager.setBar(player, name);
     }
     public static List<Function<CustomCrop, String>> getSuffixCrop() {
         return suffixCrop;

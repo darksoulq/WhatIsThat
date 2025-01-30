@@ -5,7 +5,7 @@ import com.MT.xxxtrigger50xxx.Devices.Device;
 import com.MT.xxxtrigger50xxx.Devices.Mover;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -68,18 +68,17 @@ public class MinetorioCompat {
                 MTBlockPInfo.append(func.apply(block));
             }
             if (!MTBlockPInfo.isEmpty()) {
-                info.append(MTBlockPInfo).append(" §f| ");
+                info.append(MTBlockPInfo).append(Information.getValuesFile().getString("SPLITTER", " §f| "));
             }
             info.append(deviceName);
             if (!MTBlockSInfo.isEmpty()) {
-                info.append(" §f| ").append(MTBlockSInfo);
+                info.append(Information.getValuesFile().getString("SPLITTER", " §f| ")).append(MTBlockSInfo);
             }
             WAILAListener.setLookingAt(player, deviceName);
             WAILAListener.setLookingAtPrefix(player, MTBlockPInfo.toString());
             WAILAListener.setLookingAtSuffix(player, MTBlockSInfo.toString());
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
             return true;
         }
         return false;

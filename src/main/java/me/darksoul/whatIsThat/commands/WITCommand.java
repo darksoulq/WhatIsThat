@@ -1,6 +1,7 @@
 package me.darksoul.whatIsThat.commands;
 
 import me.darksoul.whatIsThat.*;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -117,7 +118,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
         }
 
         WAILAListener.addPlayer(player);
-        WAILAManager.setBar(player, "bossbar", "");
+        WAILAManager.setBar(player, "");
         player.sendMessage("WAILA bar enabled.");
     }
 
@@ -129,7 +130,7 @@ public class WITCommand implements CommandExecutor, TabCompleter {
             StringUtil.copyPartialMatches(args[0], List.of("disable", "enable", "type", "reload"), suggestions);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("type")) {
-                StringUtil.copyPartialMatches(args[1], List.of("bossbar", "actionbar"), suggestions);
+                StringUtil.copyPartialMatches(args[1], WAILAManager.getDisplays().keySet(), suggestions);
             }
         }
 

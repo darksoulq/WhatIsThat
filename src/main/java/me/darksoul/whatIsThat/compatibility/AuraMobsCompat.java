@@ -3,7 +3,7 @@ package me.darksoul.whatIsThat.compatibility;
 import dev.aurelium.auramobs.api.AuraMobsAPI;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import org.bukkit.entity.Entity;
@@ -52,15 +52,14 @@ public class AuraMobsCompat {
                 EntityPrefix.append(func.apply(entity));
             }
             if (!EntityPrefix.isEmpty()) {
-                info.append(EntityPrefix).append(" §f| ");
+                info.append(EntityPrefix).append(Information.getValuesFile().getString("SPLITTER", " §f| "));
             }
             info.append(EntityName).append(EntitySuffix);
             WAILAListener.setLookingAt(player, EntityName);
             WAILAListener.setLookingAtPrefix(player, EntityPrefix.toString());
             WAILAListener.setLookingAtSuffix(player, EntitySuffix);
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
             return true;
         }
         return false;

@@ -8,7 +8,7 @@ import com.nexomc.nexo.mechanics.custom_block.noteblock.NoteBlockMechanic;
 import com.nexomc.nexo.mechanics.custom_block.stringblock.StringBlockMechanic;
 import com.nexomc.nexo.mechanics.furniture.FurnitureMechanic;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
@@ -46,8 +46,7 @@ public class NexoCompat {
             WAILAListener.setLookingAtPrefix(player, "");
             WAILAListener.setLookingAtSuffix(player, "");
             WAILAListener.setLookingAtInfo(player, name);
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    name);
+            WAILAManager.setBar(player, name);
             return true;
         }
         return false;
@@ -59,8 +58,7 @@ public class NexoCompat {
             WAILAListener.setLookingAtPrefix(player, "");
             WAILAListener.setLookingAtSuffix(player, "");
             WAILAListener.setLookingAtInfo(player, name);
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    name);;
+            WAILAManager.setBar(player, name);;
             return true;
         }
         return false;

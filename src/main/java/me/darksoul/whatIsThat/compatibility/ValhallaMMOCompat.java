@@ -2,7 +2,7 @@ package me.darksoul.whatIsThat.compatibility;
 
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -67,18 +67,17 @@ public class ValhallaMMOCompat {
                 suffixInfo.append(func.apply(player));
             }
             if (!prefixInfo.toString().isEmpty()) {
-                info.append(prefixInfo).append(" §f| ");
+                info.append(prefixInfo).append(Information.getValuesFile().getString("SPLITTER", " §f| "));
             }
             info.append(name);
             if (!suffixInfo.toString().isEmpty()) {
-                info.append(" §f| ").append(suffixInfo);
+                info.append(Information.getValuesFile().getString("SPLITTER", " §f| ")).append(suffixInfo);
             }
             WAILAListener.setLookingAt(player, name);
             WAILAListener.setLookingAtPrefix(player, prefixInfo.toString());
             WAILAListener.setLookingAtSuffix(player, suffixInfo.toString());
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
         }
         return false;
     }

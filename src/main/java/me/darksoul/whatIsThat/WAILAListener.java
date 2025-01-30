@@ -1,6 +1,7 @@
 package me.darksoul.whatIsThat;
 
 import me.darksoul.whatIsThat.compatibility.MinecraftCompat;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import me.darksoul.whatIsThat.misc.MathUtils;
@@ -78,7 +79,7 @@ public class WAILAListener implements Listener {
                 }
             }
         }
-        WAILAManager.setBar(player, getPlayerConfig(player).getString("type", "bossbar"), "");
+        WAILAManager.setBar(player, "");
         lookingAt.put(player, "");
         lookingAtPrefix.put(player, "");
         lookingAtSuffix.put(player, "");

@@ -577,4 +577,7 @@ public class Information {
     public static void reloadValuesFile() {
         valuesFile = ConfigUtils.loadValuesFIle();
     }
+    public static YamlConfiguration getValuesFile() {
+        return valuesFile;
+    }
 }

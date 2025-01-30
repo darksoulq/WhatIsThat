@@ -4,7 +4,7 @@ import com.magmaguy.elitemobs.entitytracker.EntityTracker;
 import com.magmaguy.elitemobs.mobconstructor.EliteEntity;
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -50,14 +50,14 @@ public class EliteMobsCompat {
             }
             info.append(EMEntityPInfo).append(name);
             if (!EMEntitySInfo.isEmpty()) {
-                info.append(" §f| ").append(EMEntitySInfo);
+                info.append(Information.getValuesFile().getString("SPLITTER", " §f| "))
+                        .append(EMEntitySInfo);
             }
             WAILAListener.setLookingAt(player, name);
             WAILAListener.setLookingAtPrefix(player, EMEntityPInfo);
             WAILAListener.setLookingAtSuffix(player, EMEntitySInfo.toString());
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
             return true;
         }
         return false;

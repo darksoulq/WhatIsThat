@@ -2,7 +2,7 @@ package me.darksoul.whatIsThat.compatibility;
 
 import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.misc.ConfigUtils;
 import me.darksoul.whatIsThat.misc.ItemGroups;
 import org.bukkit.block.Block;
@@ -99,18 +99,17 @@ public class MinecraftCompat {
                 vBlockPInfo.append(func.apply(block));
             }
             if (!vBlockPInfo.isEmpty()) {
-                info.append(vBlockPInfo).append(" §f| ");
+                info.append(vBlockPInfo).append(Information.getValuesFile().getString("SPLITTER", " §f| "));
             }
             info.append(blockName);
             if (!vBlockSInfo.isEmpty()) {
-                info.append(" §f| ").append(vBlockSInfo);
+                info.append(Information.getValuesFile().getString("SPLITTER", " §f| ")).append(vBlockSInfo);
             }
             WAILAListener.setLookingAt(player, blockName);
             WAILAListener.setLookingAtPrefix(player, vBlockPInfo.toString());
             WAILAListener.setLookingAtSuffix(player, vBlockSInfo.toString());
             WAILAListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info.toString());
+            WAILAManager.setBar(player, info.toString());
             return true;
         }
         return false;
@@ -133,17 +132,16 @@ public class MinecraftCompat {
                     vEntityPInfo.append(func.apply(entity));
                 }
                 if (!vEntityPInfo.isEmpty()) {
-                    info.append(vEntityPInfo).append(" §f| ");
+                    info.append(vEntityPInfo).append(Information.getValuesFile().getString("SPLITTER", " §f| "));
                 }
                 info.append(entityName);
                 if (!vEntitySInfo.isEmpty()) {
-                    info.append(" §f| ").append(vEntitySInfo);
+                    info.append(Information.getValuesFile().getString("SPLITTER", " §f| ")).append(vEntitySInfo);
                 }
                 WAILAListener.setLookingAt(player, entityName);
                 WAILAListener.setLookingAtPrefix(player, vEntityPInfo.toString());
                 WAILAListener.setLookingAtSuffix(player, vEntitySInfo.toString());
-                WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                        info.toString());
+                WAILAManager.setBar(player, info.toString());
                 return true;
             }
         }

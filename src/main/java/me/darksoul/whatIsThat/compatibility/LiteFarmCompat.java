@@ -3,8 +3,9 @@ package me.darksoul.whatIsThat.compatibility;
 import com.azlagor.litecore.timeutils.TimeManager;
 import com.azlagor.litefarm.API.API;
 import com.azlagor.litefarm.data.SimplePlant;
+import me.darksoul.whatIsThat.Information;
 import me.darksoul.whatIsThat.WAILAListener;
-import me.darksoul.whatIsThat.WAILAManager;
+import me.darksoul.whatIsThat.display.WAILAManager;
 import me.darksoul.whatIsThat.WhatIsThat;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -32,14 +33,14 @@ public class LiteFarmCompat {
             String name = plant.getConfig().displayName;
             String info = "";
             if (WAILAListener.getConfig().getBoolean("litefarm.growthinfo", true)) {
-                info = name + " §f| " + TimeManager.formatTime(plant.ht);
+                info = name + Information.getValuesFile().getString("SPLITTER", " §f| ")
+                        + TimeManager.formatTime(plant.ht);
             }
             WAILAListener.setLookingAt(player, name);
             WAILAListener.setLookingAtPrefix(player, "");
             WAILAListener.setLookingAtSuffix(player, TimeManager.formatTime(plant.ht));
             WAILAListener.setLookingAtInfo(player, info);
-            WAILAManager.setBar(player, WAILAListener.getPlayerConfig(player).getString("type"),
-                    info);
+            WAILAManager.setBar(player, info);
             return true;
         }
         return false;

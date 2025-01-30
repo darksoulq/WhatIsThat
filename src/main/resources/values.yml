@@ -1,3 +1,5 @@
+SPLITTER: " §f| "
+
 minecraft:
   # Prefixes
   items_in_container: "§6\uD83D\uDCE6 {items}§f "
