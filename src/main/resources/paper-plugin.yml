@@ -1,0 +1,12 @@
+name: WIT
+version: '1.4.7'
+main: me.darksoul.wit.WIT
+api-version: '1.21'
+authors:
+  - DarkSoul
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false

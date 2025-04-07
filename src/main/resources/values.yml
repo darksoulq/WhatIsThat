@@ -1,18 +1,18 @@
-SPLITTER: " §f| "
+SPLITTER: " <white>|</white> "
 
 minecraft:
   # Prefixes
-  items_in_container: "§6\uD83D\uDCE6 {items}§f "
-  preferred_tool_not_has: "§c{emojiByTool} "
-  preferred_tool_has: "§a{emojiByTool} "
-  entity_owner: "§8{entityOwner} "
-  entity_is_leashed: "§2\uD83D\uDD17 "
+  items_in_container: "<gold>\uD83D\uDCE6 {items}</gold> "
+  preferred_tool_not_has: "<red>{emojiByTool}</red> "
+  preferred_tool_has: "<green>{emojiByTool}</green> "
+  entity_owner: "<gray>{entityOwner}</gray> "
+  entity_is_leashed: "<green>\uD83D\uDD17</green> "
   # Suffixes
-  farmland_hydrated: " §9\uD83D\uDCA7"
-  farmland_not_hydrated: " §8\uD83D\uDCA7"
-  redstone_power_level: " §c● {power}"
-  redstone_power_on: " §c●"
-  redstone_power_off: " §8●"
+  farmland_hydrated: " <blue>\uD83D\uDCA7</blue>"
+  farmland_not_hydrated: " <gray>\uD83D\uDCA7</gray>"
+  redstone_power_level: " <red>● {power}</red>"
+  redstone_power_on: " <red>●</red>"
+  redstone_power_off: " <gray>●</gray>"
   crop_age_1: " {colorByPercent}\uD83C\uDF31 {age}/{maxAge}"
   crop_age_2: " {colorByPercent}🌿 {age}/{maxAge}"
   crop_age_3: " {colorByPercent}🌽 {age}/{maxAge}"
@@ -21,57 +21,27 @@ minecraft:
   smelt_time: " {colorByPercent}⌛ {secondsRemaining}s"
   beacon_1_effect: " {emojiByEffect1}:{primaryAmplifier}"
   beacon_2_effect: " {emojiByEffect1}:{primaryAmplifier} {emojiByEffect2}:{secondaryAmplifier}"
-  spawner_info: " §a\uD83E\uDDDF {spawningEntity}"
-  noteblock_info: " §6🎹 {instrument}: {tone} {octave}"
-  entity_time_to_grow: " §e\uD83D\uDC25 {secondsLeft}s"
-  entity_health: " §c❤ {entityHealth}/{entityMaxHealth}"
-  villager_profession: " §8{profession}"
-  tnt_fuse_time: " §4\uD83D\uDCA3{fuseTime}"
-
-
-minetorio:
-  # Suffixes
-  generator_power_gen_on: " §a⚡ {powerGen}"
-  generator_power_gen_off: " §8⚡ 0"
-  battery_stored_power: " {colorByPercent} ⚡ {storedPower}"
-  device_action_power_noidle: " §c⚡ {needsPower}"
-  device_action_power: " §c⚡ {needsPowerIdle}"
-
-auramobs:
-  # Prefix
-  level: "§8Lv: {entityLevel} "
-
-auraskills:
-  # Prefix
-  level: "§c💪 {playerLevel} "
-
-slimefun:
-  # Suffixes
-  stored_energy_0: " §8⚡ {deviceEnergy}/{deviceCapacity}"
-  stored_energy: " §2⚡ {deviceEnergy}/{deviceCapacity}"
-  energy_gen_on: " §2⬆ {deviceGen}"
-  energy_gen_off: " §8➖"
-  solar_energy_gen: " §6☀ {dayEnergy} §7\uD83C\uDF12 {nightEnergy}"
-
-valhallammo:
-  # Prefixes
-  level: "§c💪 {playerLevel}§8 "
-  race: "{race} "
+  spawner_info: " <green>\uD83E\uDDDF {spawningEntity}</green>"
+  noteblock_info: " <gold>🎹 {instrument}: {tone} {octave}</gold>"
+  entity_time_to_grow: " <yellow>\uD83D\uDC25 {secondsLeft}s</yellow>"
+  entity_health: " <red>❤ {entityHealth}/{entityMaxHealth}</red>"
+  villager_profession: " <gray>{profession}</gray>"
+  tnt_fuse_time: " <red>\uD83D\uDCA3{fuseTime}</red>"
 
 percent_color:
-  25: "§c"
-  50: "§e"
-  75: "§a"
-  100: "§2"
-  default: "§8"
+  25: "<red>"
+  50: "<orange>"
+  75: "<light_green>"
+  100: "<green>"
+  default: "<gray>"
 
 effect_emoji:
-  SPEED: "§b💨"
-  HASTE: "§e⛏"
-  RESISTANCE: "§6🛡"
-  JUMP: "§a🐇"
-  STRENGTH: "§c💪"
-  REGENERATION: "§d❤"
+  SPEED: "<aqua>💨</aqua>"
+  HASTE: "<yellow>⛏</yellow>"
+  RESISTANCE: "<gold>🛡</gold>"
+  JUMP: "<light_green>🐇</light_green>"
+  STRENGTH: "<red>💪</red>"
+  REGENERATION: "<purple>❤</purple>"
 
 profession:
   # Suffixes
