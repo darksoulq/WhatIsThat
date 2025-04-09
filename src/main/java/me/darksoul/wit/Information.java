@@ -29,11 +29,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.spawner.Spawner;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Information {
     private static YamlConfiguration valuesFile = ConfigUtils.loadValuesFIle();
     private static MiniMessage mm = MiniMessage.miniMessage();
+    private static final List<ItemStack> usableHoes = new LinkedList<>();
+    private static final List<ItemStack> usableShovels = new LinkedList<>();
+    private static final List<ItemStack> usableAxes = new LinkedList<>();
+    private static final List<ItemStack> usablePickaxes = new LinkedList<>();
     // Blocks
     public static Component default_getRedstoneInfo(Block block) {
         boolean isPowerSource = block.isBlockIndirectlyPowered();
@@ -210,44 +214,84 @@ public class Information {
         return Component.text("");
     }
     public static Component default_getToolToBreak(Block block, Player player) {
+        usableHoes.clear();
+        usableShovels.clear();
+        usableAxes.clear();
+        usablePickaxes.clear();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
-        ToolType prefTool = getPrefferedTool(block.getType());
-        Material prefMat;
-        switch (prefTool) {
-            case HOE -> prefMat = Material.WOODEN_HOE;
-            case AXE -> prefMat = Material.WOODEN_AXE;
-            case PICKAXE -> prefMat = Material.WOODEN_PICKAXE;
-            case SHOVEL -> prefMat = Material.WOODEN_SHOVEL;
-            case null, default -> prefMat = Material.AIR;
-        }
-        if (prefMat == Material.AIR) {
-            return Component.text("");
-        }
-        if (ItemGroups.getContainers().contains(block.getType())) {
-            if (heldItem.getType().isAir()) {
-                return mm.deserialize(valuesFile.getString("minecraft.preferred_tool_not_has", "§c {emojiByTool} ")
-                        .replace("{emojiByTool}", getEmojiForTool(prefMat)));
+        ItemStack canBreak = null;
+        new LinkedList<>(ItemGroups.HOES)
+                .stream()
+                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
+                .forEach(usableHoes::add);
+        new LinkedList<>(ItemGroups.SHOVELS)
+                .stream()
+                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
+                .forEach(usableShovels::add);
+        new LinkedList<>(ItemGroups.AXES)
+                .stream()
+                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
+                .forEach(usableAxes::add);
+        new LinkedList<>(ItemGroups.PICKAXES)
+                .stream()
+                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
+                .forEach(usablePickaxes::add);
+
+        for (ItemStack hoe : usableHoes) {
+                if (heldItem == hoe) {
+                    canBreak = heldItem;
+                    break;
+                }
             }
-            if (canToolBreakBlock(heldItem.getType(), block.getType())) {
-                return mm.deserialize(valuesFile.getString("minecraft.preferred_tool_has", "§a {emojiByTool} ")
-                        .replace("{emojiByTool}", getEmojiForTool(prefMat)));
+        if (canBreak == null) {
+            for (ItemStack shovel : usableShovels) {
+                if (heldItem == shovel) {
+                    canBreak = heldItem;
+                    break;
+                }
+            }
+        }
+        if (canBreak == null) {
+            for (ItemStack axe : usableAxes) {
+                if (heldItem == axe) {
+                    canBreak = heldItem;
+                    break;
+                }
+            }
+        }
+        if (canBreak == null) {
+            for (ItemStack pickaxe : usablePickaxes) {
+                if (heldItem == pickaxe) {
+                    canBreak = heldItem;
+                    break;
+                }
+            }
+        }
+
+        Map<String, Boolean> emojiMap = new LinkedHashMap<>();
+        if (!usableHoes.isEmpty()) {
+            emojiMap.put(getEmojiForTool(Material.WOODEN_HOE), canToolBreakBlock(heldItem.getType(), block.getType()));
+        }
+        if (!usableShovels.isEmpty()) {
+            emojiMap.put(getEmojiForTool(Material.WOODEN_SHOVEL), canToolBreakBlock(heldItem.getType(), block.getType()));
+        }
+        if (!usableAxes.isEmpty()) {
+            emojiMap.put(getEmojiForTool(Material.WOODEN_AXE), canToolBreakBlock(heldItem.getType(), block.getType()));
+        }
+        if (!usablePickaxes.isEmpty()) {
+            emojiMap.put(getEmojiForTool(Material.WOODEN_PICKAXE), canToolBreakBlock(heldItem.getType(), block.getType()));
+        }
+
+        StringBuilder toReturn = new StringBuilder();
+        for (String emoji : emojiMap.keySet()) {
+            if (emojiMap.get(emoji)) {
+                toReturn.append("<green>").append(emoji).append("</green>");
             } else {
-                return mm.deserialize(valuesFile.getString("minecraft.preferred_tool_not_has", "§c {emojiByTool} ")
-                        .replace("{emojiByTool}", getEmojiForTool(prefMat)));
-            }
-        } else {
-            if (heldItem.getType().isAir()) {
-                return mm.deserialize(valuesFile.getString("minecraft.preferred_tool_not_has", "§c {emojiByTool} ")
-                        .replace("{emojiByTool}", getEmojiForTool(prefMat)));
-            }
-            if (canToolBreakBlock(heldItem.getType(), block.getType())) {
-                return mm.deserialize(valuesFile.getString("minecraft.preferred_tool_has", "§a {emojiByTool} ")
-                        .replace("{emojiByTool}", getEmojiForTool(prefMat)));
-            } else {
-                return mm.deserialize(valuesFile.getString("minecraft.preferred_tool_not_has", "§c {emojiByTool} ")
-                        .replace("{emojiByTool}", getEmojiForTool(prefMat)));
+                toReturn.append("<red>").append(emoji).append("</red>");
             }
         }
+
+        return mm.deserialize(toReturn.toString());
     }
     // Entities
     public static Component default_getEntityAgeLeft(Entity entity) {

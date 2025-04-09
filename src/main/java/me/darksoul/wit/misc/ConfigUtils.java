@@ -18,8 +18,6 @@ public class ConfigUtils {
     private static final File VALUES_FILE = new File(LANG_FOLDER, "values.yml");
     private static final File CONFIG_FILE = new File(WIT.getInstance().getDataFolder(), "config.yml");
 
-    private static JsonObject vTranslations;
-
     static {
         if (!LANG_FOLDER.exists()) {
             LANG_FOLDER.mkdirs();

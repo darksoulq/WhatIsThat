@@ -57,11 +57,11 @@ public class WITListener implements Listener {
         Block block = MathUtils.getLookingAtBlock(player, blockDistance);
         Entity entity = MathUtils.isLookingAtEntity(player, entityDistance);
         if (entity != null) {
-//            for (BiFunction<Entity, Player, Boolean> eHandler : Handlers.getEntityHandlers()) {
-//                if (eHandler.apply(entity, player)) {
-//                    return;
-//                }
-//            }
+            for (BiFunction<Entity, Player, Boolean> eHandler : Handlers.getEntityHandlers()) {
+                if (eHandler.apply(entity, player)) {
+                    return;
+                }
+            }
             if (config.getBoolean("entities.enabled", true)) {
                 if (MinecraftCompat.handleEntity(entity, player)) {
                     return;
@@ -69,11 +69,11 @@ public class WITListener implements Listener {
             }
         }
         if (block != null) {
-//            for (BiFunction<Block, Player, Boolean> bHandler : Handlers.getBlockHandlers()) {
-//                if (bHandler.apply(block, player)) {
-//                    return;
-//                }
-//            }
+            for (BiFunction<Block, Player, Boolean> bHandler : Handlers.getBlockHandlers()) {
+                if (bHandler.apply(block, player)) {
+                    return;
+                }
+            }
             if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getOperatorBlocks().contains(block.getType())) {
                 if (MinecraftCompat.handleBlock(block, player)) {
                     return;
@@ -81,10 +81,10 @@ public class WITListener implements Listener {
             }
         }
         WAILAManager.setBar(player, Component.text(""));
-        lookingAt.put(player, Component.text(""));
-        lookingAtPrefix.put(player, "");
-        lookingAtSuffix.put(player, "");
-        lookingAtInfo.put(player, "");
+        lookingAt.put(player, null);
+        lookingAtPrefix.put(player, null);
+        lookingAtSuffix.put(player, null);
+        lookingAtInfo.put(player, null);
 
         if (WAILAManager.getDisplays().get(getPlayerConfig(player).getString("type")).isEmpty(player)) {
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));

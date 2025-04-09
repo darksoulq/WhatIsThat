@@ -1,6 +1,7 @@
 package me.darksoul.wit;
 
-import me.darksoul.wit.command.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import me.darksoul.wit.command.WCommands;
 import me.darksoul.wit.compatibility.*;
 import me.darksoul.wit.display.ActionBarDisplay;
 import me.darksoul.wit.display.BossBarDisplay;
@@ -17,7 +18,9 @@ public final class WIT extends JavaPlugin {
         WITListener.setup();
         Handlers.setup();
 
-//        getCommand("wit").setExecutor(new Commands());
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+                event -> event.registrar().register(WCommands.createCommand().build(), "Main command of What is That?")
+        );
         getServer().getPluginManager().registerEvents(new WITListener(), this);
         PlaceholderAPICompat.checkWITPAPI();
     }
@@ -28,8 +31,6 @@ public final class WIT extends JavaPlugin {
 
     public static WIT getInstance() {
         return instance;
-    }
-    public static void resetHooks() {
     }
     private static void setupDisplays() {
         WAILAManager.addDisplay(new ActionBarDisplay());

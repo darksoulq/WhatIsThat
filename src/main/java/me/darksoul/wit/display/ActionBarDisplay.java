@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class ActionBarDisplay extends InfoDisplay {
     public ActionBarDisplay() {
         super("actionbar");
@@ -11,11 +13,7 @@ public class ActionBarDisplay extends InfoDisplay {
 
     @Override
     public void setBar(Player player, Component text) {
-        if (text == null || ((TextComponent) text).content().isEmpty()) {
-            player.sendActionBar(Component.text(""));
-        } else {
-            player.sendActionBar(text);
-        }
+        player.sendActionBar(Objects.requireNonNullElseGet(text, () -> Component.text("")));
     }
 
     @Override

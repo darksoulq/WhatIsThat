@@ -110,7 +110,6 @@ public class MinecraftCompat {
             WITListener.setLookingAtSuffix(player, info.getSuffix().toString());
             WITListener.setLookingAtInfo(player, info.toString());
             WAILAManager.setBar(player, info.getCombined());
-            System.out.println(BossBarDisplay.playerBossBars);
             return true;
         }
         return false;
