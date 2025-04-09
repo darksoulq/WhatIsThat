@@ -8,12 +8,14 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 public class Handlers {
-    private static List<BiFunction<Block, Player, Boolean>> blockHandlers = new ArrayList<>();
-    private static List<BiFunction<Entity, Player, Boolean>> entityHandlers = new ArrayList<>();
+    private static Set<BiFunction<Block, Player, Boolean>> blockHandlers = new HashSet<>();
+    private static Set<BiFunction<Entity, Player, Boolean>> entityHandlers = new HashSet<>();
     private static YamlConfiguration config = WITListener.getConfig();
 
     public static void setup() {
@@ -27,10 +29,10 @@ public class Handlers {
     public static void removeEntityHandler(BiFunction<Entity, Player, Boolean> handler) {
         entityHandlers.remove(handler);
     }
-    public static List<BiFunction<Block, Player, Boolean>> getBlockHandlers() {
+    public static Set<BiFunction<Block, Player, Boolean>> getBlockHandlers() {
         return blockHandlers;
     }
-    public static List<BiFunction<Entity, Player, Boolean>> getEntityHandlers() {
+    public static Set<BiFunction<Entity, Player, Boolean>> getEntityHandlers() {
         return entityHandlers;
     }
 }

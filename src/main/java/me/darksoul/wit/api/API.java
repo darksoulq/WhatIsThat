@@ -17,35 +17,35 @@ import java.util.function.BiFunction;
  * It allows adding custom handlers for entities and blocks and updating the boss bar text for players.
  */
 public class API {
-    private static final List<WITAddon> reloadListeners = new ArrayList<>();
+    private static final List<WITPlugin> reloadListeners = new ArrayList<>();
 
     /**
-     * Registers a {@link WITAddon} to receive callbacks when the WIT plugin is reloaded.
+     * Registers a {@link WITPlugin} to receive callbacks when the WIT plugin is reloaded.
      * This allows addons to re-register their handlers or reset internal state after a reload.
      *
-     * @param addon the {@link WITAddon} instance to register.
+     * @param addon the {@link WITPlugin} instance to register.
      */
-    public static void registerAddon(WITAddon addon) {
+    public static void registerAddon(WITPlugin addon) {
         reloadListeners.add(addon);
     }
 
     /**
-     * Unregisters a previously registered {@link WITAddon}, stopping it from receiving reload callbacks.
+     * Unregisters a previously registered {@link WITPlugin}, stopping it from receiving reload callbacks.
      * This should be called during addon shutdown or disable.
      *
-     * @param addon the {@link WITAddon} instance to unregister.
+     * @param addon the {@link WITPlugin} instance to unregister.
      */
-    public static void unregisterAddon(WITAddon addon) {
+    public static void unregisterAddon(WITPlugin addon) {
         reloadListeners.remove(addon);
     }
 
     /**
-     * Fires the reload event, notifying all registered {@link WITAddon} instances
+     * Fires the reload event, notifying all registered {@link WITPlugin} instances
      * that the WIT plugin has been reloaded. This is  called internally by
      * the plugin's reload command.
      */
     public static void fireReload() {
-        for (WITAddon addon : reloadListeners) {
+        for (WITPlugin addon : reloadListeners) {
             addon.onWITReload();
         }
     }

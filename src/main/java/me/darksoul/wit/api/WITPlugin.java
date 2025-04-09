@@ -1,5 +1,5 @@
 package me.darksoul.wit.api;
 
-public interface WITAddon {
+public interface WITPlugin {
     void onWITReload();
 }

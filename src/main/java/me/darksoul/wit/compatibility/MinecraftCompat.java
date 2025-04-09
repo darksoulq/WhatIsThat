@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static me.darksoul.wit.Information.mm;
+
 public class MinecraftCompat {
     // Blocks
     private static final List<Function<Block, Component>> blockSuffix = new ArrayList<>();
@@ -99,11 +101,11 @@ public class MinecraftCompat {
                 info.addPrefix(func.apply(block));
             }
             if (!((TextComponent) info.getPrefix()).content().isEmpty()) {
-                info.addPrefix(Component.text(Information.getValuesFile().getString("SPLITTER", " §f| ")));
+                info.addPrefix(mm.deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
             }
             info.setName(key);
             if (!((TextComponent) info.getSuffix()).content().isEmpty()) {
-                info.suffixSplit(Component.text(Information.getValuesFile().getString("SPLITTER", " §f| ")));
+                info.suffixSplit(mm.deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
             }
             WITListener.setLookingAt(player, key);
             WITListener.setLookingAtPrefix(player, info.getPrefix().toString());

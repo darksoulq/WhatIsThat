@@ -33,7 +33,7 @@ import java.util.*;
 
 public class Information {
     private static YamlConfiguration valuesFile = ConfigUtils.loadValuesFIle();
-    private static MiniMessage mm = MiniMessage.miniMessage();
+    public static MiniMessage mm = MiniMessage.miniMessage();
     private static final List<ItemStack> usableHoes = new LinkedList<>();
     private static final List<ItemStack> usableShovels = new LinkedList<>();
     private static final List<ItemStack> usableAxes = new LinkedList<>();
