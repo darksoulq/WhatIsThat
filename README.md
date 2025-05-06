@@ -1,4 +1,4 @@
-[<img src="imgs/DiscordBttn.png" alt="discord">](https://discord.gg/FfAqNuGnas) [<img src="imgs/WikiBtn.png" alt="wiki">](https://darksoulq.github.io/wit-docs/api.html)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/what-is-that?style=flat-square&logo=modrinth&link=https%3A%2F%2Fmodrinth.com%2Fplugin%2Fwhat-is-that)](https://modrinth.com/plugin/what-is-that/)[![Spiget Downloads](https://img.shields.io/spiget/downloads/120891?style=flat-square&logo=spigotmc&link=https%3A%2F%2Fwww.spigotmc.org%2Fresources%2Fwhat-is-that.120891%2F)](https://www.spigotmc.org/resources/what-is-that.120891/)[![Static Badge](https://img.shields.io/badge/-wiki-gray?style=flat-square&logo=readthedocs&link=https%3A%2F%2Fdarksoulq.github.io%2Fwit-docs%2Fapi.html)](https://darksoulq.github.io/wit-docs/api.html)[![Discord](https://img.shields.io/discord/1204752282919370812?style=flat-square&logo=discord&link=https%3A%2F%2Fdiscord.gg%2Fe35gP423vN)](https://discord.gg/e35gP423vN)
 <img src="imgs/witpage2.png" alt="Description" style="width: 100%; height : 99%;">
 
 ## Note:
