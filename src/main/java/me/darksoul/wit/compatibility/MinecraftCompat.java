@@ -2,15 +2,17 @@ package me.darksoul.wit.compatibility;
 
 import me.darksoul.wit.Information;
 import me.darksoul.wit.WITListener;
+import me.darksoul.wit.api.API;
 import me.darksoul.wit.api.Info;
-import me.darksoul.wit.display.BossBarDisplay;
-import me.darksoul.wit.display.WAILAManager;
+import me.darksoul.wit.misc.Events;
 import me.darksoul.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -88,9 +90,16 @@ public class MinecraftCompat {
     }
 
     public static boolean handleBlock(Block block, Player player) {
-        if (!ItemGroups.getOperatorBlocks().contains(block.getType())) {
+        if (!ItemGroups.getBlACKLISTED_BLOCKS().contains(block.getType())) {
             Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
             Info info = new Info();
+            float progress = 0;
+            if (WITListener.getConfig().getBoolean("break-progress", true)) {
+                if (Events.progressMap.containsKey(block)) {
+                    progress = Events.progressMap.get(block);
+                }
+            }
+
             for (Function<Block, Component> func : blockSuffix) {
                  info.addSuffix(func.apply(block));
             }
@@ -107,18 +116,21 @@ public class MinecraftCompat {
             if (!((TextComponent) info.getSuffix()).content().isEmpty()) {
                 info.suffixSplit(mm.deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
             }
-            WITListener.setLookingAt(player, key);
-            WITListener.setLookingAtPrefix(player, info.getPrefix().toString());
-            WITListener.setLookingAtSuffix(player, info.getSuffix().toString());
-            WITListener.setLookingAtInfo(player, info.toString());
-            WAILAManager.setBar(player, info.getCombined());
+            API.updateBar(info, 1 - progress, player);
             return true;
         }
         return false;
     }
     public static boolean handleEntity(Entity entity, Player player) {
-        for (EntityType not : ItemGroups.getNotRenderEntities()) {
+        for (EntityType not : ItemGroups.getBlacklistedEntities()) {
             if (entity.getType() != not) {
+                float health = 0;
+                if (WITListener.getConfig().getBoolean("health-progress", true)) {
+                    if (entity instanceof LivingEntity) {
+                        health = (float) Math.max(0f, Math.min(1f, ((LivingEntity) entity).getHealth() /
+                                ((LivingEntity) entity).getAttribute(Attribute.MAX_HEALTH).getValue()));
+                    }
+                }
                 Component key = Component.translatable("entity.minecraft." + entity.getType().toString().toLowerCase());
                 if (entity.customName() != null) {
                     key = entity.customName();
@@ -137,10 +149,7 @@ public class MinecraftCompat {
                 if (!((TextComponent) info.getSuffix()).content().isEmpty()) {
                     info.suffixSplit(Component.text(Information.getValuesFile().getString("SPLITTER", " §f| ")));
                 }
-                WITListener.setLookingAt(player, key);
-                WITListener.setLookingAtPrefix(player, info.getPrefix().toString());
-                WITListener.setLookingAtSuffix(player, info.getSuffix().toString());
-                WAILAManager.setBar(player, info.getCombined());
+                API.updateBar(info, 1 - health, player);
                 return true;
             }
         }

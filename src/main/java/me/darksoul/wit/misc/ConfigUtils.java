@@ -1,22 +1,17 @@
 package me.darksoul.wit.misc;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import me.darksoul.wit.WIT;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
 public class ConfigUtils {
-    private static final File LANG_FOLDER = new File(WIT.getInstance().getDataFolder(), "lang");
+    private static final File LANG_FOLDER = new File(WIT.instance().getDataFolder(), "lang");
     private static final File VALUES_FILE = new File(LANG_FOLDER, "values.yml");
-    private static final File CONFIG_FILE = new File(WIT.getInstance().getDataFolder(), "config.yml");
+    private static final File CONFIG_FILE = new File(WIT.instance().getDataFolder(), "config.yml");
 
     static {
         if (!LANG_FOLDER.exists()) {
@@ -33,7 +28,7 @@ public class ConfigUtils {
      */
     private static void copyTemplate(String resourceName, File destination) {
         if (!destination.exists()) {
-            try (InputStream resourceStream = WIT.getInstance().getResource(resourceName)) {
+            try (InputStream resourceStream = WIT.instance().getResource(resourceName)) {
                 if (resourceStream != null) {
                     Files.copy(resourceStream, destination.toPath());
                 } else {

@@ -9,6 +9,7 @@ public abstract class InfoDisplay {
         this.id = id;
     }
     public abstract void setBar(Player player, Component text);
+    public void setProgress(Player player, float value) {}
     public abstract void removeBar(Player player);
     public abstract boolean isEmpty(Player player);
 

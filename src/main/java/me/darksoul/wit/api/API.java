@@ -1,6 +1,7 @@
 package me.darksoul.wit.api;
 
 import me.darksoul.wit.Handlers;
+import me.darksoul.wit.WITListener;
 import me.darksoul.wit.display.InfoDisplay;
 import me.darksoul.wit.display.WAILAManager;
 import net.kyori.adventure.text.Component;
@@ -97,11 +98,25 @@ public class API {
     /**
      * Updates the boss bar text displayed to a specific player.
      *
-     * @param text   the new text to display on the boss bar.
+     * @param info   the new text to display on the boss bar.
      * @param player the {@link Player} for whom the boss bar text is updated.
      */
-    public static void updateBar(Component text, Player player) {
-        WAILAManager.setBar(player, text);
+    public static void updateBar(Info info, Player player) {
+        WITListener.setLookingAt(player, info);
+        WAILAManager.setBar(player, info.getCombined());
+    }
+
+    /**
+     * Updates the boss bar text displayed to a specific player.
+     *
+     * @param info   the new text to display on the boss bar.
+     * @param progress the progress to set for the bossBar (currently)
+     * @param player the {@link Player} for whom the boss bar text is updated.
+     */
+    public static void updateBar(Info info, float progress, Player player) {
+        WITListener.setLookingAt(player, info);
+        WAILAManager.setProgress(player, progress);
+        WAILAManager.setBar(player, info.getCombined());
     }
 
     /**

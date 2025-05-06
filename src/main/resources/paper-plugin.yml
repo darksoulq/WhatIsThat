@@ -1,5 +1,5 @@
 name: WIT
-version: '1.4.8-hotfix'
+version: '1.4.9'
 main: me.darksoul.wit.WIT
 api-version: '1.21'
 authors:

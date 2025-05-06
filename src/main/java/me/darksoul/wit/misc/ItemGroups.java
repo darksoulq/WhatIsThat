@@ -1,5 +1,7 @@
 package me.darksoul.wit.misc;
 
+import me.darksoul.wit.WIT;
+import me.darksoul.wit.WITListener;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -15,8 +17,9 @@ public class ItemGroups {
     private static final List<Material> FURNACES = new ArrayList<>();
     private static final List<Material> CONTAINERS = new ArrayList<>();
     private static final List<EntityType> PETS = new ArrayList<>();
-    private static final List<EntityType> NOT_RENDER_ENTITIES = new ArrayList<>();
-    private static final List<Material> OPERATOR_BLOCKS = new ArrayList<>();
+    private static final List<EntityType> BLACKLISTED_ENTITIES = new ArrayList<>();
+    private static final List<Material> BlACKLISTED_BLOCKS = new ArrayList<>();
+    // Items
     public static final List<ItemStack> HOES = List.of(new ItemStack(Material.WOODEN_HOE), new ItemStack(Material.STONE_HOE), new ItemStack(Material.GOLDEN_HOE),
             new ItemStack(Material.IRON_HOE), new ItemStack(Material.DIAMOND_HOE), new ItemStack(Material.NETHERITE_HOE));
     public static final List<ItemStack> SHOVELS = List.of(new ItemStack(Material.WOODEN_SHOVEL), new ItemStack(Material.STONE_SHOVEL), new ItemStack(Material.GOLDEN_SHOVEL),
@@ -95,11 +98,12 @@ public class ItemGroups {
         CONTAINERS.add(Material.TRAPPED_CHEST);
         CONTAINERS.add(Material.BARREL);
         CONTAINERS.add(Material.HOPPER);
-        // Operator Blocks
-        OPERATOR_BLOCKS.add(Material.BARRIER);
-        OPERATOR_BLOCKS.add(Material.LIGHT);
-        OPERATOR_BLOCKS.add(Material.STRUCTURE_BLOCK);
-        OPERATOR_BLOCKS.add(Material.STRUCTURE_VOID);
+        CONTAINERS.add(Material.SHULKER_BOX);
+
+        // BlackListed Blocks
+        for (String mat : WITListener.getConfig().getStringList("block-blacklist")) {
+            BlACKLISTED_BLOCKS.add(Material.valueOf(mat));
+        }
 
         // Pets
         PETS.add(EntityType.CAT);
@@ -111,31 +115,9 @@ public class ItemGroups {
         PETS.add(EntityType.LLAMA);
 
         // Entities to not render for
-        NOT_RENDER_ENTITIES.add(EntityType.ITEM);
-        NOT_RENDER_ENTITIES.add(EntityType.ITEM);
-        NOT_RENDER_ENTITIES.add(EntityType.ITEM_DISPLAY);
-        NOT_RENDER_ENTITIES.add(EntityType.BLOCK_DISPLAY);
-        NOT_RENDER_ENTITIES.add(EntityType.INTERACTION);
-        NOT_RENDER_ENTITIES.add(EntityType.EVOKER_FANGS);
-        NOT_RENDER_ENTITIES.add(EntityType.EXPERIENCE_BOTTLE);
-        NOT_RENDER_ENTITIES.add(EntityType.EXPERIENCE_ORB);
-        NOT_RENDER_ENTITIES.add(EntityType.FALLING_BLOCK);
-        NOT_RENDER_ENTITIES.add(EntityType.LIGHTNING_BOLT);
-        NOT_RENDER_ENTITIES.add(EntityType.MARKER);
-        NOT_RENDER_ENTITIES.add(EntityType.POTION);
-        NOT_RENDER_ENTITIES.add(EntityType.FIREBALL);
-        NOT_RENDER_ENTITIES.add(EntityType.SMALL_FIREBALL);
-        NOT_RENDER_ENTITIES.add(EntityType.SHULKER_BULLET);
-        NOT_RENDER_ENTITIES.add(EntityType.FIREWORK_ROCKET);
-        NOT_RENDER_ENTITIES.add(EntityType.EYE_OF_ENDER);
-        NOT_RENDER_ENTITIES.add(EntityType.SNOWBALL);
-        NOT_RENDER_ENTITIES.add(EntityType.ENDER_PEARL);
-        NOT_RENDER_ENTITIES.add(EntityType.DRAGON_FIREBALL);
-        NOT_RENDER_ENTITIES.add(EntityType.SPECTRAL_ARROW);
-        NOT_RENDER_ENTITIES.add(EntityType.ARROW);
-        NOT_RENDER_ENTITIES.add(EntityType.TRIDENT);
-        NOT_RENDER_ENTITIES.add(EntityType.WITHER);
-        NOT_RENDER_ENTITIES.add(EntityType.ENDER_DRAGON);
+        for (String type : WITListener.getConfig().getStringList("entity-blacklist")) {
+            BLACKLISTED_ENTITIES.add(EntityType.valueOf(type));
+        }
     }
 
     public static List<Material> getRedstoneProviders() {
@@ -156,14 +138,14 @@ public class ItemGroups {
     public static List<Material> getContainers() {
         return CONTAINERS;
     }
-    public static List<Material> getOperatorBlocks() {
-        return OPERATOR_BLOCKS;
+    public static List<Material> getBlACKLISTED_BLOCKS() {
+        return BlACKLISTED_BLOCKS;
     }
 
     public static List<EntityType> getPets() {
         return PETS;
     }
-    public static List<EntityType> getNotRenderEntities() {
-        return NOT_RENDER_ENTITIES;
+    public static List<EntityType> getBlacklistedEntities() {
+        return BLACKLISTED_ENTITIES;
     }
 }

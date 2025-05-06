@@ -4,8 +4,10 @@ core:
   # These values cannot be in decimal form!
   entitydistance: 25 # The max distance the plugin will show entity bossbar in (in blocks)
   blockdistance: 25 # The max distance the plugin will show block bossbar in (in blocks)
+  update-delay: 5 # How frequently to update the BossBar, (in ticks)
   vanilla_lang: "en_us" # The language file to use (lang files are vanilla_ + name_here + .json, in this case vanilla_en_us.json
-  mode: "normal" #the mode of the plugin (normal or hidden) (hidden mode will hide the bossbars, is useful when you want to display info somewhere else)
+  mode: "normal" # The mode of the plugin (normal or hidden) (hidden mode will hide the bossbars, is useful when you want to display info somewhere else)
+  bstats: true # whether to enable bsStats or not (recommended to keep on)
 
 blocks:
   enabled: true
@@ -19,6 +21,7 @@ blocks:
   noteblockinfo: true # Show Instrument, tone and octave of NoteBlock
   farmlandinfo: true # Show Whether farmland is hydrated or not
   toolinfo: true # Show what the preferred tool to break the block is
+  break-progress: true # BossBar only as of now, but shows progress of the block being broken (can be smooth or not depending on update delays)
 
 entities:
   enabled: true
@@ -28,3 +31,41 @@ entities:
   healthinfo: true # Show health of entity
   professioninfo: true # Show profession of villager
   tntinfo: true # Show tnt time till explosion
+  health-progress: true # BossBar only as of now, changes the progress of the bossBar according to health of entity
+
+# The MATERIAL of the blocks to ignore, https://jd.papermc.io/paper/1.21.5/org/bukkit/material/package-summary.html
+block-blacklist:
+  - BARRIER
+  - LIGHT
+  - STRUCTURE_BLOCK
+  - STRUCTURE_VOID
+
+# the ENTITY_TYPE of entities to ignore, https://jd.papermc.io/paper/1.21.5/org/bukkit/entity/EntityType.html
+entity-blacklist:
+  - ITEM
+  - ITEM_DISPLAY
+  - BLOCK_DISPLAY
+  - INTERACTION
+  - EVOKER_FANGS
+  - EXPERIENCE_BOTTLE
+  - EXPERIENCE_ORB
+  - EXPERIENCE_BOTTLE
+  - EXPERIENCE_ORB
+  - FALLING_BLOCK
+  - LIGHTNING_BOLT
+  - MARKER
+  - SPLASH_POTION
+  - LINGERING_POTION
+  - FIREBALL
+  - SMALL_FIREBALL
+  - SHULKER_BULLET
+  - FIREWORK_ROCKET
+  - EYE_OF_ENDER
+  - SNOWBALL
+  - ENDER_PEARL
+  - DRAGON_FIREBALL
+  - SPECTRAL_ARROW
+  - ARROW
+  - TRIDENT
+  - WITHER
+  - ENDER_DRAGON

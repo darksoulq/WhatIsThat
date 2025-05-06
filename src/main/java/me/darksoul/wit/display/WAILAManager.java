@@ -24,6 +24,13 @@ public class WAILAManager {
         }
     }
 
+    public static void setProgress(Player player, float value) {
+        InfoDisplay display = displays.get(WITListener.getPlayerConfig(player).getString("type"));
+        if (display != null) {
+            display.setProgress(player, value);
+        }
+    }
+
     public static void removeBar(Player player, String type) {
         if (!displays.isEmpty() && displays.containsKey(type)) {
             displays.get(type).removeBar(player);

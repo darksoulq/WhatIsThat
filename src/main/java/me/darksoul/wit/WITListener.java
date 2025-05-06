@@ -1,5 +1,6 @@
 package me.darksoul.wit;
 
+import me.darksoul.wit.api.Info;
 import me.darksoul.wit.compatibility.MinecraftCompat;
 import me.darksoul.wit.display.WAILAManager;
 import me.darksoul.wit.misc.ConfigUtils;
@@ -26,12 +27,9 @@ import java.util.function.BiFunction;
 
 public class WITListener implements Listener {
     private static YamlConfiguration config = ConfigUtils.loadConfig();
-    private static final File PREF_FOLDER = new File(WIT.getInstance().getDataFolder(), "cache/players");
+    private static final File PREF_FOLDER = new File(WIT.instance().getDataFolder(), "cache/players");
     private static final List<Player> players = new ArrayList<>();
-    private static final Map<Player, Component> lookingAt = new HashMap<>();
-    private static final Map<Player, String> lookingAtPrefix = new HashMap<>();
-    private static final Map<Player, String> lookingAtSuffix = new HashMap<>();
-    private static final Map<Player, String> lookingAtInfo = new HashMap<>();
+    private static final Map<Player, Info> lookingAt = new HashMap<>();
     private static int entityDistance = config.getInt("core.entitydistance", 25);
     private static int blockDistance = config.getInt("core.blockdistance", 25);
     private static boolean isHidden = false;
@@ -51,7 +49,7 @@ public class WITListener implements Listener {
                     updateWAILA(player);
                 }
             }
-        }.runTaskTimer(WIT.getInstance(), 0, 5);
+        }.runTaskTimer(WIT.instance(), 0, config.getInt("core.update-delay", 5));
     }
     private void updateWAILA(Player player) {
         Block block = MathUtils.getLookingAtBlock(player, blockDistance);
@@ -74,7 +72,7 @@ public class WITListener implements Listener {
                     return;
                 }
             }
-            if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getOperatorBlocks().contains(block.getType())) {
+            if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getBlACKLISTED_BLOCKS().contains(block.getType())) {
                 if (MinecraftCompat.handleBlock(block, player)) {
                     return;
                 }
@@ -82,9 +80,6 @@ public class WITListener implements Listener {
         }
         WAILAManager.setBar(player, Component.text(""));
         lookingAt.put(player, null);
-        lookingAtPrefix.put(player, null);
-        lookingAtSuffix.put(player, null);
-        lookingAtInfo.put(player, null);
 
         if (WAILAManager.getDisplays().get(getPlayerConfig(player).getString("type")).isEmpty(player)) {
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
@@ -98,7 +93,7 @@ public class WITListener implements Listener {
             isHidden = false;
         } else {
             isHidden = false;
-            WIT.getInstance().getLogger().warning("Invalid mode in config.yml, defaulting to normal");
+            WIT.instance().getLogger().warning("Invalid mode in config.yml, defaulting to normal");
         }
         entityDistance = config.getInt("core.entitydistance", 25);
         blockDistance = config.getInt("core.blockdistance", 25);
@@ -146,29 +141,11 @@ public class WITListener implements Listener {
     public static boolean isHidden() {
         return isHidden;
     }
-    public static Component getLookingAt(Player player) {
+    public static Info getLookingAt(Player player) {
         return lookingAt.get(player);
     }
-    public static String getLookingAtPrefix(Player player) {
-        return lookingAtPrefix.get(player);
-    }
-    public static String getLookingAtSuffix(Player player) {
-        return lookingAtSuffix.get(player);
-    }
-    public static String getLookingAtInfo(Player player) {
-        return lookingAtInfo.get(player);
-    }
-    public static void setLookingAt(Player player, Component value) {
+    public static void setLookingAt(Player player, Info value) {
         lookingAt.put(player, value);
-    }
-    public static void setLookingAtPrefix(Player player, String value) {
-        lookingAtPrefix.put(player, value);
-    }
-    public static void setLookingAtSuffix(Player player, String value) {
-        lookingAtSuffix.put(player, value);
-    }
-    public static void setLookingAtInfo(Player player, String value) {
-        lookingAtInfo.put(player, value);
     }
 
     public static YamlConfiguration getConfig() {

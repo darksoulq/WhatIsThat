@@ -35,20 +35,20 @@ public class PlaceholderAPICompat {
                     return null;
                 }
                 if (identifier.equalsIgnoreCase("looking_at")) {
-                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer())).content();
+                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getName()).content();
                 } else if (identifier.equalsIgnoreCase("looking_at_prefix")) {
-                    return WITListener.getLookingAtPrefix(player.getPlayer());
+                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getPrefix()).content();
                 } else if (identifier.equalsIgnoreCase("looking_at_suffix")) {
-                    return WITListener.getLookingAtSuffix(player.getPlayer());
+                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getSuffix()).content();
                 } else if (identifier.equalsIgnoreCase("looking_at_info")) {
-                    return WITListener.getLookingAtInfo(player.getPlayer());
+                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getCombined()).content();
                 }
                 return null;
             }
         }.register();
     }
     public static void checkWITPAPI() {
-        Plugin pl = WIT.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        Plugin pl = WIT.instance().getServer().getPluginManager().getPlugin("PlaceholderAPI");
         isInstalled = pl != null && pl.isEnabled();
         if (isInstalled) {
             setup();

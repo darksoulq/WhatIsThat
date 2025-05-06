@@ -34,6 +34,14 @@ public class BossBarDisplay extends InfoDisplay {
     }
 
     @Override
+    public void setProgress(Player player, float value) {
+        BossBar bossBar = playerBossBars.get(player);
+        if (bossBar != null) {
+            bossBar.progress(value);
+        }
+    }
+
+    @Override
     public void removeBar(Player player) {
         BossBar bossBar = BossBarDisplay.playerBossBars.remove(player);
         if (bossBar != null) {

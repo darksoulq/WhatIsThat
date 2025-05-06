@@ -5,6 +5,9 @@ import net.kyori.adventure.text.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * This class is used for supplying Prefix, Suffix and Name (of entity/block) to relevant functions
+ */
 public class Info {
     private List<Component> prefix = new ArrayList<>();
     private List<Component> suffix = new ArrayList<>();
