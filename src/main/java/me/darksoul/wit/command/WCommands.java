@@ -16,6 +16,7 @@ import me.darksoul.wit.WITListener;
 import me.darksoul.wit.api.API;
 import me.darksoul.wit.display.InfoDisplay;
 import me.darksoul.wit.display.WAILAManager;
+import me.darksoul.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -88,6 +89,7 @@ public class WCommands {
         WITListener.setup();
         Information.reloadValuesFile();
         Handlers.setup();
+        ItemGroups.reload();
         API.fireReload();
         ctx.getSource().getSender().sendMessage("§2WIT config reloaded.");
         return Command.SINGLE_SUCCESS;

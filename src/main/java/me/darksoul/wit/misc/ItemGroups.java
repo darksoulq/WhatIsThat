@@ -120,6 +120,18 @@ public class ItemGroups {
         }
     }
 
+    public static void reload() {
+        BLACKLISTED_ENTITIES.clear();
+        BlACKLISTED_BLOCKS.clear();
+
+        for (String type : WITListener.getConfig().getStringList("entity-blacklist")) {
+            BLACKLISTED_ENTITIES.add(EntityType.valueOf(type));
+        }
+        for (String mat : WITListener.getConfig().getStringList("block-blacklist")) {
+            BlACKLISTED_BLOCKS.add(Material.valueOf(mat));
+        }
+    }
+
     public static List<Material> getRedstoneProviders() {
         return REDSTONE_PROVIDERS;
     }

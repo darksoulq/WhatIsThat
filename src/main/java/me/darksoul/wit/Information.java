@@ -150,7 +150,7 @@ public class Information {
                 }
             }
 
-            return mm.deserialize(valuesFile.getString("minecraft:items_in_container", "§6\uD83D\uDCE6 {items}§f ")
+            return mm.deserialize(valuesFile.getString("minecraft.items_in_container", "§6\uD83D\uDCE6 {items}§f ")
                     .replace("{items}", String.valueOf(totalItems)));
         }
         return Component.text("");
