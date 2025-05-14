@@ -30,7 +30,7 @@ minecraft:
 
 percent_color:
   25: "<red>"
-  50: "<orange>"
+  50: "<yellow>"
   75: "<light_green>"
   100: "<green>"
   default: "<gray>"
