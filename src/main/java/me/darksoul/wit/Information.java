@@ -75,25 +75,29 @@ public class Information {
             int percentage = (age / maxAge) * 100;
 
             if (percentage >= 0 && percentage <= 25) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_1", " {colorByPercent}\uD83C\uDF31 {age}/{maxAge}")
+                return mm.deserialize(valuesFile.getString("minecraft.crop_age_1", " {colorByPercent}\uD83C\uDF31 {age}/{maxAge}{colorByPercentEnd}")
                         .replace("{colorByPercent}", getColorForPercent((float) percentage))
                         .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge)));
+                        .replace("{maxAge}", String.valueOf(maxAge))
+                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
             } else if (percentage > 25 && percentage <= 50) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_2", " {colorByPercent}\uD83C\uDF3F {age}/{maxAge}")
+                return mm.deserialize(valuesFile.getString("minecraft.crop_age_2", " {colorByPercent}\uD83C\uDF3F {age}/{maxAge}{colorByPercentEnd}")
                         .replace("{colorByPercent}", getColorForPercent((float) percentage))
                         .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge)));
+                        .replace("{maxAge}", String.valueOf(maxAge))
+                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
             } else if (percentage > 50 && percentage <= 75) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_3", " {colorByPercent}\uD83C\uDF3D {age}/{maxAge}")
+                return mm.deserialize(valuesFile.getString("minecraft.crop_age_3", " {colorByPercent}\uD83C\uDF3D {age}/{maxAge}{colorByPercentEnd}")
                         .replace("{colorByPercent}", getColorForPercent((float) percentage))
                         .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge)));
+                        .replace("{maxAge}", String.valueOf(maxAge))
+                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
             } else if (percentage > 75) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_4", " {colorByPercent}\uD83C\uDF3D {age}/{maxAge}")
+                return mm.deserialize(valuesFile.getString("minecraft.crop_age_4", " {colorByPercent}\uD83C\uDF3D {age}/{maxAge}{colorByPercentEnd}")
                         .replace("{colorByPercent}", getColorForPercent((float) percentage))
                         .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge)));
+                        .replace("{maxAge}", String.valueOf(maxAge))
+                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
             }
         }
         return Component.text("");
@@ -108,10 +112,11 @@ public class Information {
                 double percentage = (honeyLevel / (double) maxHoneyLevel) * 100;
 
                 return mm.deserialize(valuesFile.getString("minecraft.honey_level",
-                                " {colorByPercent}\uD83D\uDC1D {honeyLevel}/{honeyMaxLevel}")
+                                " {colorByPercent}\uD83D\uDC1D {honeyLevel}/{honeyMaxLevel}{colorByPercentEnd}")
                         .replace("{colorByPercent}", getColorForPercent((float) percentage))
                         .replace("{honeyLevel}", String.valueOf(honeyLevel))
-                        .replace("{honeyMaxLevel}", String.valueOf(maxHoneyLevel)));
+                        .replace("{honeyMaxLevel}", String.valueOf(maxHoneyLevel))
+                        .replace("{colorByPercentEnd}", getColorForPercentEnd((float) percentage)));
             }
         }
         return Component.text("");
@@ -129,9 +134,10 @@ public class Information {
             int secondsRemaining = ticksRemaining / 20;
             float percentage = ((float) cookTime / cookTimeTotal) * 100;
             if (inventory.getSmelting() != null && cookTime != 0) {
-                return mm.deserialize(valuesFile.getString("minecraft.smelt_time", " {colorByPercent}⌛ {secondsRemaining}s")
-                            .replace("{colorByPercent}", getColorForPercent(percentage))
-                            .replace("{secondsRemaining}", String.valueOf(secondsRemaining)));
+                return mm.deserialize(valuesFile.getString("minecraft.smelt_time", " {colorByPercent}⌛ {secondsRemaining}s{colorByPercentEnd}")
+                        .replace("{colorByPercent}", getColorForPercent(percentage))
+                        .replace("{secondsRemaining}", String.valueOf(secondsRemaining))
+                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
                 }
         }
         return Component.text("");
@@ -356,15 +362,27 @@ public class Information {
     // Utility
     public static String getColorForPercent(float percent) {
         if (percent >= 0 && percent <= 25) {
-            return valuesFile.getString("percent_color.25", "§c");
+            return valuesFile.getString("percent_color.25", "<red>");
         } else if (percent > 25 && percent <= 50) {
-            return valuesFile.getString("percent_color.50", "§e");
+            return valuesFile.getString("percent_color.50", "<yellow>");
         } else if (percent > 50 && percent <= 75) {
-            return valuesFile.getString("percent_color.75", "§a");
+            return valuesFile.getString("percent_color.75", "<15ed15>");
         } else if (percent > 75) {
-            return valuesFile.getString("percent_color.100", "§2");
+            return valuesFile.getString("percent_color.100", "<2b662b>");
         }
-        return valuesFile.getString("percent_color.default", "§8");
+        return valuesFile.getString("percent_color.default", "<gray>");
+    }
+    public static String getColorForPercentEnd(float percent) {
+        if (percent >= 0 && percent <= 25) {
+            return valuesFile.getString("percent_color.25", "</red>");
+        } else if (percent > 25 && percent <= 50) {
+            return valuesFile.getString("percent_color.50", "</yellow>");
+        } else if (percent > 50 && percent <= 75) {
+            return valuesFile.getString("percent_color.75", "</15ed15>");
+        } else if (percent > 75) {
+            return valuesFile.getString("percent_color.100", "</2b662b>");
+        }
+        return valuesFile.getString("percent_color.default", "/<gray>");
     }
     public static String getEmojiForEffect(String effect) {
         return switch (effect) {
