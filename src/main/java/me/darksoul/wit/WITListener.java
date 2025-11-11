@@ -45,7 +45,9 @@ public class WITListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (isHidden) return;
                 for (Player player : players) {
+                    if ("sneaking".equals(config.getString("core.mode", "normal")) && !player.isSneaking()) return;
                     updateWAILA(player);
                 }
             }
@@ -89,8 +91,6 @@ public class WITListener implements Listener {
         config = ConfigUtils.loadConfig();
         if (config.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
             isHidden = true;
-        } else if (config.getString("core.mode", "normal").equalsIgnoreCase("normal")) {
-            isHidden = false;
         } else {
             isHidden = false;
             WIT.instance().getLogger().warning("Invalid mode in config.yml, defaulting to normal");
@@ -107,21 +107,21 @@ public class WITListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         File playerFile = new File(PREF_FOLDER + "/" + event.getPlayer().getName() + ".yml");
-        YamlConfiguration config = new YamlConfiguration();
+        YamlConfiguration pconfig = new YamlConfiguration();
         if (!playerFile.exists()) {
             try {
                 playerFile.createNewFile();
-                config = YamlConfiguration.loadConfiguration(playerFile);
-                config.set("disableWAILA", false);
-                config.set("type", "bossbar");
-                config.save(playerFile);
+                pconfig = YamlConfiguration.loadConfiguration(playerFile);
+                pconfig.set("disableWAILA", "disabled".equals(config.getString("core.default_state", "enabled")));
+                pconfig.set("type", "bossbar");
+                pconfig.save(playerFile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            config = YamlConfiguration.loadConfiguration(playerFile);
+            pconfig = YamlConfiguration.loadConfiguration(playerFile);
         }
-        boolean disableBossBar = config.getBoolean("disableWAILA", false);
+        boolean disableBossBar = pconfig.getBoolean("disableWAILA", false);
         if (!disableBossBar) {
             players.add(event.getPlayer());
         }

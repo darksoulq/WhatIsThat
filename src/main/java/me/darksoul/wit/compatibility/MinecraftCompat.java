@@ -95,8 +95,8 @@ public class MinecraftCompat {
             Info info = new Info();
             float progress = 0;
             if (WITListener.getConfig().getBoolean("break-progress", true)) {
-                if (Events.progressMap.containsKey(block)) {
-                    progress = Events.progressMap.get(block);
+                if (Events.BREAK_PROGRESS.containsKey(block)) {
+                    progress = Events.BREAK_PROGRESS.get(block);
                 }
             }
 
@@ -109,13 +109,7 @@ public class MinecraftCompat {
             for (Function<Block, Component> func : blockPrefix) {
                 info.addPrefix(func.apply(block));
             }
-            if (!((TextComponent) info.getPrefix()).content().isEmpty()) {
-                info.addPrefix(mm.deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
-            }
             info.setName(key);
-            if (!((TextComponent) info.getSuffix()).content().isEmpty()) {
-                info.suffixSplit(mm.deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
-            }
             API.updateBar(info, 1 - progress, player);
             return true;
         }
@@ -127,7 +121,7 @@ public class MinecraftCompat {
                 float health = 0;
                 if (WITListener.getConfig().getBoolean("health-progress", true)) {
                     if (entity instanceof LivingEntity) {
-                        health = (float) Math.max(0f, Math.min(1f, ((LivingEntity) entity).getHealth() /
+                        health = 1 - (float) Math.max(0f, Math.min(1f, ((LivingEntity) entity).getHealth() /
                                 ((LivingEntity) entity).getAttribute(Attribute.MAX_HEALTH).getValue()));
                     }
                 }
@@ -142,13 +136,7 @@ public class MinecraftCompat {
                 for (Function<Entity, Component> func : entityPrefix) {
                     info.addPrefix(func.apply(entity));
                 }
-                if (!((TextComponent) info.getPrefix()).content().isEmpty()) {
-                    info.addPrefix(Component.text(Information.getValuesFile().getString("SPLITTER", " §f| ")));
-                }
                 info.setName(key);
-                if (!((TextComponent) info.getSuffix()).content().isEmpty()) {
-                    info.suffixSplit(Component.text(Information.getValuesFile().getString("SPLITTER", " §f| ")));
-                }
                 API.updateBar(info, 1 - health, player);
                 return true;
             }

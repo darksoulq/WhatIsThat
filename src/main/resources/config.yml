@@ -6,7 +6,8 @@ core:
   blockdistance: 25 # The max distance the plugin will show block bossbar in (in blocks)
   update-delay: 5 # How frequently to update the BossBar, (in ticks)
   vanilla_lang: "en_us" # The language file to use (lang files are vanilla_ + name_here + .json, in this case vanilla_en_us.json
-  mode: "normal" # The mode of the plugin (normal or hidden) (hidden mode will hide the bossbars, is useful when you want to display info somewhere else)
+  mode: "normal" # The mode of the plugin (normal, sneaking, hidden) (hidden mode will hide the bossbars, is useful when you want to display info somewhere else)
+  default_state: "enabled" # Whether bossbars should be "disabled" by default or "enabled".
   bstats: true # whether to enable bsStats or not (recommended to keep on)
 
 blocks:

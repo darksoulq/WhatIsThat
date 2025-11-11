@@ -8,17 +8,30 @@ import me.darksoul.wit.display.BossBarDisplay;
 import me.darksoul.wit.display.WAILAManager;
 import me.darksoul.wit.misc.Events;
 import me.darksoul.wit.misc.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.logging.Logger;
 
 public final class WIT extends JavaPlugin {
     private static WIT INSTANCE;
+    public static Logger LOGGER;
 
     @Override
     public void onEnable() {
         INSTANCE = this;
+        LOGGER = getLogger();
         setupDisplays();
         WITListener.setup();
         Handlers.setup();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getPluginManager().callEvent(new Information.StartTierRegistrationEvent());
+            }
+        }.runTaskLater(this, 10);
 
         if (WITListener.getConfig().getBoolean("core.bstats", true)) {
             int pluginId = 25423;

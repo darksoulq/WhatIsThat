@@ -51,6 +51,7 @@ public class BossBarDisplay extends InfoDisplay {
 
     @Override
     public boolean isEmpty(Player player) {
+        if (!playerBossBars.containsKey(player)) return true;
         return ((TextComponent) playerBossBars.get(player).name()).content().isEmpty();
     }
 }

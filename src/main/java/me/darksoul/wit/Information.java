@@ -1,13 +1,18 @@
 package me.darksoul.wit;
 
+import com.mojang.datafixers.util.Either;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import me.darksoul.wit.misc.ConfigUtils;
 import me.darksoul.wit.misc.ItemGroups;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Instrument;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Tag;
+import net.kyori.adventure.text.object.ObjectContents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
@@ -19,25 +24,183 @@ import org.bukkit.block.data.type.Beehive;
 import org.bukkit.block.data.type.Farmland;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Villager.Profession;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.spawner.Spawner;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class Information {
     private static YamlConfiguration valuesFile = ConfigUtils.loadValuesFIle();
     public static MiniMessage mm = MiniMessage.miniMessage();
-    private static final List<ItemStack> usableHoes = new LinkedList<>();
-    private static final List<ItemStack> usableShovels = new LinkedList<>();
-    private static final List<ItemStack> usableAxes = new LinkedList<>();
-    private static final List<ItemStack> usablePickaxes = new LinkedList<>();
+    private static final List<Function<ItemStack, ToolTier>> TIER_GETTERS = new ArrayList<>();
+    private static final List<Function<Block, ToolTier>> BLOCK_TIER_GETTERS = new ArrayList<>();
+    private static final List<ToolTier> TIERS = new ArrayList<>();
+
+    public static final ToolTier WOODEN_AXE = new ToolTier(new NamespacedKey("default", "wooden_axe"), ItemStack.of(Material.WOODEN_AXE), 0) {};
+    public static final ToolTier WOODEN_PICKAXE = new ToolTier(new NamespacedKey("default", "wooden_pickaxe"), ItemStack.of(Material.WOODEN_PICKAXE), 0) {};
+    public static final ToolTier WOODEN_SHOVEL = new ToolTier(new NamespacedKey("default", "wooden_shovel"), ItemStack.of(Material.WOODEN_SHOVEL), 0) {};
+    public static final ToolTier WOODEN_HOE = new ToolTier(new NamespacedKey("default", "wooden_hoe"), ItemStack.of(Material.WOODEN_HOE), 0) {};
+    public static final ToolTier WOODEN_SWORD = new ToolTier(new NamespacedKey("default", "wooden_sword"), ItemStack.of(Material.WOODEN_SWORD), 0) {};
+
+    public static final ToolTier STONE_AXE = new ToolTier(new NamespacedKey("default", "stone_axe"), ItemStack.of(Material.STONE_AXE), 1) {};
+    public static final ToolTier STONE_PICKAXE = new ToolTier(new NamespacedKey("default", "stone_pickaxe"), ItemStack.of(Material.STONE_PICKAXE), 1) {};
+    public static final ToolTier STONE_SHOVEL = new ToolTier(new NamespacedKey("default", "stone_shovel"), ItemStack.of(Material.STONE_SHOVEL), 1) {};
+    public static final ToolTier STONE_HOE = new ToolTier(new NamespacedKey("default", "stone_hoe"), ItemStack.of(Material.STONE_HOE), 1) {};
+    public static final ToolTier STONE_SWORD = new ToolTier(new NamespacedKey("default", "stone_sword"), ItemStack.of(Material.STONE_SWORD), 1) {};
+
+    public static final ToolTier COPPER_AXE = new ToolTier(new NamespacedKey("default", "copper_axe"), ItemStack.of(Material.COPPER_AXE), 2) {};
+    public static final ToolTier COPPER_PICKAXE = new ToolTier(new NamespacedKey("default", "copper_pickaxe"), ItemStack.of(Material.COPPER_PICKAXE), 2) {};
+    public static final ToolTier COPPER_SHOVEL = new ToolTier(new NamespacedKey("default", "copper_shovel"), ItemStack.of(Material.COPPER_SHOVEL), 2) {};
+    public static final ToolTier COPPER_HOE = new ToolTier(new NamespacedKey("default", "copper_hoe"), ItemStack.of(Material.COPPER_HOE), 2) {};
+    public static final ToolTier COPPER_SWORD = new ToolTier(new NamespacedKey("default", "copper_sword"), ItemStack.of(Material.COPPER_SWORD), 2) {};
+
+    public static final ToolTier GOLD_AXE = new ToolTier(new NamespacedKey("default", "gold_axe"), ItemStack.of(Material.GOLDEN_AXE), 3) {};
+    public static final ToolTier GOLD_PICKAXE = new ToolTier(new NamespacedKey("default", "gold_pickaxe"), ItemStack.of(Material.GOLDEN_PICKAXE), 3) {};
+    public static final ToolTier GOLD_SHOVEL = new ToolTier(new NamespacedKey("default", "gold_shovel"), ItemStack.of(Material.GOLDEN_SHOVEL), 3) {};
+    public static final ToolTier GOLD_HOE = new ToolTier(new NamespacedKey("default", "gold_hoe"), ItemStack.of(Material.GOLDEN_HOE), 3) {};
+    public static final ToolTier GOLD_SWORD = new ToolTier(new NamespacedKey("default", "gold_sword"), ItemStack.of(Material.GOLDEN_SWORD), 3) {};
+
+    public static final ToolTier IRON_AXE = new ToolTier(new NamespacedKey("default", "iron_axe"), ItemStack.of(Material.IRON_AXE), 4) {};
+    public static final ToolTier IRON_PICKAXE = new ToolTier(new NamespacedKey("default", "iron_pickaxe"), ItemStack.of(Material.IRON_PICKAXE), 4) {};
+    public static final ToolTier IRON_SHOVEL = new ToolTier(new NamespacedKey("default", "iron_shovel"), ItemStack.of(Material.IRON_SHOVEL), 4) {};
+    public static final ToolTier IRON_HOE = new ToolTier(new NamespacedKey("default", "iron_hoe"), ItemStack.of(Material.IRON_HOE), 4) {};
+    public static final ToolTier IRON_SWORD = new ToolTier(new NamespacedKey("default", "iron_sword"), ItemStack.of(Material.IRON_SWORD), 4) {};
+
+    public static final ToolTier DIAMOND_AXE = new ToolTier(new NamespacedKey("default", "diamond_axe"), ItemStack.of(Material.DIAMOND_AXE), 5) {};
+    public static final ToolTier DIAMOND_PICKAXE = new ToolTier(new NamespacedKey("default", "diamond_pickaxe"), ItemStack.of(Material.DIAMOND_PICKAXE), 5) {};
+    public static final ToolTier DIAMOND_SHOVEL = new ToolTier(new NamespacedKey("default", "diamond_shovel"), ItemStack.of(Material.DIAMOND_SHOVEL), 5) {};
+    public static final ToolTier DIAMOND_HOE = new ToolTier(new NamespacedKey("default", "diamond_hoe"), ItemStack.of(Material.DIAMOND_HOE), 5) {};
+    public static final ToolTier DIAMOND_SWORD = new ToolTier(new NamespacedKey("default", "diamond_sword"), ItemStack.of(Material.DIAMOND_SWORD), 45) {};
+
+    public static final Function<ItemStack, ToolTier> VANILLA_TIER_GETTER = item -> {
+        String type = "";
+        String material = "";
+
+        Material mat = item.getType();
+        String name = mat.name().toLowerCase();
+
+        if (name.startsWith("wooden_")) material = "wooden";
+        else if (name.startsWith("stone_")) material = "stone";
+        else if (name.startsWith("iron_")) material = "iron";
+        else if (name.startsWith("golden_")) material = "gold";
+        else if (name.startsWith("diamond_")) material = "diamond";
+        else if (name.startsWith("netherite_")) material = "netherite";
+
+        if (name.endsWith("_sword")) type = "sword";
+        else if (name.endsWith("_pickaxe")) type = "pickaxe";
+        else if (name.endsWith("_axe")) type = "axe";
+        else if (name.endsWith("_shovel")) type = "shovel";
+        else if (name.endsWith("_hoe")) type = "hoe";
+
+        if (!type.isEmpty() && !material.isEmpty()) {
+            NamespacedKey key = new NamespacedKey("default", material + "_" + type);
+            for (ToolTier tier : TIERS) {
+                if (tier.id.equals(key)) {
+                    return tier;
+                }
+            }
+        }
+
+        return null;
+    };
+    public static final Function<Block, ToolTier> VANILLA_BLOCK_TIER_GETTER = block -> {
+
+        Either<ResourceKey<net.minecraft.world.level.block.Block>, net.minecraft.world.level.block.Block> either =
+                ((CraftBlockState) block.getState()).getHandle().getBlockHolder().unwrap();
+
+        net.minecraft.world.level.block.Block nmsBlock = null;
+        Optional<ResourceKey<net.minecraft.world.level.block.Block>> nmsKey = either.left();
+        Optional<net.minecraft.world.level.block.Block> nmsOptionalBlock = either.right();
+
+        if (nmsKey.isPresent()) {
+            nmsBlock = BuiltInRegistries.BLOCK.getValue(nmsKey.get());
+        } else if (nmsOptionalBlock.isPresent()) {
+            nmsBlock = nmsOptionalBlock.get();
+        }
+
+        if (nmsBlock == null) return null;
+
+        List<TagKey<net.minecraft.world.level.block.Block>> tags = nmsBlock.defaultBlockState().getTags().toList();
+
+        return getToolTier(tags);
+    };
+    private static @Nullable ToolTier getToolTier(List<TagKey<net.minecraft.world.level.block.Block>> tags) {
+        ToolTier baseTier = null;
+        String preferredType = null;
+
+        if (tags.contains(BlockTags.MINEABLE_WITH_AXE)) preferredType = "axe";
+        else if (tags.contains(BlockTags.MINEABLE_WITH_PICKAXE)) preferredType = "pickaxe";
+        else if (tags.contains(BlockTags.MINEABLE_WITH_SHOVEL)) preferredType = "shovel";
+        else if (tags.contains(BlockTags.MINEABLE_WITH_HOE)) preferredType = "hoe";
+
+
+        if (tags.contains(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
+        else if (tags.contains(BlockTags.INCORRECT_FOR_IRON_TOOL)) baseTier = getTierByType(preferredType, "diamond");
+        else if (tags.contains(BlockTags.INCORRECT_FOR_STONE_TOOL)) baseTier = getTierByType(preferredType, "iron");
+        else if (tags.contains(BlockTags.INCORRECT_FOR_COPPER_TOOL)) baseTier = getTierByType(preferredType, "stone");
+        else if (tags.contains(BlockTags.INCORRECT_FOR_GOLD_TOOL)) baseTier = getTierByType(preferredType, "copper");
+        else if (tags.contains(BlockTags.INCORRECT_FOR_WOODEN_TOOL)) baseTier = getTierByType(preferredType, "gold");
+
+        if (tags.contains(BlockTags.NEEDS_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
+        else if (tags.contains(BlockTags.NEEDS_IRON_TOOL)) baseTier = getTierByType(preferredType, "iron");
+        else if (tags.contains(BlockTags.NEEDS_STONE_TOOL)) baseTier = getTierByType(preferredType, "stone");
+
+        if (baseTier == null && preferredType != null) {
+            baseTier = getTierByType(preferredType, "wooden");
+        }
+        return baseTier;
+    }
+
+    public static abstract class ToolTier {
+        final NamespacedKey id;
+        final ItemStack stack;
+        final int weight;
+
+        public ToolTier(NamespacedKey id, ItemStack stack, int weight) {
+            this.id = id;
+            this.stack = stack;
+            this.weight = weight;
+        }
+
+        public boolean isTier(ItemStack stack) {
+            return this.stack.isSimilar(stack);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof ToolTier toolTier)) return false;
+            return Objects.equals(id, toolTier.id);
+        }
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(id);
+        }
+    }
+    public static class StartTierRegistrationEvent extends Event {
+        public static HandlerList HANDLERS = new HandlerList();
+
+        @Override
+        public @NotNull HandlerList getHandlers() {
+            return HANDLERS;
+        }
+
+        public static HandlerList getHandlerList() {
+            return HANDLERS;
+        }
+    }
+
     // Blocks
     public static Component default_getRedstoneInfo(Block block) {
         boolean isPowerSource = block.isBlockIndirectlyPowered();
@@ -220,84 +383,19 @@ public class Information {
         return Component.text("");
     }
     public static Component default_getToolToBreak(Block block, Player player) {
-        usableHoes.clear();
-        usableShovels.clear();
-        usableAxes.clear();
-        usablePickaxes.clear();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
-        ItemStack canBreak = null;
-        new LinkedList<>(ItemGroups.HOES)
-                .stream()
-                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
-                .forEach(usableHoes::add);
-        new LinkedList<>(ItemGroups.SHOVELS)
-                .stream()
-                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
-                .forEach(usableShovels::add);
-        new LinkedList<>(ItemGroups.AXES)
-                .stream()
-                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
-                .forEach(usableAxes::add);
-        new LinkedList<>(ItemGroups.PICKAXES)
-                .stream()
-                .filter(item -> canToolBreakBlock(item.getType(), block.getType()))
-                .forEach(usablePickaxes::add);
+        ToolTier tier = getTier(heldItem);
+        ToolTier reqTier = getRequiredTier(block);
 
-        for (ItemStack hoe : usableHoes) {
-                if (heldItem == hoe) {
-                    canBreak = heldItem;
-                    break;
-                }
-            }
-        if (canBreak == null) {
-            for (ItemStack shovel : usableShovels) {
-                if (heldItem == shovel) {
-                    canBreak = heldItem;
-                    break;
-                }
-            }
-        }
-        if (canBreak == null) {
-            for (ItemStack axe : usableAxes) {
-                if (heldItem == axe) {
-                    canBreak = heldItem;
-                    break;
-                }
-            }
-        }
-        if (canBreak == null) {
-            for (ItemStack pickaxe : usablePickaxes) {
-                if (heldItem == pickaxe) {
-                    canBreak = heldItem;
-                    break;
-                }
-            }
+        if (reqTier == null) {
+            return Component.empty();
         }
 
-        Map<String, Boolean> emojiMap = new LinkedHashMap<>();
-        if (!usableHoes.isEmpty()) {
-            emojiMap.put(getEmojiForTool(Material.WOODEN_HOE), canToolBreakBlock(heldItem.getType(), block.getType()));
-        }
-        if (!usableShovels.isEmpty()) {
-            emojiMap.put(getEmojiForTool(Material.WOODEN_SHOVEL), canToolBreakBlock(heldItem.getType(), block.getType()));
-        }
-        if (!usableAxes.isEmpty()) {
-            emojiMap.put(getEmojiForTool(Material.WOODEN_AXE), canToolBreakBlock(heldItem.getType(), block.getType()));
-        }
-        if (!usablePickaxes.isEmpty()) {
-            emojiMap.put(getEmojiForTool(Material.WOODEN_PICKAXE), canToolBreakBlock(heldItem.getType(), block.getType()));
-        }
+        Key baseKey = reqTier.stack.getDataOrDefault(DataComponentTypes.ITEM_MODEL,
+                new NamespacedKey("minecraft", reqTier.stack.getType().name().toLowerCase(Locale.ROOT)));
+        NamespacedKey key = new NamespacedKey(baseKey.namespace(), "item/" + baseKey.value());
 
-        StringBuilder toReturn = new StringBuilder();
-        for (String emoji : emojiMap.keySet()) {
-            if (emojiMap.get(emoji)) {
-                toReturn.append("<green>").append(emoji).append("</green>");
-            } else {
-                toReturn.append("<red>").append(emoji).append("</red>");
-            }
-        }
-
-        return mm.deserialize(toReturn.toString());
+        return Component.object(ObjectContents.sprite(new NamespacedKey("minecraft", "blocks"), key));
     }
     // Entities
     public static Component default_getEntityAgeLeft(Entity entity) {
@@ -427,60 +525,49 @@ public class Information {
         }
         return "";
     }
-    public static ToolType getPrefferedTool(Material mat) {
-        if (Tag.MINEABLE_AXE.isTagged(mat)) {
-            return ToolType.AXE;
-        } else if (Tag.MINEABLE_PICKAXE.isTagged(mat)) {
-            return ToolType.PICKAXE;
-        } else if (Tag.MINEABLE_SHOVEL.isTagged(mat)) {
-            return ToolType.SHOVEL;
-        } else if (Tag.MINEABLE_HOE.isTagged(mat)) {
-            return ToolType.HOE;
-        } else {
+
+    public static ToolTier getTier(ItemStack stack) {
+        for (Function<ItemStack, ToolTier> getter : TIER_GETTERS) {
+            ToolTier tier = getter.apply(stack);
+            if (tier != null) {
+                return tier;
+            }
+        }
+
+        return null;
+    }
+    public static ToolTier getRequiredTier(Block block) {
+        for (Function<Block, ToolTier> getter : BLOCK_TIER_GETTERS) {
+            ToolTier tier = getter.apply(block);
+            if (tier != null) {
+                return tier;
+            }
+        }
+
+        return null;
+    }
+    private static ToolTier getTierByType(String type, String material) {
+        if (type == null || material == null) {
             return null;
         }
-    }
-    public static boolean canToolBreakBlock(Material iMat, Material bMat) {
-        ToolType prefferedTool = getPrefferedTool(bMat);
 
-        switch (prefferedTool) {
-            case AXE -> {
-                return iMat.name().contains("AXE");
-            }
-            case PICKAXE -> {
-                return iMat.name().contains("PICKAXE");
-            }
-            case SHOVEL -> {
-                return iMat.name().contains("SHOVEL");
-            }
-            case HOE -> {
-                return iMat.name().contains("HOE");
-            }
-            case null, default -> {
-                return false;
+        for (ToolTier tier : TIERS) {
+            String key = tier.id.getKey();
+            if (key.equals(material + "_" + type)) {
+                return tier;
             }
         }
-    }
-    public static String getEmojiForTool(@Nullable Material mat) {
-        if (mat != null) {
-            if (mat.name().endsWith("_AXE")) {
-                return valuesFile.getString("tool_emoji.AXE", "\uD83E\uDE93");
-            } else if (mat.name().endsWith("_PICKAXE")) {
-                return valuesFile.getString("tool_emoji.PICKAXE", "⛏");
-            } else if (mat.name().endsWith("_SHOVEL")) {
-                return valuesFile.getString("tool_emoji.SHOVEL", "\uD83E\uDD44");
-            } else if (mat.name().endsWith("_HOE")) {
-                return valuesFile.getString("tool_emoji.HOE", "\uD83D\uDD2A");
-            }
-        }
-        return "";
+        return null;
     }
 
-    public enum ToolType {
-        AXE,
-        PICKAXE,
-        SHOVEL,
-        HOE,
+    public static void addRequiredTierGetter(Function<Block, ToolTier> getter) {
+        BLOCK_TIER_GETTERS.add(getter);
+    }
+    public static void addTierGetter(Function<ItemStack, ToolTier> getter) {
+        TIER_GETTERS.add(getter);
+    }
+    public static void addTier(ToolTier tier) {
+        TIERS.add(tier);
     }
 
     public static void reloadValuesFile() {

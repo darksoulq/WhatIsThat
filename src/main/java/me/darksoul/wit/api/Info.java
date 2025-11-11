@@ -1,6 +1,9 @@
 package me.darksoul.wit.api;
 
+import me.darksoul.wit.Information;
+import me.darksoul.wit.WITListener;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +12,8 @@ import java.util.List;
  * This class is used for supplying Prefix, Suffix and Name (of entity/block) to relevant functions
  */
 public class Info {
-    private List<Component> prefix = new ArrayList<>();
-    private List<Component> suffix = new ArrayList<>();
+    private final List<Component> prefix = new ArrayList<>();
+    private final List<Component> suffix = new ArrayList<>();
     private Component name;
 
     public void addPrefix(Component information) {
@@ -18,9 +21,6 @@ public class Info {
     }
     public void addSuffix(Component information) {
         suffix.add(information);
-    }
-    public void suffixSplit(Component splitter) {
-        suffix.addFirst(splitter);
     }
     public void setName(Component name) {
         this.name = name;
@@ -44,14 +44,25 @@ public class Info {
         return name;
     }
     public Component getCombined() {
-        Component combined = Component.text("");
-        for (Component p : prefix) {
-            combined = combined.append(p);
+        Component combined = Component.empty();
+
+        if (!prefix.isEmpty()) {
+            for (Component p : prefix) {
+                combined = combined.append(p);
+            }
+            combined = combined.append(MiniMessage.miniMessage().deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
         }
-        combined = combined.append(name);
-        for (Component s : suffix) {
-            combined = combined.append(s);
+        if (name != null) {
+            combined = combined.append(name);
         }
+        if (!suffix.isEmpty()) {
+            combined = combined.append(MiniMessage.miniMessage().deserialize(Information.getValuesFile().getString("SPLITTER", " §f| ")));
+            for (Component s : suffix) {
+                combined = combined.append(s);
+            }
+        }
+
         return combined;
     }
+
 }
