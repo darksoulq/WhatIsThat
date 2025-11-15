@@ -2,6 +2,7 @@ package com.github.darksoulq.wit.api;
 
 import com.github.darksoulq.wit.Information;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.ArrayList;
@@ -16,11 +17,23 @@ public class Info {
     private Component name;
 
     public void addPrefix(Component information) {
-        prefix.add(information);
+        if (!(information instanceof TextComponent text)) {
+            prefix.add(information);
+            return;
+        }
+        if (!text.content().isEmpty())
+            prefix.add(information);
     }
+
     public void addSuffix(Component information) {
-        suffix.add(information);
+        if (!(information instanceof TextComponent text)) {
+            suffix.add(information);
+            return;
+        }
+        if (!text.content().isEmpty())
+            suffix.add(information);
     }
+
     public void setName(Component name) {
         this.name = name;
     }
