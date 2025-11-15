@@ -1,6 +1,6 @@
-package me.darksoul.wit.display;
+package com.github.darksoulq.wit.display;
 
-import me.darksoul.wit.WITListener;
+import com.github.darksoulq.wit.WITListener;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 

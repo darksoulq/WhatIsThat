@@ -1,7 +1,6 @@
-package me.darksoul.wit.misc;
+package com.github.darksoulq.wit.misc;
 
-import me.darksoul.wit.WIT;
-import me.darksoul.wit.WITListener;
+import com.github.darksoulq.wit.WITListener;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;

@@ -1,7 +1,6 @@
-package me.darksoul.wit.command;
+package com.github.darksoulq.wit.command;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,20 +8,17 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import me.darksoul.wit.Handlers;
-import me.darksoul.wit.Information;
-import me.darksoul.wit.WIT;
-import me.darksoul.wit.WITListener;
-import me.darksoul.wit.api.API;
-import me.darksoul.wit.display.InfoDisplay;
-import me.darksoul.wit.display.WAILAManager;
-import me.darksoul.wit.misc.ItemGroups;
+import com.github.darksoulq.wit.Handlers;
+import com.github.darksoulq.wit.Information;
+import com.github.darksoulq.wit.WITListener;
+import com.github.darksoulq.wit.api.API;
+import com.github.darksoulq.wit.display.WAILAManager;
+import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,13 +1,12 @@
-package me.darksoul.wit.compatibility;
+package com.github.darksoulq.wit.compatibility;
 
-import me.darksoul.wit.Information;
-import me.darksoul.wit.WITListener;
-import me.darksoul.wit.api.API;
-import me.darksoul.wit.api.Info;
-import me.darksoul.wit.misc.Events;
-import me.darksoul.wit.misc.ItemGroups;
+import com.github.darksoulq.wit.Information;
+import com.github.darksoulq.wit.WITListener;
+import com.github.darksoulq.wit.api.API;
+import com.github.darksoulq.wit.api.Info;
+import com.github.darksoulq.wit.misc.Events;
+import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -18,8 +17,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import static me.darksoul.wit.Information.mm;
 
 public class MinecraftCompat {
     // Blocks

@@ -1,15 +1,11 @@
-package me.darksoul.wit;
+package com.github.darksoulq.wit;
 
-import me.darksoul.wit.compatibility.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 

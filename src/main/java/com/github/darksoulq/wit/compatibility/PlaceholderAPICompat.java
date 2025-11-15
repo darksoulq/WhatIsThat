@@ -1,8 +1,8 @@
-package me.darksoul.wit.compatibility;
+package com.github.darksoulq.wit.compatibility;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.darksoul.wit.WITListener;
-import me.darksoul.wit.WIT;
+import com.github.darksoulq.wit.WITListener;
+import com.github.darksoulq.wit.WIT;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;

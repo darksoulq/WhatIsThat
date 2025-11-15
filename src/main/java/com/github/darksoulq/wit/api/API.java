@@ -1,10 +1,9 @@
-package me.darksoul.wit.api;
+package com.github.darksoulq.wit.api;
 
-import me.darksoul.wit.Handlers;
-import me.darksoul.wit.WITListener;
-import me.darksoul.wit.display.InfoDisplay;
-import me.darksoul.wit.display.WAILAManager;
-import net.kyori.adventure.text.Component;
+import com.github.darksoulq.wit.Handlers;
+import com.github.darksoulq.wit.WITListener;
+import com.github.darksoulq.wit.display.InfoDisplay;
+import com.github.darksoulq.wit.display.WAILAManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

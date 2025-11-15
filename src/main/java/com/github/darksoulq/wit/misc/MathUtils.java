@@ -1,4 +1,4 @@
-package me.darksoul.wit.misc;
+package com.github.darksoulq.wit.misc;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;

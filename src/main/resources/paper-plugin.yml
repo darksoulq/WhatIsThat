@@ -1,6 +1,6 @@
 name: WIT
-version: '1.6.0'
-main: me.darksoul.wit.WIT
+version: '1.6.1'
+main: com.github.darksoulq.wit.WIT
 api-version: '1.21'
 authors:
   - DarkSoul

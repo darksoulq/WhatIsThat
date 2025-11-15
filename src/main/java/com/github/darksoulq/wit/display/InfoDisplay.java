@@ -1,4 +1,4 @@
-package me.darksoul.wit.display;
+package com.github.darksoulq.wit.display;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;

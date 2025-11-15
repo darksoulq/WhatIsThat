@@ -1,11 +1,11 @@
-package me.darksoul.wit;
+package com.github.darksoulq.wit;
 
-import me.darksoul.wit.api.Info;
-import me.darksoul.wit.compatibility.MinecraftCompat;
-import me.darksoul.wit.display.WAILAManager;
-import me.darksoul.wit.misc.ConfigUtils;
-import me.darksoul.wit.misc.ItemGroups;
-import me.darksoul.wit.misc.MathUtils;
+import com.github.darksoulq.wit.api.Info;
+import com.github.darksoulq.wit.compatibility.MinecraftCompat;
+import com.github.darksoulq.wit.display.WAILAManager;
+import com.github.darksoulq.wit.misc.ConfigUtils;
+import com.github.darksoulq.wit.misc.ItemGroups;
+import com.github.darksoulq.wit.misc.MathUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;

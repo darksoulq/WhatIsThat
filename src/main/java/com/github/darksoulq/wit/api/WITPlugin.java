@@ -1,4 +1,4 @@
-package me.darksoul.wit.api;
+package com.github.darksoulq.wit.api;
 
 public interface WITPlugin {
     void onWITReload();

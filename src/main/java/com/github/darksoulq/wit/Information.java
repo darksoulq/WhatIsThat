@@ -1,9 +1,9 @@
-package me.darksoul.wit;
+package com.github.darksoulq.wit;
 
 import com.mojang.datafixers.util.Either;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import me.darksoul.wit.misc.ConfigUtils;
-import me.darksoul.wit.misc.ItemGroups;
+import com.github.darksoulq.wit.misc.ConfigUtils;
+import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

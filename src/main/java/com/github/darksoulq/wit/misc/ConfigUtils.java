@@ -1,6 +1,6 @@
-package me.darksoul.wit.misc;
+package com.github.darksoulq.wit.misc;
 
-import me.darksoul.wit.WIT;
+import com.github.darksoulq.wit.WIT;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

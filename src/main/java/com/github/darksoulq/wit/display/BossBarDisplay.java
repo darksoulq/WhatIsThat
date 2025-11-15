@@ -1,6 +1,5 @@
-package me.darksoul.wit.display;
+package com.github.darksoulq.wit.display;
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

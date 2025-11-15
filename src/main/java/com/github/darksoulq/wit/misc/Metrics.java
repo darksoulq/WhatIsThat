@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package me.darksoul.wit.misc;
+package com.github.darksoulq.wit.misc;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

@@ -1,8 +1,8 @@
-package me.darksoul.wit.misc;
+package com.github.darksoulq.wit.misc;
 
 import io.papermc.paper.event.block.BlockBreakProgressUpdateEvent;
-import me.darksoul.wit.Information;
-import me.darksoul.wit.api.API;
+import com.github.darksoulq.wit.Information;
+import com.github.darksoulq.wit.api.API;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

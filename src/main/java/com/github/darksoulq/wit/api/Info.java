@@ -1,7 +1,6 @@
-package me.darksoul.wit.api;
+package com.github.darksoulq.wit.api;
 
-import me.darksoul.wit.Information;
-import me.darksoul.wit.WITListener;
+import com.github.darksoulq.wit.Information;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
