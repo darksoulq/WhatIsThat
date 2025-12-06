@@ -31,8 +31,8 @@ minecraft:
 percent_color:
   25: "<red>"
   50: "<yellow>"
-  75: "<light_green>"
-  100: "<green>"
+  75: "<green>"
+  100: "<dark_green>"
   default: "<gray>"
 
 effect_emoji:

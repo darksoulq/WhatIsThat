@@ -126,6 +126,9 @@ public class MinecraftCompat {
                 if (entity.customName() != null) {
                     key = entity.customName();
                 }
+                if (entity instanceof Player pl) {
+                    key = pl.displayName();
+                }
                 Info info = new Info();
                 for (Function<Entity, Component> func : entitySuffix) {
                     info.addSuffix(func.apply(entity));

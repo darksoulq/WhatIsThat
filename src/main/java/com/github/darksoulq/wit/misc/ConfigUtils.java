@@ -1,6 +1,9 @@
 package com.github.darksoulq.wit.misc;
 
 import com.github.darksoulq.wit.WIT;
+import com.github.darksoulq.wit.WITListener;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -46,7 +49,14 @@ public class ConfigUtils {
      * @return YamlConfiguration for the config file
      */
     public static YamlConfiguration loadConfig() {
-        return YamlConfiguration.loadConfiguration(CONFIG_FILE);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+        WITListener.DISABLED_WORLDS.clear();
+        config.getStringList("world-blacklist").forEach(wn -> {
+            World world = Bukkit.getWorld(wn);
+            if (world == null) return;
+            WITListener.DISABLED_WORLDS.add(world);
+        });
+        return config;
     }
     public static YamlConfiguration loadValuesFIle() {
         return YamlConfiguration.loadConfiguration(VALUES_FILE);

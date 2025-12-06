@@ -7,62 +7,63 @@ import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import com.github.darksoulq.wit.misc.MathUtils;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 
 
 public class WITListener implements Listener {
-    private static YamlConfiguration config = ConfigUtils.loadConfig();
-    private static final File PREF_FOLDER = new File(WIT.instance().getDataFolder(), "cache/players");
-    private static final List<Player> players = new ArrayList<>();
-    private static final Map<Player, Info> lookingAt = new HashMap<>();
-    private static int entityDistance = config.getInt("core.entitydistance", 25);
-    private static int blockDistance = config.getInt("core.blockdistance", 25);
-    private static boolean isHidden = false;
+
+    public static final File PREF_FOLDER = new File(WIT.instance().getDataFolder(), "cache/players");
+    private static final List<UUID> PLAYERS = new ArrayList<>();
+    public static final List<World> DISABLED_WORLDS = new ArrayList<>();
+    private static final Map<Player, Info> LOOKING_AT = new HashMap<>();
+    private static YamlConfiguration CONFIG = ConfigUtils.loadConfig();
+    private static int ENTITY_DISTANCE = CONFIG.getInt("core.entitydistance", 25);
+    private static int BLOCK_DISTANCE = CONFIG.getInt("core.blockdistance", 25);
+    public static boolean IS_HIDDEN = false;
 
     public WITListener() {
         if (!PREF_FOLDER.exists()) {
             PREF_FOLDER.mkdirs();
         }
-        for (Player player : players) {
+        for (UUID playerID : PLAYERS) {
+            Player player = Bukkit.getPlayer(playerID);
+            if (player == null) continue;
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (isHidden) return;
-                for (Player player : players) {
-                    if ("sneaking".equals(config.getString("core.mode", "normal")) && !player.isSneaking()) return;
+                for (UUID playerID : PLAYERS) {
+                    Player player = Bukkit.getPlayer(playerID);
+                    if (player == null) continue;
+                    if ("sneaking".equals(CONFIG.getString("core.mode", "normal")) && !player.isSneaking()) return;
                     updateWAILA(player);
                 }
             }
-        }.runTaskTimer(WIT.instance(), 0, config.getInt("core.update-delay", 5));
+        }.runTaskTimer(WIT.instance(), 0, CONFIG.getInt("core.update-delay", 5));
     }
     private void updateWAILA(Player player) {
-        Block block = MathUtils.getLookingAtBlock(player, blockDistance);
-        Entity entity = MathUtils.isLookingAtEntity(player, entityDistance);
+        Block block = MathUtils.getLookingAtBlock(player, BLOCK_DISTANCE);
+        Entity entity = MathUtils.isLookingAtEntity(player, ENTITY_DISTANCE);
         if (entity != null) {
             for (BiFunction<Entity, Player, Boolean> eHandler : Handlers.getEntityHandlers()) {
                 if (eHandler.apply(entity, player)) {
                     return;
                 }
             }
-            if (config.getBoolean("entities.enabled", true)) {
+            if (CONFIG.getBoolean("entities.enabled", true)) {
                 if (MinecraftCompat.handleEntity(entity, player)) {
                     return;
                 }
@@ -74,63 +75,36 @@ public class WITListener implements Listener {
                     return;
                 }
             }
-            if (config.getBoolean("blocks.enabled", true) && !ItemGroups.getBlACKLISTED_BLOCKS().contains(block.getType())) {
+            if (CONFIG.getBoolean("blocks.enabled", true) && !ItemGroups.getBlACKLISTED_BLOCKS().contains(block.getType())) {
                 if (MinecraftCompat.handleBlock(block, player)) {
                     return;
                 }
             }
         }
         WAILAManager.setBar(player, Component.text(""));
-        lookingAt.put(player, null);
+        LOOKING_AT.put(player, null);
 
         if (WAILAManager.getDisplays().get(getPlayerConfig(player).getString("type")).isEmpty(player)) {
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
         }
     }
     public static void setup() {
-        config = ConfigUtils.loadConfig();
-        if (config.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
-            isHidden = true;
+        CONFIG = ConfigUtils.loadConfig();
+        if (CONFIG.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
+            IS_HIDDEN = true;
         } else {
-            isHidden = false;
+            IS_HIDDEN = false;
             WIT.instance().getLogger().warning("Invalid mode in config.yml, defaulting to normal");
         }
-        entityDistance = config.getInt("core.entitydistance", 25);
-        blockDistance = config.getInt("core.blockdistance", 25);
+        ENTITY_DISTANCE = CONFIG.getInt("core.entitydistance", 25);
+        BLOCK_DISTANCE = CONFIG.getInt("core.blockdistance", 25);
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        WAILAManager.removeBar(event.getPlayer(), getPlayerConfig(event.getPlayer()).getString("type", "bossbar"));
-        players.remove(event.getPlayer());
-    }
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        File playerFile = new File(PREF_FOLDER + "/" + event.getPlayer().getName() + ".yml");
-        YamlConfiguration pconfig = new YamlConfiguration();
-        if (!playerFile.exists()) {
-            try {
-                playerFile.createNewFile();
-                pconfig = YamlConfiguration.loadConfiguration(playerFile);
-                pconfig.set("disableWAILA", "disabled".equals(config.getString("core.default_state", "enabled")));
-                pconfig.set("type", "bossbar");
-                pconfig.save(playerFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            pconfig = YamlConfiguration.loadConfiguration(playerFile);
-        }
-        boolean disableBossBar = pconfig.getBoolean("disableWAILA", false);
-        if (!disableBossBar) {
-            players.add(event.getPlayer());
-        }
-    }
     public static void removePlayer(Player player) {
-        players.remove(player);
+        PLAYERS.remove(player.getUniqueId());
     }
     public static void addPlayer(Player player) {
-        players.add(player);
+        PLAYERS.add(player.getUniqueId());
     }
     public static File getPrefFolder() {
         return PREF_FOLDER;
@@ -139,16 +113,16 @@ public class WITListener implements Listener {
         return YamlConfiguration.loadConfiguration(new File(PREF_FOLDER + "/" + player.getName() + ".yml"));
     }
     public static boolean isHidden() {
-        return isHidden;
+        return IS_HIDDEN;
     }
     public static Info getLookingAt(Player player) {
-        return lookingAt.get(player);
+        return LOOKING_AT.get(player);
     }
     public static void setLookingAt(Player player, Info value) {
-        lookingAt.put(player, value);
+        LOOKING_AT.put(player, value);
     }
 
     public static YamlConfiguration getConfig() {
-        return config;
+        return CONFIG;
     }
 }

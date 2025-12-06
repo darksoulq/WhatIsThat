@@ -3,7 +3,9 @@ package com.github.darksoulq.wit.compatibility;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.WIT;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -35,17 +37,29 @@ public class PlaceholderAPICompat {
                     return null;
                 }
                 if (identifier.equalsIgnoreCase("looking_at")) {
-                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getName()).content();
+                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getName());
                 } else if (identifier.equalsIgnoreCase("looking_at_prefix")) {
-                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getPrefix()).content();
+                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getPrefix());
                 } else if (identifier.equalsIgnoreCase("looking_at_suffix")) {
-                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getSuffix()).content();
+                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getSuffix());
                 } else if (identifier.equalsIgnoreCase("looking_at_info")) {
-                    return ((TextComponent) WITListener.getLookingAt(player.getPlayer()).getCombined()).content();
+                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getCombined());
+                } else if (identifier.equalsIgnoreCase("info_type")) {
+                    return WITListener.getPlayerConfig(player.getPlayer()).getString("type");
+                } else if (identifier.equalsIgnoreCase("info_state")) {
+                    return "false".equalsIgnoreCase(WITListener.getPlayerConfig(player.getPlayer()).getString("disableWAILA")) ? "enabled" : "disabled";
                 }
                 return null;
             }
         }.register();
+    }
+
+    private String getContentFromComponent(Component component) {
+        if (component instanceof TextComponent text) {
+            return text.content();
+        }
+
+        return Component.text().append(component).build().content();
     }
     public static void checkWITPAPI() {
         Plugin pl = WIT.instance().getServer().getPluginManager().getPlugin("PlaceholderAPI");

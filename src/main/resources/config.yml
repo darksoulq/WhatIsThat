@@ -33,6 +33,10 @@ entities:
   tntinfo: true # Show tnt time till explosion
   health-progress: true # BossBar only as of now, changes the progress of the bossBar according to health of entity
 
+# the Worlds in which WIT is disabled.
+world-blacklist:
+  # - world_the_end
+
 # The MATERIAL of the blocks to ignore, https://jd.papermc.io/paper/1.21.5/org/bukkit/material/package-summary.html
 block-blacklist:
   - BARRIER
