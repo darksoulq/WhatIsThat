@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ConfigUtils {
     private static final File LANG_FOLDER = new File(WIT.instance().getDataFolder(), "lang");
@@ -60,5 +62,10 @@ public class ConfigUtils {
     }
     public static YamlConfiguration loadValuesFIle() {
         return YamlConfiguration.loadConfiguration(VALUES_FILE);
+    }
+    public static String toProperCase(String enumName) {
+        return Arrays.stream(enumName.split("_"))
+                .map(s -> s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase())
+                .collect(Collectors.joining(" "));
     }
 }

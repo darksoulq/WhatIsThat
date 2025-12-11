@@ -348,10 +348,17 @@ public class Information {
     public static Component default_getSpawnerInfo(Block block) {
         if (block.getType() == Material.SPAWNER) {
             Spawner state = (Spawner) block.getState();
-            EntityType entity = state.getSpawnedType();
-            if (entity != null) {
+            EntitySnapshot snapshot = state.getSpawnedEntity();
+            if (snapshot != null) {
+                Entity entity = snapshot.createEntity(new Location(Bukkit.getWorlds().getFirst(), 0, 0, 0));
+                Component key = Component.translatable("entity.minecraft." + entity.getType().toString().toLowerCase());
+                if (entity.customName() != null) {
+                    key = entity.customName();
+                }
+                entity.remove();
+                assert key != null;
                 return mm.deserialize(valuesFile.getString("minecraft.spawner_info", " §a\uD83E\uDDDF {spawningEntity}")
-                        .replace("{spawningEntity}", entity.name()));
+                        .replace("{spawningEntity}", mm.serialize(key)));
             }
         }
         return Component.text("");
@@ -363,8 +370,8 @@ public class Information {
             Instrument instrument = data.getInstrument();
 
             return mm.deserialize(valuesFile.getString("minecraft.noteblock_info", " §6🎹 {instrument}: {tone} {octave}")
-                    .replace("{instrument}", instrument.name())
-                    .replace("{tone}", note.getTone().name())
+                    .replace("{instrument}", ConfigUtils.toProperCase(instrument.name()))
+                    .replace("{tone}", ConfigUtils.toProperCase(note.getTone().name()))
                     .replace("{octave}", String.valueOf(note.getOctave())));
         }
         return Component.text("");

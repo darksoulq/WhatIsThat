@@ -142,8 +142,10 @@ public class WCommands {
             return;
         }
 
-        WITListener.addPlayer(player);
-        WAILAManager.setBar(player, Component.text(""));
+        if (!WITListener.DISABLED_WORLDS.contains(player.getWorld())) {
+            WITListener.addPlayer(player);
+            WAILAManager.setBar(player, Component.text(""));
+        }
         player.sendMessage("WAILA bar enabled.");
     }
 }
