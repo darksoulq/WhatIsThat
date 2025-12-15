@@ -37,13 +37,21 @@ public class PlaceholderAPICompat {
                     return null;
                 }
                 if (identifier.equalsIgnoreCase("looking_at")) {
-                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getName());
+                    Component name = WITListener.getLookingAt(player.getPlayer()).getName();
+                    if (name == null) return "";
+                    return MiniMessage.miniMessage().serialize(name);
                 } else if (identifier.equalsIgnoreCase("looking_at_prefix")) {
-                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getPrefix());
+                    Component prefix = WITListener.getLookingAt(player.getPlayer()).getPrefix();
+                    if (prefix == null) return "";
+                    return MiniMessage.miniMessage().serialize(prefix);
                 } else if (identifier.equalsIgnoreCase("looking_at_suffix")) {
-                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getSuffix());
+                    Component suffix = WITListener.getLookingAt(player.getPlayer()).getSuffix();
+                    if (suffix == null) return "";;
+                    return MiniMessage.miniMessage().serialize(suffix);
                 } else if (identifier.equalsIgnoreCase("looking_at_info")) {
-                    return MiniMessage.miniMessage().serialize(WITListener.getLookingAt(player.getPlayer()).getCombined());
+                    Component combined = WITListener.getLookingAt(player.getPlayer()).getCombined();
+                    if (combined == null) return "";
+                    return MiniMessage.miniMessage().serialize(combined);
                 } else if (identifier.equalsIgnoreCase("info_type")) {
                     return WITListener.getPlayerConfig(player.getPlayer()).getString("type");
                 } else if (identifier.equalsIgnoreCase("info_state")) {
