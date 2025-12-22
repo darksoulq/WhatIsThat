@@ -1,5 +1,6 @@
 package com.github.darksoulq.wit.compatibility;
 
+import com.github.darksoulq.wit.api.Info;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.WIT;
@@ -34,30 +35,30 @@ public class PlaceholderAPICompat {
             @Override
             public String onRequest(OfflinePlayer player, @NotNull String identifier) {
                 if (player.getPlayer() == null) {
-                    return null;
+                    return "";
                 }
                 if (identifier.equalsIgnoreCase("looking_at")) {
-                    Component name = WITListener.getLookingAt(player.getPlayer()).getName();
+                    Info name = WITListener.getLookingAt(player.getPlayer());
                     if (name == null) return "";
-                    return MiniMessage.miniMessage().serialize(name);
+                    return MiniMessage.miniMessage().serialize(name.getName());
                 } else if (identifier.equalsIgnoreCase("looking_at_prefix")) {
-                    Component prefix = WITListener.getLookingAt(player.getPlayer()).getPrefix();
+                    Info prefix = WITListener.getLookingAt(player.getPlayer());
                     if (prefix == null) return "";
-                    return MiniMessage.miniMessage().serialize(prefix);
+                    return MiniMessage.miniMessage().serialize(prefix.getPrefix());
                 } else if (identifier.equalsIgnoreCase("looking_at_suffix")) {
-                    Component suffix = WITListener.getLookingAt(player.getPlayer()).getSuffix();
+                    Info suffix = WITListener.getLookingAt(player.getPlayer());
                     if (suffix == null) return "";;
-                    return MiniMessage.miniMessage().serialize(suffix);
+                    return MiniMessage.miniMessage().serialize(suffix.getSuffix());
                 } else if (identifier.equalsIgnoreCase("looking_at_info")) {
-                    Component combined = WITListener.getLookingAt(player.getPlayer()).getCombined();
+                    Info combined = WITListener.getLookingAt(player.getPlayer());
                     if (combined == null) return "";
-                    return MiniMessage.miniMessage().serialize(combined);
+                    return MiniMessage.miniMessage().serialize(combined.getCombined());
                 } else if (identifier.equalsIgnoreCase("info_type")) {
                     return WITListener.getPlayerConfig(player.getPlayer()).getString("type");
                 } else if (identifier.equalsIgnoreCase("info_state")) {
                     return "false".equalsIgnoreCase(WITListener.getPlayerConfig(player.getPlayer()).getString("disableWAILA")) ? "enabled" : "disabled";
                 }
-                return null;
+                return "";
             }
         }.register();
     }

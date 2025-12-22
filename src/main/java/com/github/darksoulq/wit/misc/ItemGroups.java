@@ -149,7 +149,7 @@ public class ItemGroups {
     public static List<Material> getContainers() {
         return CONTAINERS;
     }
-    public static List<Material> getBlACKLISTED_BLOCKS() {
+    public static List<Material> getBlacklistedBlocks() {
         return BlACKLISTED_BLOCKS;
     }
 

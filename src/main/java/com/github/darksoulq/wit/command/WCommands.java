@@ -124,6 +124,7 @@ public class WCommands {
 
         WITListener.removePlayer(player);
         WAILAManager.removeBar(player, WITListener.getPlayerConfig(player).getString("type"));
+        WITListener.setLookingAt(player, null);
         player.sendMessage("WAILA bar disabled.");
     }
 

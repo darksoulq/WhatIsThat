@@ -63,7 +63,7 @@ public class WITListener implements Listener {
                     return;
                 }
             }
-            if (CONFIG.getBoolean("entities.enabled", true)) {
+            if (CONFIG.getBoolean("entities.enabled", true) && !ItemGroups.getBlacklistedEntities().contains(entity.getType())) {
                 if (MinecraftCompat.handleEntity(entity, player)) {
                     return;
                 }
@@ -75,7 +75,7 @@ public class WITListener implements Listener {
                     return;
                 }
             }
-            if (CONFIG.getBoolean("blocks.enabled", true) && !ItemGroups.getBlACKLISTED_BLOCKS().contains(block.getType())) {
+            if (CONFIG.getBoolean("blocks.enabled", true) && !ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
                 if (MinecraftCompat.handleBlock(block, player)) {
                     return;
                 }

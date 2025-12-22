@@ -5,8 +5,6 @@ import com.github.darksoulq.wit.display.WAILAManager;
 import io.papermc.paper.event.block.BlockBreakProgressUpdateEvent;
 import com.github.darksoulq.wit.Information;
 import com.github.darksoulq.wit.api.API;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -32,7 +30,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onBlockBreakProgress(BlockBreakProgressUpdateEvent event) {
-        if (ItemGroups.getBlACKLISTED_BLOCKS().contains(event.getBlock().getType())) return;
+        if (ItemGroups.getBlacklistedBlocks().contains(event.getBlock().getType())) return;
         BREAK_PROGRESS.put(event.getBlock(), event.getProgress());
         if (event.getProgress() == 1f || event.getProgress() == 0f) {
             BREAK_PROGRESS.remove(event.getBlock());

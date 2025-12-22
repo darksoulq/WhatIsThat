@@ -10,7 +10,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -87,7 +86,7 @@ public class MinecraftCompat {
     }
 
     public static boolean handleBlock(Block block, Player player) {
-        if (!ItemGroups.getBlACKLISTED_BLOCKS().contains(block.getType())) {
+        if (!ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
             Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
             Info info = new Info();
             float progress = 0;
@@ -113,34 +112,29 @@ public class MinecraftCompat {
         return false;
     }
     public static boolean handleEntity(Entity entity, Player player) {
-        for (EntityType not : ItemGroups.getBlacklistedEntities()) {
-            if (entity.getType() != not) {
-                float health = 0;
-                if (WITListener.getConfig().getBoolean("health-progress", true)) {
-                    if (entity instanceof LivingEntity) {
-                        health = 1 - (float) Math.max(0f, Math.min(1f, ((LivingEntity) entity).getHealth() /
-                                ((LivingEntity) entity).getAttribute(Attribute.MAX_HEALTH).getValue()));
-                    }
-                }
-                Component key = Component.translatable("entity.minecraft." + entity.getType().toString().toLowerCase());
-                if (entity.customName() != null) {
-                    key = entity.customName();
-                }
-                if (entity instanceof Player pl) {
-                    key = pl.displayName();
-                }
-                Info info = new Info();
-                for (Function<Entity, Component> func : entitySuffix) {
-                    info.addSuffix(func.apply(entity));
-                }
-                for (Function<Entity, Component> func : entityPrefix) {
-                    info.addPrefix(func.apply(entity));
-                }
-                info.setName(key);
-                API.updateBar(info, 1 - health, player);
-                return true;
+        float health = 0;
+        if (WITListener.getConfig().getBoolean("health-progress", true)) {
+            if (entity instanceof LivingEntity) {
+                health = 1 - (float) Math.max(0f, Math.min(1f, ((LivingEntity) entity).getHealth() /
+                    ((LivingEntity) entity).getAttribute(Attribute.MAX_HEALTH).getValue()));
             }
         }
-        return false;
+        Component key = Component.translatable("entity.minecraft." + entity.getType().toString().toLowerCase());
+        if (entity.customName() != null) {
+            key = entity.customName();
+        }
+        if (entity instanceof Player pl) {
+            key = pl.displayName();
+        }
+        Info info = new Info();
+        for (Function<Entity, Component> func : entitySuffix) {
+            info.addSuffix(func.apply(entity));
+        }
+        for (Function<Entity, Component> func : entityPrefix) {
+            info.addPrefix(func.apply(entity));
+        }
+        info.setName(key);
+        API.updateBar(info, 1 - health, player);
+        return true;
     }
 }
