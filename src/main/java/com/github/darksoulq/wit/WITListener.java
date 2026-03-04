@@ -96,8 +96,11 @@ public class WITListener implements Listener {
 
     public static void setup() {
         CONFIG = ConfigUtils.loadConfig();
-        if (CONFIG.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
+        String mode = CONFIG.getString("core.mode", "normal");
+        if (mode.equalsIgnoreCase("hidden")) {
             IS_HIDDEN = true;
+        } else if (mode.equalsIgnoreCase("normal") || mode.equalsIgnoreCase("sneaking")) {
+            IS_HIDDEN = false;
         } else {
             IS_HIDDEN = false;
             WIT.instance().getLogger().warning("Invalid mode in config.yml, defaulting to normal");
