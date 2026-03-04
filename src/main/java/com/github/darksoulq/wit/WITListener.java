@@ -58,6 +58,9 @@ public class WITListener implements Listener {
     }
 
     private void updateWAILA(Player player) {
+        if (DISABLED_WORLDS.contains(player.getWorld().getName())) {
+            return;
+        }
         Block block = MathUtils.getLookingAtBlock(player, BLOCK_DISTANCE);
         Entity entity = MathUtils.isLookingAtEntity(player, ENTITY_DISTANCE);
         if (entity != null) {

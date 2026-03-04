@@ -12,6 +12,7 @@ import com.github.darksoulq.wit.Handlers;
 import com.github.darksoulq.wit.Information;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.API;
+import com.github.darksoulq.wit.compatibility.MinecraftCompat;
 import com.github.darksoulq.wit.display.WAILAManager;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
@@ -80,6 +81,7 @@ public class WCommands {
 
     private static int reloadExecutor(CommandContext<CommandSourceStack> ctx) {
         WITListener.setup();
+        MinecraftCompat.setup();
         Information.reloadValuesFile();
         Handlers.setup();
         ItemGroups.reload();
