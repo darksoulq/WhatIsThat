@@ -29,19 +29,16 @@ public class WCommands {
         return Commands.literal("wit")
                 .then(Commands.literal("toggle")
                         .requires(sender -> sender.getSender().hasPermission("wit.default"))
-                        .executes(WCommands::toggleExecutor)
-                )
+                        .executes(WCommands::toggleExecutor))
                 .then(Commands.literal("type")
                         .then(Commands.argument("type", StringArgumentType.string())
                                 .requires(sender -> sender.getSender().hasPermission("wit.default"))
                                 .suggests(WCommands::changeTypeSuggester)
-                                .executes(WCommands::changeTypeExecutor))
-                )
+                                .executes(WCommands::changeTypeExecutor)))
                 .then(Commands.literal("reload")
                         .requires(sender -> sender.getSender().hasPermission("wit.reload"))
                         .executes(WCommands::reloadExecutor));
     }
-
 
     private static int toggleExecutor(CommandContext<CommandSourceStack> ctx) {
         CommandSender sender = ctx.getSource().getSender();
@@ -76,7 +73,7 @@ public class WCommands {
     }
 
     private static CompletableFuture<Suggestions> changeTypeSuggester(final CommandContext<CommandSourceStack> ctx,
-                                                                      final SuggestionsBuilder builder) {
+            final SuggestionsBuilder builder) {
         WAILAManager.getDisplays().keySet().forEach(builder::suggest);
         return builder.buildFuture();
     }
@@ -143,7 +140,7 @@ public class WCommands {
             return;
         }
 
-        if (!WITListener.DISABLED_WORLDS.contains(player.getWorld())) {
+        if (!WITListener.DISABLED_WORLDS.contains(player.getWorld().getName())) {
             WITListener.addPlayer(player);
             WAILAManager.setBar(player, Component.text(""));
         }

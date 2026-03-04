@@ -30,7 +30,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onBlockBreakProgress(BlockBreakProgressUpdateEvent event) {
-        if (ItemGroups.getBlacklistedBlocks().contains(event.getBlock().getType())) return;
+        if (ItemGroups.getBlacklistedBlocks().contains(event.getBlock().getType()))
+            return;
         BREAK_PROGRESS.put(event.getBlock(), event.getProgress());
         if (event.getProgress() == 1f || event.getProgress() == 0f) {
             BREAK_PROGRESS.remove(event.getBlock());
@@ -39,18 +40,20 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
-        if (DISABLED_WORLDS.contains(event.getPlayer().getWorld())) {
+        if (DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
             WAILAManager.removeBar(event.getPlayer(), getPlayerConfig(event.getPlayer()).getString("type", "bossbar"));
             WITListener.removePlayer(event.getPlayer());
         } else {
             WITListener.addPlayer(event.getPlayer());
         }
     }
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         WAILAManager.removeBar(event.getPlayer(), getPlayerConfig(event.getPlayer()).getString("type", "bossbar"));
         WITListener.removePlayer(event.getPlayer());
     }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         File playerFile = new File(PREF_FOLDER + "/" + event.getPlayer().getName() + ".yml");
@@ -59,7 +62,8 @@ public class Events implements Listener {
             try {
                 playerFile.createNewFile();
                 pconfig = YamlConfiguration.loadConfiguration(playerFile);
-                pconfig.set("disableWAILA", "disabled".equals(WITListener.getConfig().getString("core.default_state", "enabled")));
+                pconfig.set("disableWAILA",
+                        "disabled".equals(WITListener.getConfig().getString("core.default_state", "enabled")));
                 pconfig.set("type", "bossbar");
                 pconfig.save(playerFile);
             } catch (Exception e) {
@@ -69,7 +73,7 @@ public class Events implements Listener {
             pconfig = YamlConfiguration.loadConfiguration(playerFile);
         }
         boolean disableBossBar = pconfig.getBoolean("disableWAILA", false);
-        if (!disableBossBar && !DISABLED_WORLDS.contains(event.getPlayer().getWorld())) {
+        if (!disableBossBar && !DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
             WITListener.addPlayer(event.getPlayer());
         }
     }

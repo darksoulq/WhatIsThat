@@ -20,12 +20,11 @@ import java.io.File;
 import java.util.*;
 import java.util.function.BiFunction;
 
-
 public class WITListener implements Listener {
 
     public static final File PREF_FOLDER = new File(WIT.instance().getDataFolder(), "cache/players");
     private static final List<UUID> PLAYERS = new ArrayList<>();
-    public static final List<World> DISABLED_WORLDS = new ArrayList<>();
+    public static final List<String> DISABLED_WORLDS = new ArrayList<>();
     private static final Map<Player, Info> LOOKING_AT = new HashMap<>();
     private static YamlConfiguration CONFIG = ConfigUtils.loadConfig();
     private static int ENTITY_DISTANCE = CONFIG.getInt("core.entitydistance", 25);
@@ -38,7 +37,8 @@ public class WITListener implements Listener {
         }
         for (UUID playerID : PLAYERS) {
             Player player = Bukkit.getPlayer(playerID);
-            if (player == null) continue;
+            if (player == null)
+                continue;
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
         }
 
@@ -47,13 +47,16 @@ public class WITListener implements Listener {
             public void run() {
                 for (UUID playerID : PLAYERS) {
                     Player player = Bukkit.getPlayer(playerID);
-                    if (player == null) continue;
-                    if ("sneaking".equals(CONFIG.getString("core.mode", "normal")) && !player.isSneaking()) return;
+                    if (player == null)
+                        continue;
+                    if ("sneaking".equals(CONFIG.getString("core.mode", "normal")) && !player.isSneaking())
+                        return;
                     updateWAILA(player);
                 }
             }
         }.runTaskTimer(WIT.instance(), 0, CONFIG.getInt("core.update-delay", 5));
     }
+
     private void updateWAILA(Player player) {
         Block block = MathUtils.getLookingAtBlock(player, BLOCK_DISTANCE);
         Entity entity = MathUtils.isLookingAtEntity(player, ENTITY_DISTANCE);
@@ -63,7 +66,8 @@ public class WITListener implements Listener {
                     return;
                 }
             }
-            if (CONFIG.getBoolean("entities.enabled", true) && !ItemGroups.getBlacklistedEntities().contains(entity.getType())) {
+            if (CONFIG.getBoolean("entities.enabled", true)
+                    && !ItemGroups.getBlacklistedEntities().contains(entity.getType())) {
                 if (MinecraftCompat.handleEntity(entity, player)) {
                     return;
                 }
@@ -75,7 +79,8 @@ public class WITListener implements Listener {
                     return;
                 }
             }
-            if (CONFIG.getBoolean("blocks.enabled", true) && !ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
+            if (CONFIG.getBoolean("blocks.enabled", true)
+                    && !ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
                 if (MinecraftCompat.handleBlock(block, player)) {
                     return;
                 }
@@ -88,6 +93,7 @@ public class WITListener implements Listener {
             WAILAManager.removeBar(player, getPlayerConfig(player).getString("type"));
         }
     }
+
     public static void setup() {
         CONFIG = ConfigUtils.loadConfig();
         if (CONFIG.getString("core.mode", "normal").equalsIgnoreCase("hidden")) {
@@ -103,21 +109,27 @@ public class WITListener implements Listener {
     public static void removePlayer(Player player) {
         PLAYERS.remove(player.getUniqueId());
     }
+
     public static void addPlayer(Player player) {
         PLAYERS.add(player.getUniqueId());
     }
+
     public static File getPrefFolder() {
         return PREF_FOLDER;
     }
+
     public static YamlConfiguration getPlayerConfig(Player player) {
         return YamlConfiguration.loadConfiguration(new File(PREF_FOLDER + "/" + player.getName() + ".yml"));
     }
+
     public static boolean isHidden() {
         return IS_HIDDEN;
     }
+
     public static Info getLookingAt(Player player) {
         return LOOKING_AT.get(player);
     }
+
     public static void setLookingAt(Player player, Info value) {
         LOOKING_AT.put(player, value);
     }
