@@ -12,6 +12,7 @@ import com.github.darksoulq.wit.Handlers;
 import com.github.darksoulq.wit.Information;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.API;
+import com.github.darksoulq.wit.compatibility.MinecraftCompat;
 import com.github.darksoulq.wit.display.WAILAManager;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
@@ -29,19 +30,16 @@ public class WCommands {
         return Commands.literal("wit")
                 .then(Commands.literal("toggle")
                         .requires(sender -> sender.getSender().hasPermission("wit.default"))
-                        .executes(WCommands::toggleExecutor)
-                )
+                        .executes(WCommands::toggleExecutor))
                 .then(Commands.literal("type")
                         .then(Commands.argument("type", StringArgumentType.string())
                                 .requires(sender -> sender.getSender().hasPermission("wit.default"))
                                 .suggests(WCommands::changeTypeSuggester)
-                                .executes(WCommands::changeTypeExecutor))
-                )
+                                .executes(WCommands::changeTypeExecutor)))
                 .then(Commands.literal("reload")
                         .requires(sender -> sender.getSender().hasPermission("wit.reload"))
                         .executes(WCommands::reloadExecutor));
     }
-
 
     private static int toggleExecutor(CommandContext<CommandSourceStack> ctx) {
         CommandSender sender = ctx.getSource().getSender();
@@ -76,13 +74,14 @@ public class WCommands {
     }
 
     private static CompletableFuture<Suggestions> changeTypeSuggester(final CommandContext<CommandSourceStack> ctx,
-                                                                      final SuggestionsBuilder builder) {
+            final SuggestionsBuilder builder) {
         WAILAManager.getDisplays().keySet().forEach(builder::suggest);
         return builder.buildFuture();
     }
 
     private static int reloadExecutor(CommandContext<CommandSourceStack> ctx) {
         WITListener.setup();
+        MinecraftCompat.setup();
         Information.reloadValuesFile();
         Handlers.setup();
         ItemGroups.reload();
@@ -143,7 +142,7 @@ public class WCommands {
             return;
         }
 
-        if (!WITListener.DISABLED_WORLDS.contains(player.getWorld())) {
+        if (!WITListener.DISABLED_WORLDS.contains(player.getWorld().getName())) {
             WITListener.addPlayer(player);
             WAILAManager.setBar(player, Component.text(""));
         }

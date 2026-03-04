@@ -25,8 +25,10 @@ public class ConfigUtils {
         copyTemplate("config.yml", CONFIG_FILE);
         copyTemplate("values.yml", VALUES_FILE);
     }
+
     /**
-     * Copies a template file from the plugin's resources to disk if it doesn't exist already.
+     * Copies a template file from the plugin's resources to disk if it doesn't
+     * exist already.
      *
      * @param resourceName The name of the resource template file.
      * @param destination  The destination file on disk.
@@ -54,18 +56,18 @@ public class ConfigUtils {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
         WITListener.DISABLED_WORLDS.clear();
         config.getStringList("world-blacklist").forEach(wn -> {
-            World world = Bukkit.getWorld(wn);
-            if (world == null) return;
-            WITListener.DISABLED_WORLDS.add(world);
+            WITListener.DISABLED_WORLDS.add(wn);
         });
         return config;
     }
+
     public static YamlConfiguration loadValuesFIle() {
         return YamlConfiguration.loadConfiguration(VALUES_FILE);
     }
+
     public static String toProperCase(String enumName) {
         return Arrays.stream(enumName.split("_"))
-                .map(s -> s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase())
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
 }
