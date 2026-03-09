@@ -202,7 +202,7 @@ public class Information {
     }
 
     // Blocks
-    public static Component default_getRedstoneInfo(Block block) {
+    public static Component defaultGetRedstoneInfo(Block block) {
         boolean isPowerSource = block.isBlockIndirectlyPowered();
         int power = block.getBlockPower();
         //RedStone components
@@ -229,7 +229,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getCropAge(Block block) {
+    public static Component defaultGetCropAge(Block block) {
         if (ItemGroups.getCrops().contains(block.getType())) {
             BlockData data = block.getBlockData();
             int age = ((Ageable) data).getAge();
@@ -265,7 +265,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getHoneyLevel(Block block) {
+    public static Component defaultGetHoneyLevel(Block block) {
         if (ItemGroups.getHoneyProducers().contains(block.getType())) {
             BlockData data = block.getBlockData();
             if (data instanceof Beehive) {
@@ -284,7 +284,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getRemainingSmeltTime(Block block) {
+    public static Component defaultGetRemainingSmeltTime(Block block) {
         if (ItemGroups.getFurnaces().contains(block.getType())) {
             BlockState state = block.getState();
             InventoryHolder ih = (InventoryHolder) state;
@@ -305,7 +305,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getTotalItemsInContainer(Block block) {
+    public static Component defaultGetTotalItemsInContainer(Block block) {
         if (ItemGroups.getContainers().contains(block.getType())) {
             BlockState state = block.getState();
             InventoryHolder ih = (InventoryHolder) state;
@@ -324,7 +324,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getBeaconEffect(Block block) {
+    public static Component defaultGetBeaconEffect(Block block) {
         if (block.getType() == Material.BEACON) {
             Beacon state = (Beacon) block.getState();
             PotionEffect primaryEffect = state.getPrimaryEffect();
@@ -345,7 +345,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getSpawnerInfo(Block block) {
+    public static Component defaultGetSpawnerInfo(Block block) {
         if (block.getType() == Material.SPAWNER) {
             Spawner state = (Spawner) block.getState();
             EntitySnapshot snapshot = state.getSpawnedEntity();
@@ -363,7 +363,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getNoteblockInfo(Block block) {
+    public static Component defaultGetNoteblockInfo(Block block) {
         if (block.getType() == Material.NOTE_BLOCK) {
             NoteBlock data = (NoteBlock) block.getBlockData();
             Note note = data.getNote();
@@ -376,7 +376,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getFarmlandHydration(Block block) {
+    public static Component defaultGetFarmlandHydration(Block block) {
         if (block.getType() == Material.FARMLAND) {
             Farmland data = (Farmland) block.getBlockData();
             int moisture = data.getMoisture();
@@ -389,7 +389,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getToolToBreak(Block block, Player player) {
+    public static Component defaultGetToolToBreak(Block block, Player player) {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
         ToolTier tier = getTier(heldItem);
         ToolTier reqTier = getRequiredTier(block);
@@ -402,10 +402,10 @@ public class Information {
                 new NamespacedKey("minecraft", reqTier.stack.getType().name().toLowerCase(Locale.ROOT)));
         NamespacedKey key = new NamespacedKey(baseKey.namespace(), "item/" + baseKey.value());
 
-        return Component.object(ObjectContents.sprite(new NamespacedKey("minecraft", "blocks"), key));
+        return Component.object(ObjectContents.sprite(new NamespacedKey("minecraft", "items"), key));
     }
     // Entities
-    public static Component default_getEntityAgeLeft(Entity entity) {
+    public static Component defaultGetEntityAgeLeft(Entity entity) {
         if (entity instanceof org.bukkit.entity.Ageable data) {
             int age = data.getAge();
             if (age < 0) {
@@ -416,7 +416,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getEntityOwner(Entity entity) {
+    public static Component defaultGetEntityOwner(Entity entity) {
         if (ItemGroups.getPets().contains(entity.getType())) {
             Tameable data = (Tameable) entity;
             AnimalTamer owner = data.getOwner();
@@ -427,7 +427,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getIsLeashed(Entity entity) {
+    public static Component defaultGetIsLeashed(Entity entity) {
         if (entity instanceof LivingEntity lEntity) {
             if (lEntity.isLeashed()) {
                 return mm.deserialize(valuesFile.getString("minecraft.entity_is_leashed", " §2\uD83D\uDD17"));
@@ -435,7 +435,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getEntityHealth(Entity entity) {
+    public static Component defaultGetEntityHealth(Entity entity) {
         if (entity instanceof LivingEntity data) {
             int health = (int) data.getHealth();
             int maxHealth = (int) Objects.requireNonNull(data.getAttribute(Attribute.MAX_HEALTH)).getValue();
@@ -446,7 +446,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getVillagerProfession(Entity entity) {
+    public static Component defaultGetVillagerProfession(Entity entity) {
         if (entity.getType() == EntityType.VILLAGER) {
             Villager villager = (Villager) entity;
             Profession profession = villager.getProfession();
@@ -456,7 +456,7 @@ public class Information {
         }
         return Component.text("");
     }
-    public static Component default_getTNTFuseTime(Entity entity) {
+    public static Component defaultGetTNTFuseTime(Entity entity) {
         if (entity.getType() == EntityType.TNT) {
             float tntFuseTime = ((TNTPrimed) entity).getFuseTicks() / 20.0f;
             return mm.deserialize(valuesFile.getString("minecraft.tnt_fuse_time", " §4\uD83D\uDCA3{fuseTime}")

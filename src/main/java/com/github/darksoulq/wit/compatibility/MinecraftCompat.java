@@ -34,50 +34,50 @@ public class MinecraftCompat {
         // Blocks
 
         if (WITListener.getConfig().getBoolean("blocks.containerinfo", true)) {
-            blockPrefix.add(Information::default_getTotalItemsInContainer);
+            blockPrefix.add(Information::defaultGetTotalItemsInContainer);
         }
         if (WITListener.getConfig().getBoolean("blocks.redstoneinfo", true)) {
-            blockSuffix.add(Information::default_getRedstoneInfo);
+            blockSuffix.add(Information::defaultGetRedstoneInfo);
         }
         if (WITListener.getConfig().getBoolean("blocks.cropinfo", true)) {
-            blockSuffix.add(Information::default_getCropAge);
+            blockSuffix.add(Information::defaultGetCropAge);
         }
         if (WITListener.getConfig().getBoolean("blocks.beehiveinfo", true)) {
-            blockSuffix.add(Information::default_getHoneyLevel);
+            blockSuffix.add(Information::defaultGetHoneyLevel);
         }
         if (WITListener.getConfig().getBoolean("blocks.smeltinfo", true)) {
-            blockSuffix.add(Information::default_getRemainingSmeltTime);
+            blockSuffix.add(Information::defaultGetRemainingSmeltTime);
         }
         if (WITListener.getConfig().getBoolean("blocks.beaconinfo", true)) {
-            blockSuffix.add(Information::default_getBeaconEffect);
+            blockSuffix.add(Information::defaultGetBeaconEffect);
         }
         if (WITListener.getConfig().getBoolean("blocks.spawnerinfo", true)) {
-            blockSuffix.add(Information::default_getSpawnerInfo);
+            blockSuffix.add(Information::defaultGetSpawnerInfo);
         }
         if (WITListener.getConfig().getBoolean("blocks.noteblockinfo", true)) {
-            blockSuffix.add(Information::default_getNoteblockInfo);
+            blockSuffix.add(Information::defaultGetNoteblockInfo);
         }
         if (WITListener.getConfig().getBoolean("blocks.farmlandinfo", true)) {
-            blockSuffix.add(Information::default_getFarmlandHydration);
+            blockSuffix.add(Information::defaultGetFarmlandHydration);
         }
         // Entities
         if (WITListener.getConfig().getBoolean("entities.ownerinfo", true)) {
-            entityPrefix.add(Information::default_getEntityOwner);
+            entityPrefix.add(Information::defaultGetEntityOwner);
         }
         if (WITListener.getConfig().getBoolean("entities.leashinfo", true)) {
-            entityPrefix.add(Information::default_getIsLeashed);
+            entityPrefix.add(Information::defaultGetIsLeashed);
         }
         if (WITListener.getConfig().getBoolean("entities.ageinfo", true)) {
-            entitySuffix.add(Information::default_getEntityAgeLeft);
+            entitySuffix.add(Information::defaultGetEntityAgeLeft);
         }
         if (WITListener.getConfig().getBoolean("entities.healthinfo", true)) {
-            entitySuffix.add(Information::default_getEntityHealth);
+            entitySuffix.add(Information::defaultGetEntityHealth);
         }
         if (WITListener.getConfig().getBoolean("entities.professioninfo", true)) {
-            entitySuffix.add(Information::default_getVillagerProfession);
+            entitySuffix.add(Information::defaultGetVillagerProfession);
         }
         if (WITListener.getConfig().getBoolean("entities.tntinfo", true)) {
-            entitySuffix.add(Information::default_getTNTFuseTime);
+            entitySuffix.add(Information::defaultGetTNTFuseTime);
         }
     }
 
@@ -100,7 +100,7 @@ public class MinecraftCompat {
                  info.addSuffix(func.apply(block));
             }
             if (WITListener.getConfig().getBoolean("block.toolinfo", true)) {
-                 info.addPrefix(Information.default_getToolToBreak(block, player));
+                 info.addPrefix(Information.defaultGetToolToBreak(block, player));
             }
             for (Function<Block, Component> func : blockPrefix) {
                 info.addPrefix(func.apply(block));
