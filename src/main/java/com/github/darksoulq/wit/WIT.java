@@ -1,6 +1,7 @@
 package com.github.darksoulq.wit;
 
 import com.github.darksoulq.wit.compatibility.PlaceholderAPICompat;
+import com.github.darksoulq.wit.misc.ItemGroups;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import com.github.darksoulq.wit.command.WCommands;
 import com.github.darksoulq.wit.display.ActionBarDisplay;

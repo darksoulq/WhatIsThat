@@ -14,14 +14,10 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class ConfigUtils {
-    private static final File LANG_FOLDER = new File(WIT.instance().getDataFolder(), "lang");
-    private static final File VALUES_FILE = new File(LANG_FOLDER, "values.yml");
+    private static final File VALUES_FILE = new File(WIT.instance().getDataFolder(), "values.yml");
     private static final File CONFIG_FILE = new File(WIT.instance().getDataFolder(), "config.yml");
 
     static {
-        if (!LANG_FOLDER.exists()) {
-            LANG_FOLDER.mkdirs();
-        }
         copyTemplate("config.yml", CONFIG_FILE);
         copyTemplate("values.yml", VALUES_FILE);
     }

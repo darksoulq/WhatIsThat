@@ -79,6 +79,10 @@ public class MinecraftCompat {
         if (WITListener.getConfig().getBoolean("entities.tntinfo", true)) {
             entitySuffix.add(Information::defaultGetTNTFuseTime);
         }
+        if (WITListener.getConfig().getBoolean("entities.horseinfo", true)) {
+            entitySuffix.add(Information::defaultGetHorseSpeed);
+            entitySuffix.add(Information::defaultGetHorseJumpStrength);
+        }
     }
 
     static {

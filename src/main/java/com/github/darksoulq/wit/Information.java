@@ -7,6 +7,7 @@ import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.object.ObjectContents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -14,12 +15,15 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.type.Beehive;
 import org.bukkit.block.data.type.Farmland;
 import org.bukkit.block.data.type.NoteBlock;
@@ -34,7 +38,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.spawner.Spawner;
+import org.checkerframework.checker.units.qual.K;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -203,126 +209,117 @@ public class Information {
 
     // Blocks
     public static Component defaultGetRedstoneInfo(Block block) {
-        boolean isPowerSource = block.isBlockIndirectlyPowered();
-        int power = block.getBlockPower();
-        //RedStone components
-        if (ItemGroups.getRedstoneComponents().contains(block.getType())) {
-            if (power > 0 || isPowerSource) {
-                return mm.deserialize(valuesFile.getString("minecraft.redstone_power_level",
-                                " <red>§c●</red> {power}")
-                        .replace("{power}", String.valueOf(power)));
-            } else if (power == 0) {
-                return mm.deserialize(valuesFile.getString("minecraft.redstone_power_off", " <gray>●</gray>"));
-            }
-        }
-        // Redstone Block
         if (block.getType() == Material.REDSTONE_BLOCK) {
             return mm.deserialize(valuesFile.getString("minecraft.redstone_power_on", " <red>●</red>"));
         }
-        // Redstone Providers
-        if (ItemGroups.getRedstoneProviders().contains(block.getType())) {
-            if (power > 0 || isPowerSource) {
-                return mm.deserialize(valuesFile.getString("minecraft.redstone_power_on", " <red>●</red>"));
-            } else if (power == 0) {
-                return mm.deserialize(valuesFile.getString("minecraft.redstone_power_on", " <gray>●</gray>"));
-            }
+
+        BlockData data = block.getBlockData();
+        int power = 0;
+        boolean powered = false;
+
+        if (data instanceof AnaloguePowerable a) {
+            power = a.getPower();
+        } else if (data instanceof Powerable p) {
+            powered = p.isPowered();
+        } else {
+            power = block.getBlockPower();
+            powered = block.isBlockPowered();
+            if (power == 0 && !powered) return Component.empty();
         }
-        return Component.text("");
+
+        if (power > 0) {
+            return mm.deserialize(
+                valuesFile.getString("minecraft.redstone_power_level", " <red>●</red> <power>"),
+                Placeholder.unparsed("power", String.valueOf(power))
+            );
+        }
+
+        return mm.deserialize(valuesFile.getString(
+            powered ? "minecraft.redstone_power_on" : "minecraft.redstone_power_off",
+            powered ? " <red>●</red>" : " <gray>●</gray>"
+        ));
     }
     public static Component defaultGetCropAge(Block block) {
-        if (ItemGroups.getCrops().contains(block.getType())) {
-            BlockData data = block.getBlockData();
-            int age = ((Ageable) data).getAge();
-            int maxAge = ((Ageable) data).getMaximumAge();
+        BlockData data = block.getBlockData();
+        if (!(data instanceof Ageable ageable)) return Component.empty();
 
-            int percentage = (age / maxAge) * 100;
+        int age = ageable.getAge();
+        int maxAge = ageable.getMaximumAge();
+        int percent = (int) ((age / (double) maxAge) * 100);
 
-            if (percentage >= 0 && percentage <= 25) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_1", " {colorByPercent}\uD83C\uDF31 {age}/{maxAge}{colorByPercentEnd}")
-                        .replace("{colorByPercent}", getColorForPercent((float) percentage))
-                        .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge))
-                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
-            } else if (percentage > 25 && percentage <= 50) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_2", " {colorByPercent}\uD83C\uDF3F {age}/{maxAge}{colorByPercentEnd}")
-                        .replace("{colorByPercent}", getColorForPercent((float) percentage))
-                        .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge))
-                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
-            } else if (percentage > 50 && percentage <= 75) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_3", " {colorByPercent}\uD83C\uDF3D {age}/{maxAge}{colorByPercentEnd}")
-                        .replace("{colorByPercent}", getColorForPercent((float) percentage))
-                        .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge))
-                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
-            } else if (percentage > 75) {
-                return mm.deserialize(valuesFile.getString("minecraft.crop_age_4", " {colorByPercent}\uD83C\uDF3D {age}/{maxAge}{colorByPercentEnd}")
-                        .replace("{colorByPercent}", getColorForPercent((float) percentage))
-                        .replace("{age}", String.valueOf(age))
-                        .replace("{maxAge}", String.valueOf(maxAge))
-                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
-            }
-        }
-        return Component.text("");
+        int stage = Math.min(3, percent / 25) + 1;
+
+        return mm.deserialize(
+            valuesFile.getString("minecraft.crop_age_" + stage,
+                " <color_by_percent>\uD83C\uDF31 <age>/<max_age><color_by_percent_end>"
+            ),
+            Placeholder.parsed("color_by_percent", getColorForPercent(percent)),
+            Placeholder.parsed("color_by_percent_end", getColorForPercentEnd(percent)),
+            Placeholder.unparsed("age", String.valueOf(age)),
+            Placeholder.unparsed("max_age", String.valueOf(maxAge))
+        );
     }
     public static Component defaultGetHoneyLevel(Block block) {
-        if (ItemGroups.getHoneyProducers().contains(block.getType())) {
-            BlockData data = block.getBlockData();
-            if (data instanceof Beehive) {
-                int honeyLevel = ((Beehive) data).getHoneyLevel();
-                int maxHoneyLevel = ((Beehive) data).getMaximumHoneyLevel();
+        BlockData data = block.getBlockData();
+        if (!(data instanceof Beehive hive)) return Component.empty();
 
-                double percentage = (honeyLevel / (double) maxHoneyLevel) * 100;
+        int honey = hive.getHoneyLevel();
+        int max = hive.getMaximumHoneyLevel();
+        float percent = (float) (honey / (double) max * 100);
 
-                return mm.deserialize(valuesFile.getString("minecraft.honey_level",
-                                " {colorByPercent}\uD83D\uDC1D {honeyLevel}/{honeyMaxLevel}{colorByPercentEnd}")
-                        .replace("{colorByPercent}", getColorForPercent((float) percentage))
-                        .replace("{honeyLevel}", String.valueOf(honeyLevel))
-                        .replace("{honeyMaxLevel}", String.valueOf(maxHoneyLevel))
-                        .replace("{colorByPercentEnd}", getColorForPercentEnd((float) percentage)));
-            }
-        }
-        return Component.text("");
+        return mm.deserialize(
+            valuesFile.getString("minecraft.honey_level",
+                " <honey_icon> <color_by_percent><honey_level>/<honey_max_level><color_by_percent_end>"
+            ),
+            Placeholder.component("honey_icon", getSprite(Atlases.ITEMS.key, "item/honeycomb")),
+            Placeholder.parsed("color_by_percent", getColorForPercent(percent)),
+            Placeholder.parsed("color_by_percent_end", getColorForPercentEnd(percent)),
+            Placeholder.unparsed("honey_level", String.valueOf(honey)),
+            Placeholder.unparsed("honey_max_level", String.valueOf(max))
+        );
     }
     public static Component defaultGetRemainingSmeltTime(Block block) {
-        if (ItemGroups.getFurnaces().contains(block.getType())) {
-            BlockState state = block.getState();
-            InventoryHolder ih = (InventoryHolder) state;
-            FurnaceInventory inventory = (FurnaceInventory) ih.getInventory();
+        BlockState state = block.getState();
+        if (!(state instanceof Furnace furnace)) return Component.empty();
 
-            int cookTime = ((Furnace) state).getCookTime();
-            int cookTimeTotal = ((Furnace) state).getCookTimeTotal();
+        FurnaceInventory inv = furnace.getInventory();
+        if (inv.getSmelting() == null || furnace.getCookTime() == 0) return Component.empty();
 
-            int ticksRemaining = cookTimeTotal - cookTime;
-            int secondsRemaining = ticksRemaining / 20;
-            float percentage = ((float) cookTime / cookTimeTotal) * 100;
-            if (inventory.getSmelting() != null && cookTime != 0) {
-                return mm.deserialize(valuesFile.getString("minecraft.smelt_time", " {colorByPercent}⌛ {secondsRemaining}s{colorByPercentEnd}")
-                        .replace("{colorByPercent}", getColorForPercent(percentage))
-                        .replace("{secondsRemaining}", String.valueOf(secondsRemaining))
-                        .replace("{colorByPercentEnd}", getColorForPercentEnd(percentage)));
-                }
-        }
-        return Component.text("");
+        int cookTime = furnace.getCookTime();
+        int cookTotal = furnace.getCookTimeTotal();
+
+        int secondsRemaining = (cookTotal - cookTime) / 20;
+        float percent = cookTime / (float) cookTotal * 100;
+
+        return mm.deserialize(
+            valuesFile.getString("minecraft.smelt_time", " <color_by_percent>⌛ <seconds_remaining>s<color_by_percent_end>"),
+            Placeholder.parsed("color_by_percent", getColorForPercent(percent)),
+            Placeholder.parsed("color_by_percent_end", getColorForPercentEnd(percent)),
+            Placeholder.unparsed("seconds_remaining", String.valueOf(secondsRemaining))
+        );
     }
     public static Component defaultGetTotalItemsInContainer(Block block) {
-        if (ItemGroups.getContainers().contains(block.getType())) {
-            BlockState state = block.getState();
-            InventoryHolder ih = (InventoryHolder) state;
-            Inventory inventory = ih.getInventory();
-
-            int totalItems = 0;
-
-            for (ItemStack item : inventory.getContents()) {
-                if (item != null) {
-                        totalItems += item.getAmount();
-                }
-            }
-
-            return mm.deserialize(valuesFile.getString("minecraft.items_in_container", "§6\uD83D\uDCE6 {items}§f ")
-                    .replace("{items}", String.valueOf(totalItems)));
+        if (!ItemGroups.getContainers().contains(block.getType())) {
+            return Component.text("");
         }
-        return Component.text("");
+
+        BlockState state = block.getState();
+        if (!(state instanceof InventoryHolder holder)) {
+            return Component.text("g");
+        }
+
+        int totalItems = 0;
+
+        for (ItemStack item : holder.getInventory().getContents()) {
+            if (item != null && item.getType() != Material.AIR) {
+                totalItems += item.getAmount();
+            }
+        }
+
+        return mm.deserialize(
+            valuesFile.getString("minecraft.items_in_container", "<gold>📦 <items></gold> "),
+            Placeholder.parsed("items", String.valueOf(totalItems))
+        );
     }
     public static Component defaultGetBeaconEffect(Block block) {
         if (block.getType() == Material.BEACON) {
@@ -332,15 +329,17 @@ public class Information {
             if (primaryEffect != null) {
                 if (secondaryEffect != null) {
                     return mm.deserialize(valuesFile.getString("minecraft.beacon_2_effect",
-                            " {emojiByEffect1}:{primaryAmplifier} {emojiByEffect2}:{secondaryAmplifier}")
-                            .replace("{emojiByEffect1}", getEmojiForEffect(primaryEffect.getType().getName()))
-                            .replace("{primaryAmplifier}", String.valueOf(primaryEffect.getAmplifier() + 1))
-                            .replace("{emojiByEffect2}", getEmojiForEffect(secondaryEffect.getType().getName()))
-                            .replace("{secondaryAmplifier}", String.valueOf(secondaryEffect.getAmplifier() + 1)));
+                            " <effect_icon_1> <primary_amplifier> <effect_icon_2> <secondary_amplifier>"),
+                            Placeholder.component("effect_icon_1", getEffectSprite(primaryEffect.getType().key())),
+                            Placeholder.unparsed("primary_amplifier", String.valueOf(primaryEffect.getAmplifier() + 1)),
+                            Placeholder.component("effect_icon_2", getEffectSprite(secondaryEffect.getType().key())),
+                            Placeholder.unparsed("secondary_amplifier", String.valueOf(secondaryEffect.getAmplifier() + 1))
+                    );
                 }
-                return mm.deserialize(valuesFile.getString("minecraft.beacon_1_effect", " {emojiByEffect1}:{primaryAmplifier}")
-                        .replace("{emojiByEffect1}", getEmojiForEffect(primaryEffect.getType().getName()))
-                        .replace("{primaryAmplifier}", String.valueOf(primaryEffect.getAmplifier() + 1)));
+                return mm.deserialize(valuesFile.getString("minecraft.beacon_1_effect", " <effect_icon> <primary_amplifier>"),
+                        Placeholder.component("effect_icon", getEffectSprite(primaryEffect.getType().key())),
+                        Placeholder.unparsed("primary_amplifier", String.valueOf(primaryEffect.getAmplifier() + 1))
+                );
             }
         }
         return Component.text("");
@@ -357,8 +356,10 @@ public class Information {
                 }
                 entity.remove();
                 assert key != null;
-                return mm.deserialize(valuesFile.getString("minecraft.spawner_info", " §a\uD83E\uDDDF {spawningEntity}")
-                        .replace("{spawningEntity}", mm.serialize(key)));
+                return mm.deserialize(valuesFile.getString("minecraft.spawner_info", " <egg_icon> <green><spawning_entity></green>"),
+                        Placeholder.component("egg_icon", getSprite(Atlases.ITEMS.key, "item/egg")),
+                        Placeholder.component("spawning_entity", key)
+                );
             }
         }
         return Component.text("");
@@ -369,10 +370,11 @@ public class Information {
             Note note = data.getNote();
             Instrument instrument = data.getInstrument();
 
-            return mm.deserialize(valuesFile.getString("minecraft.noteblock_info", " §6🎹 {instrument}: {tone} {octave}")
-                    .replace("{instrument}", ConfigUtils.toProperCase(instrument.name()))
-                    .replace("{tone}", ConfigUtils.toProperCase(note.getTone().name()))
-                    .replace("{octave}", String.valueOf(note.getOctave())));
+            return mm.deserialize(valuesFile.getString("minecraft.noteblock_info", " <gold>\uD83C\uDFB9 <instrument>: <tone> <octave></gold>"),
+                    Placeholder.unparsed("instrument", ConfigUtils.toProperCase(instrument.name())),
+                    Placeholder.unparsed("tone", ConfigUtils.toProperCase(note.getTone().name())),
+                    Placeholder.unparsed("octave", String.valueOf(note.getOctave()))
+            );
         }
         return Component.text("");
     }
@@ -402,7 +404,7 @@ public class Information {
                 new NamespacedKey("minecraft", reqTier.stack.getType().name().toLowerCase(Locale.ROOT)));
         NamespacedKey key = new NamespacedKey(baseKey.namespace(), "item/" + baseKey.value());
 
-        return Component.object(ObjectContents.sprite(new NamespacedKey("minecraft", "items"), key));
+        return getSprite(Atlases.ITEMS.key, key).append(Component.text(" "));
     }
     // Entities
     public static Component defaultGetEntityAgeLeft(Entity entity) {
@@ -410,27 +412,29 @@ public class Information {
             int age = data.getAge();
             if (age < 0) {
                 int secondsLeft = Math.abs(age) / 20;
-                return mm.deserialize(valuesFile.getString("minecraft.entity_time_to_grow", " §e\uD83D\uDC25 {secondsLeft}s")
-                        .replace("{secondsLeft}", String.valueOf(secondsLeft)));
+                return mm.deserialize(valuesFile.getString("minecraft.entity_time_to_grow", " <entity_egg> <seconds_left>s"),
+                    Placeholder.component("entity_egg", getSprite(Atlases.ITEMS.key, "item/egg")),
+                    Placeholder.unparsed("seconds_left", String.valueOf(secondsLeft)));
             }
         }
         return Component.text("");
     }
     public static Component defaultGetEntityOwner(Entity entity) {
-        if (ItemGroups.getPets().contains(entity.getType())) {
-            Tameable data = (Tameable) entity;
-            AnimalTamer owner = data.getOwner();
-            if (data.isTamed() && owner != null) {
-                return mm.deserialize(valuesFile.getString("minecraft.entity_owner", "§8{entityOwner} ")
-                        .replace("{entityOwner}", owner.getName()));
-            }
-        }
-        return Component.text("");
+        if (!(entity instanceof Tameable tameable)) return Component.empty();
+
+        AnimalTamer owner = tameable.getOwner();
+        if (!tameable.isTamed() || owner == null) return Component.empty();
+
+        return mm.deserialize(
+            valuesFile.getString("minecraft.entity_owner", "<gray><entity_owner></gray> "),
+            Placeholder.unparsed("entity_owner", owner.getName())
+        );
     }
     public static Component defaultGetIsLeashed(Entity entity) {
         if (entity instanceof LivingEntity lEntity) {
             if (lEntity.isLeashed()) {
-                return mm.deserialize(valuesFile.getString("minecraft.entity_is_leashed", " §2\uD83D\uDD17"));
+                return mm.deserialize(valuesFile.getString("minecraft.entity_is_leashed", "<leash_icon> "),
+                    Placeholder.component("leash_icon", getSprite(Atlases.ITEMS.key, "item/lead")));
             }
         }
         return Component.text("");
@@ -440,9 +444,11 @@ public class Information {
             int health = (int) data.getHealth();
             int maxHealth = (int) Objects.requireNonNull(data.getAttribute(Attribute.MAX_HEALTH)).getValue();
 
-            return mm.deserialize(valuesFile.getString("minecraft.entity_health", " §c❤ {entityHealth}/{entityMaxHealth}")
-                    .replace("{entityHealth}", String.valueOf(health))
-                    .replace("{entityMaxHealth}", String.valueOf(maxHealth)));
+            return mm.deserialize(valuesFile.getString("minecraft.entity_health", " <heart_icon> <red><entity_health>/<entity_max_health></red>"),
+                    Placeholder.component("heart_icon", getSprite(Atlases.GUI.key, "hud/heart/full")),
+                    Placeholder.unparsed("entity_health", String.valueOf(health)),
+                    Placeholder.unparsed("entity_max_health", String.valueOf(maxHealth))
+            );
         }
         return Component.text("");
     }
@@ -451,19 +457,43 @@ public class Information {
             Villager villager = (Villager) entity;
             Profession profession = villager.getProfession();
 
-            return mm.deserialize(valuesFile.getString("minecraft.villager_profession", "§8{profession}")
-                    .replace("{profession}", getProfessionString(profession)));
+            return mm.deserialize(valuesFile.getString("minecraft.villager_profession", " <gray><profession></gray>"),
+                    Placeholder.unparsed("profession", getProfessionString(profession))
+            );
         }
         return Component.text("");
     }
     public static Component defaultGetTNTFuseTime(Entity entity) {
         if (entity.getType() == EntityType.TNT) {
             float tntFuseTime = ((TNTPrimed) entity).getFuseTicks() / 20.0f;
-            return mm.deserialize(valuesFile.getString("minecraft.tnt_fuse_time", " §4\uD83D\uDCA3{fuseTime}")
-                    .replace("{fuseTime}", String.valueOf(tntFuseTime)));
+            return mm.deserialize(valuesFile.getString("minecraft.tnt_fuse_time", " <red>\\uD83D\\uDCA3<fuse_time></red>"),
+                    Placeholder.unparsed("fuse_time", String.valueOf(tntFuseTime))
+            );
         }
         return Component.text("");
     }
+    public static Component defaultGetHorseSpeed(Entity entity) {
+        if (!(entity instanceof AbstractHorse horse)) return Component.text("");
+        AttributeInstance speed = horse.getAttribute(Attribute.MOVEMENT_SPEED);
+        if (speed == null) return Component.text("");
+        return mm.deserialize(valuesFile.getString("minecraft.horse_speed", " <speed_icon> <horse_speed>"),
+            Placeholder.component("speed_icon", getEffectSprite(PotionEffectType.SPEED.key())),
+            Placeholder.unparsed("horse_speed", String.format("%.3f", speed.getBaseValue() * 43.17))
+        );
+    }
+    public static Component defaultGetHorseJumpStrength(Entity entity) {
+        if (!(entity instanceof AbstractHorse horse)) return Component.text("");
+        AttributeInstance jumpStrength = horse.getAttribute(Attribute.JUMP_STRENGTH);
+        if (jumpStrength == null) return Component.text("");
+        return mm.deserialize(valuesFile.getString("minecraft.horse_jump_strength", " <jump_icon> <horse_jump_strength>"),
+            Placeholder.component("jump_icon", getEffectSprite(PotionEffectType.JUMP_BOOST.key())),
+            Placeholder.unparsed("horse_jump_strength", String.format("%.3f", getJumpHeight(jumpStrength.getBaseValue())))
+        );
+    }
+    private static double getJumpHeight(double jumpStrength) {
+        return 4.53680079 * jumpStrength * jumpStrength + 1.61431730 * jumpStrength - 0.22656224;
+    }
+
     // Utility
     public static String getColorForPercent(float percent) {
         if (percent >= 0 && percent <= 25) {
@@ -489,16 +519,14 @@ public class Information {
         }
         return valuesFile.getString("percent_color.default", "/<gray>");
     }
-    public static String getEmojiForEffect(String effect) {
-        return switch (effect) {
-            case "SPEED" -> valuesFile.getString("effect_emoji.SPEED", "§b💨");
-            case "FAST_DIGGING" -> valuesFile.getString("effect_emoji.HASTE", "§e⛏");
-            case "DAMAGE_RESISTANCE" -> valuesFile.getString("effect_emoji.RESISTANCE", "§6🛡");
-            case "JUMP" -> valuesFile.getString("effect_emoji.JUMP", "§a🐇");
-            case "INCREASE_DAMAGE" -> valuesFile.getString("effect_emoji.STRENGTH", "§c💪");
-            case "REGENERATION" -> valuesFile.getString("effect_emoji.REGENERATION", "§d❤");
-            default -> "";
-        };
+    public static Component getSprite(Key atlas, Key value) {
+        return Component.object(ObjectContents.sprite(atlas, value));
+    }
+    public static Component getSprite(Key atlas, String value) {
+        return getSprite(atlas, Key.key("minecraft", value));
+    }
+    public static Component getEffectSprite(Key effect) {
+        return getSprite(Atlases.GUI.key, Key.key("minecraft", "mob_effect/" + effect.value()));
     }
     public static String getProfessionString(Profession profession) {
         if (profession == Profession.ARMORER) {
@@ -582,5 +610,16 @@ public class Information {
     }
     public static YamlConfiguration getValuesFile() {
         return valuesFile;
+    }
+
+    public enum Atlases {
+        ITEMS(Key.key("minecraft", "items")),
+        BLOCKS(Key.key("minecraft", "blocks")),
+        GUI(Key.key("minecraft", "gui"));
+
+        public final Key key;
+        Atlases(Key key) {
+            this.key = key;
+        }
     }
 }

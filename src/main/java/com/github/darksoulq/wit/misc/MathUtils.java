@@ -23,7 +23,7 @@ public class MathUtils {
     public static Entity isLookingAtEntity(Player player, double distance) {
         RayTraceResult result = player.rayTraceEntities((int) distance, false);
         if (result != null && result.getHitEntity() != null) {
-            return result.getHitEntity();
+            return result.getHitEntity() == player.getVehicle() ? null : result.getHitEntity();
         }
         return null;
     }

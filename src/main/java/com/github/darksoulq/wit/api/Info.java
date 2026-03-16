@@ -21,7 +21,7 @@ public class Info {
             prefix.add(information);
             return;
         }
-        if (!text.content().isEmpty())
+        if (!text.content().isEmpty() || !text.children().isEmpty())
             prefix.add(information);
     }
 
@@ -30,7 +30,7 @@ public class Info {
             suffix.add(information);
             return;
         }
-        if (!text.content().isEmpty())
+        if (!text.content().isEmpty() || !text.children().isEmpty())
             suffix.add(information);
     }
 
