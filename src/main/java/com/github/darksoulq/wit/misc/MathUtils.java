@@ -34,7 +34,7 @@ public class MathUtils {
 
         EntityHitResult result = ProjectileUtil.getEntityHitResult(sp.level(), sp, eye, end, aabb, e -> !e.isSpectator() && e.isPickable(), 0.3F);
 
-        if (result != null && result.getEntity() != null) {
+        if (result != null) {
             Entity hit = result.getEntity().getBukkitEntity();
             return hit.equals(player.getVehicle()) ? null : hit;
         }
