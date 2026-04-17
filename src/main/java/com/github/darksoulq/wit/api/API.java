@@ -3,7 +3,7 @@ package com.github.darksoulq.wit.api;
 import com.github.darksoulq.wit.Handlers;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.display.InfoDisplay;
-import com.github.darksoulq.wit.display.WAILAManager;
+import com.github.darksoulq.wit.display.DisplayManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -102,7 +102,7 @@ public class API {
      */
     public static void updateBar(Info info, Player player) {
         WITListener.setLookingAt(player, info);
-        WAILAManager.setBar(player, info.getCombined());
+        DisplayManager.setBar(player, info.getCombined());
     }
 
     /**
@@ -114,8 +114,8 @@ public class API {
      */
     public static void updateBar(Info info, float progress, Player player) {
         WITListener.setLookingAt(player, info);
-        WAILAManager.setProgress(player, progress);
-        WAILAManager.setBar(player, info.getCombined());
+        DisplayManager.setProgress(player, progress);
+        DisplayManager.setBar(player, info.getCombined());
     }
 
     /**
@@ -125,6 +125,6 @@ public class API {
      * @param display the custom display to add to the plugin.
      */
     public static void addDisplay(InfoDisplay display) {
-        WAILAManager.addDisplay(display);
+        DisplayManager.addDisplay(display);
     }
 }

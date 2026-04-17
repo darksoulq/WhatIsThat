@@ -1,46 +1,56 @@
 package com.github.darksoulq.wit.misc;
 
-import org.bukkit.Location;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
-import org.bukkit.util.RayTraceResult;
-import org.bukkit.util.Vector;
-
-import java.util.Collection;
 
 public class MathUtils {
 
-    /**
-     * Get the entity the player is looking at, within the specified distance.
-     *
-     * @param player   The player.
-     * @param distance The maximum distance to check.
-     * @return The entity the player is looking at, or null if none.
-     */
+    public static long getBlockKey(int x, int y, int z) {
+        return (((long) x & 0x3FFFFFF) << 38) | (((long) y & 0xFFF)) | (((long) z & 0x3FFFFFF) << 12);
+    }
+
     public static Entity isLookingAtEntity(Player player, double distance) {
-        RayTraceResult result = player.rayTraceEntities((int) distance, false);
-        if (result != null && result.getHitEntity() != null) {
-            return result.getHitEntity() == player.getVehicle() ? null : result.getHitEntity();
+        ServerPlayer sp = ((CraftPlayer) player).getHandle();
+        Vec3 eye = sp.getEyePosition(1.0F);
+        Vec3 view = sp.getViewVector(1.0F);
+        Vec3 end = eye.add(view.x * distance, view.y * distance, view.z * distance);
+
+        BlockHitResult blockHit = sp.level().clip(new ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, sp));
+        if (blockHit.getType() != HitResult.Type.MISS) {
+            end = blockHit.getLocation();
+        }
+
+        AABB aabb = sp.getBoundingBox().expandTowards(end.subtract(eye)).inflate(1.0D, 1.0D, 1.0D);
+
+        EntityHitResult result = ProjectileUtil.getEntityHitResult(sp.level(), sp, eye, end, aabb, e -> !e.isSpectator() && e.isPickable(), 0.3F);
+
+        if (result != null && result.getEntity() != null) {
+            Entity hit = result.getEntity().getBukkitEntity();
+            return hit.equals(player.getVehicle()) ? null : hit;
         }
         return null;
     }
 
-    /**
-     * Get the block the player is looking at, within the specified distance.
-     *
-     * @param player   The player.
-     * @param distance The maximum distance to check.
-     * @return The block the player is looking at, or null if none.
-     */
     public static Block getLookingAtBlock(Player player, double distance) {
-        RayTraceResult result =  player.rayTraceBlocks(distance);
-        if (result != null && result.getHitBlock() != null) {
-            return result.getHitBlock();
+        ServerPlayer sp = ((CraftPlayer) player).getHandle();
+        Vec3 eye = sp.getEyePosition(1.0F);
+        Vec3 view = sp.getViewVector(1.0F);
+        Vec3 end = eye.add(view.x * distance, view.y * distance, view.z * distance);
+
+        BlockHitResult result = sp.level().clip(new ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, sp));
+        if (result.getType() == HitResult.Type.BLOCK) {
+            return player.getWorld().getBlockAt(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ());
         }
         return null;
     }
-
 }

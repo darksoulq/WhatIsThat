@@ -10,15 +10,16 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import com.github.darksoulq.wit.Handlers;
 import com.github.darksoulq.wit.Information;
+import com.github.darksoulq.wit.WIT;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.API;
 import com.github.darksoulq.wit.compatibility.MinecraftCompat;
-import com.github.darksoulq.wit.display.WAILAManager;
+import com.github.darksoulq.wit.display.DisplayManager;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -28,54 +29,49 @@ import java.util.concurrent.CompletableFuture;
 public class WCommands {
     public static LiteralArgumentBuilder<CommandSourceStack> createCommand() {
         return Commands.literal("wit")
-                .then(Commands.literal("toggle")
-                        .requires(sender -> sender.getSender().hasPermission("wit.default"))
-                        .executes(WCommands::toggleExecutor))
-                .then(Commands.literal("type")
-                        .then(Commands.argument("type", StringArgumentType.string())
-                                .requires(sender -> sender.getSender().hasPermission("wit.default"))
-                                .suggests(WCommands::changeTypeSuggester)
-                                .executes(WCommands::changeTypeExecutor)))
-                .then(Commands.literal("reload")
-                        .requires(sender -> sender.getSender().hasPermission("wit.reload"))
-                        .executes(WCommands::reloadExecutor));
+            .then(Commands.literal("toggle")
+                .requires(sender -> sender.getSender().hasPermission("wit.default"))
+                .executes(WCommands::toggleExecutor))
+            .then(Commands.literal("type")
+                .then(Commands.argument("type", StringArgumentType.string())
+                    .requires(sender -> sender.getSender().hasPermission("wit.default"))
+                    .suggests(WCommands::changeTypeSuggester)
+                    .executes(WCommands::changeTypeExecutor)))
+            .then(Commands.literal("reload")
+                .requires(sender -> sender.getSender().hasPermission("wit.reload"))
+                .executes(WCommands::reloadExecutor));
     }
 
     private static int toggleExecutor(CommandContext<CommandSourceStack> ctx) {
         CommandSender sender = ctx.getSource().getSender();
-        Entity executor = ctx.getSource().getExecutor();
-
-        if (!(executor instanceof Player) && !(sender == executor)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only a player can run this command");
             return Command.SINGLE_SUCCESS;
         }
 
-        if (WITListener.getPlayerConfig((Player) sender).getBoolean("disableWAILA")) {
-            enableBar((Player) sender);
+        WITListener.PlayerSettings settings = WITListener.getSettings(player);
+        if (settings.disabled) {
+            enableBar(player, settings);
         } else {
-            disableBar((Player) sender);
+            disableBar(player, settings);
         }
 
         return Command.SINGLE_SUCCESS;
     }
 
     private static int changeTypeExecutor(CommandContext<CommandSourceStack> ctx) {
-        String type = StringArgumentType.getString(ctx, "type");
-
-        if (!(ctx.getSource().getExecutor() instanceof Player)) {
+        if (!(ctx.getSource().getExecutor() instanceof Player player)) {
             ctx.getSource().getSender().sendMessage("Only players can execute this command");
             return Command.SINGLE_SUCCESS;
         }
-        if (ctx.getSource().getSender() == ctx.getSource().getExecutor()) {
-            setType((Player) ctx.getSource().getSender(), type);
-            return Command.SINGLE_SUCCESS;
-        }
+
+        String type = StringArgumentType.getString(ctx, "type");
+        setType(player, type);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static CompletableFuture<Suggestions> changeTypeSuggester(final CommandContext<CommandSourceStack> ctx,
-            final SuggestionsBuilder builder) {
-        WAILAManager.getDisplays().keySet().forEach(builder::suggest);
+    private static CompletableFuture<Suggestions> changeTypeSuggester(final CommandContext<CommandSourceStack> ctx, final SuggestionsBuilder builder) {
+        DisplayManager.getDisplays().keySet().forEach(builder::suggest);
         return builder.buildFuture();
     }
 
@@ -91,60 +87,61 @@ public class WCommands {
     }
 
     private static void setType(Player player, String type) {
-        File playerFile = new File(WITListener.getPrefFolder() + "/" + player.getName() + ".yml");
-        try {
-            if (!playerFile.exists()) {
-                playerFile.createNewFile();
+        WITListener.PlayerSettings settings = WITListener.getSettings(player);
+        DisplayManager.removeBar(player, settings.type);
+        settings.type = type;
+
+        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+            File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
+            try {
+                if (!playerFile.exists()) playerFile.createNewFile();
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+                config.set("type", type);
+                config.save(playerFile);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            WAILAManager.removeBar(player, config.getString("type"));
-            config.set("type", type);
-            config.save(playerFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            player.sendMessage("An error occurred while saving your settings.");
-        }
+        });
     }
 
-    private static void disableBar(Player player) {
-        File playerFile = new File(WITListener.getPrefFolder() + "/" + player.getName() + ".yml");
-        try {
-            if (!playerFile.exists()) {
-                playerFile.createNewFile();
-            }
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            config.set("disableWAILA", true);
-            config.save(playerFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            player.sendMessage("An error occurred while saving your settings.");
-            return;
-        }
-
+    private static void disableBar(Player player, WITListener.PlayerSettings settings) {
+        settings.disabled = true;
         WITListener.removePlayer(player);
-        WAILAManager.removeBar(player, WITListener.getPlayerConfig(player).getString("type"));
+        DisplayManager.removeBar(player, settings.type);
         WITListener.setLookingAt(player, null);
+
+        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+            File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
+            try {
+                if (!playerFile.exists()) playerFile.createNewFile();
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+                config.set("disableWAILA", true);
+                config.save(playerFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         player.sendMessage("WAILA bar disabled.");
     }
 
-    private static void enableBar(Player player) {
-        File playerFile = new File(WITListener.getPrefFolder() + "/" + player.getName() + ".yml");
-        try {
-            if (!playerFile.exists()) {
-                playerFile.createNewFile();
+    private static void enableBar(Player player, WITListener.PlayerSettings settings) {
+        settings.disabled = false;
+
+        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+            File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
+            try {
+                if (!playerFile.exists()) playerFile.createNewFile();
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+                config.set("disableWAILA", false);
+                config.save(playerFile);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            config.set("disableWAILA", false);
-            config.save(playerFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            player.sendMessage("An error occurred while saving your settings.");
-            return;
-        }
+        });
 
         if (!WITListener.DISABLED_WORLDS.contains(player.getWorld().getName())) {
             WITListener.addPlayer(player);
-            WAILAManager.setBar(player, Component.text(""));
+            DisplayManager.setBar(player, Component.empty());
         }
         player.sendMessage("WAILA bar enabled.");
     }

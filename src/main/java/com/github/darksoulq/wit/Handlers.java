@@ -12,7 +12,6 @@ import java.util.function.BiFunction;
 public class Handlers {
     private static Set<BiFunction<Block, Player, Boolean>> blockHandlers = new HashSet<>();
     private static Set<BiFunction<Entity, Player, Boolean>> entityHandlers = new HashSet<>();
-    private static YamlConfiguration config = WITListener.getConfig();
 
     public static void setup() {
         blockHandlers.clear();

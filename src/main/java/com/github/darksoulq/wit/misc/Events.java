@@ -1,12 +1,10 @@
 package com.github.darksoulq.wit.misc;
 
-import com.github.darksoulq.wit.WITListener;
-import com.github.darksoulq.wit.display.WAILAManager;
-import io.papermc.paper.event.block.BlockBreakProgressUpdateEvent;
 import com.github.darksoulq.wit.Information;
+import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.API;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.github.darksoulq.wit.display.DisplayManager;
+import io.papermc.paper.event.block.BlockBreakProgressUpdateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -14,14 +12,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
-
-import static com.github.darksoulq.wit.WITListener.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Events implements Listener {
-    public static Map<Block, Float> BREAK_PROGRESS = new HashMap<>();
+    public static final Map<Long, Float> BREAK_PROGRESS = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onServerLoad(ServerLoadEvent e) {
@@ -30,18 +25,20 @@ public class Events implements Listener {
 
     @EventHandler
     public void onBlockBreakProgress(BlockBreakProgressUpdateEvent event) {
-        if (ItemGroups.getBlacklistedBlocks().contains(event.getBlock().getType()))
-            return;
-        BREAK_PROGRESS.put(event.getBlock(), event.getProgress());
-        if (event.getProgress() == 1f || event.getProgress() == 0f) {
-            BREAK_PROGRESS.remove(event.getBlock());
+        if (ItemGroups.getBlacklistedBlocks().contains(event.getBlock().getType())) return;
+        long key = MathUtils.getBlockKey(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
+        float progress = event.getProgress();
+        if (progress == 1f || progress == 0f) {
+            BREAK_PROGRESS.remove(key);
+        } else {
+            BREAK_PROGRESS.put(key, progress);
         }
     }
 
     @EventHandler
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
-        if (DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
-            WAILAManager.removeBar(event.getPlayer(), getPlayerConfig(event.getPlayer()).getString("type", "bossbar"));
+        if (WITListener.DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
+            DisplayManager.removeBar(event.getPlayer(), WITListener.getSettings(event.getPlayer()).type);
             WITListener.removePlayer(event.getPlayer());
         } else {
             WITListener.addPlayer(event.getPlayer());
@@ -50,32 +47,19 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        WAILAManager.removeBar(event.getPlayer(), getPlayerConfig(event.getPlayer()).getString("type", "bossbar"));
+        DisplayManager.removeBar(event.getPlayer(), WITListener.getSettings(event.getPlayer()).type);
         WITListener.removePlayer(event.getPlayer());
+        WITListener.unloadSettings(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        File playerFile = new File(PREF_FOLDER + "/" + event.getPlayer().getName() + ".yml");
-        YamlConfiguration pconfig = new YamlConfiguration();
-        if (!playerFile.exists()) {
-            try {
-                playerFile.createNewFile();
-                pconfig = YamlConfiguration.loadConfiguration(playerFile);
-                pconfig.set("disableWAILA",
-                        "disabled".equals(WITListener.getConfig().getString("core.default_state", "enabled")));
-                pconfig.set("type", "bossbar");
-                pconfig.save(playerFile);
-            } catch (Exception e) {
-                e.printStackTrace();
+        WITListener.loadSettings(event.getPlayer(), () -> {
+            WITListener.PlayerSettings settings = WITListener.getSettings(event.getPlayer());
+            if (!settings.disabled && !WITListener.DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
+                WITListener.addPlayer(event.getPlayer());
             }
-        } else {
-            pconfig = YamlConfiguration.loadConfiguration(playerFile);
-        }
-        boolean disableBossBar = pconfig.getBoolean("disableWAILA", false);
-        if (!disableBossBar && !DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
-            WITListener.addPlayer(event.getPlayer());
-        }
+        });
     }
 
     @EventHandler
@@ -85,37 +69,31 @@ public class Events implements Listener {
         Information.addTier(Information.WOODEN_PICKAXE);
         Information.addTier(Information.WOODEN_SHOVEL);
         Information.addTier(Information.WOODEN_HOE);
-
         Information.addTier(Information.STONE_SWORD);
         Information.addTier(Information.STONE_AXE);
         Information.addTier(Information.STONE_PICKAXE);
         Information.addTier(Information.STONE_SHOVEL);
         Information.addTier(Information.STONE_HOE);
-
         Information.addTier(Information.GOLD_SWORD);
         Information.addTier(Information.GOLD_AXE);
         Information.addTier(Information.GOLD_PICKAXE);
         Information.addTier(Information.GOLD_SHOVEL);
         Information.addTier(Information.GOLD_HOE);
-
         Information.addTier(Information.COPPER_SWORD);
         Information.addTier(Information.COPPER_AXE);
         Information.addTier(Information.COPPER_PICKAXE);
         Information.addTier(Information.COPPER_SHOVEL);
         Information.addTier(Information.COPPER_HOE);
-
         Information.addTier(Information.IRON_SWORD);
         Information.addTier(Information.IRON_AXE);
         Information.addTier(Information.IRON_PICKAXE);
         Information.addTier(Information.IRON_SHOVEL);
         Information.addTier(Information.IRON_HOE);
-
         Information.addTier(Information.DIAMOND_SWORD);
         Information.addTier(Information.DIAMOND_AXE);
         Information.addTier(Information.DIAMOND_PICKAXE);
         Information.addTier(Information.DIAMOND_SHOVEL);
         Information.addTier(Information.DIAMOND_HOE);
-
         Information.addRequiredTierGetter(Information.VANILLA_BLOCK_TIER_GETTER);
         Information.addTierGetter(Information.VANILLA_TIER_GETTER);
     }

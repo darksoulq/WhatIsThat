@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WAILAManager {
+public class DisplayManager {
     private static final Map<String, InfoDisplay> displays = new HashMap<>();
 
     public static void addDisplay(InfoDisplay display) {
@@ -15,25 +15,28 @@ public class WAILAManager {
     }
 
     public static void setBar(Player player, Component text) {
+        String type = WITListener.getSettings(player).type;
         if (!WITListener.isHidden()) {
-            if (!displays.isEmpty() && displays.containsKey(WITListener.getPlayerConfig(player).getString("type"))) {
-                displays.get(WITListener.getPlayerConfig(player).getString("type")).setBar(player, text);
+            InfoDisplay display = displays.get(type);
+            if (display != null) {
+                display.setBar(player, text);
             }
         } else {
-            removeBar(player, WITListener.getPlayerConfig(player).getString("type"));
+            removeBar(player, type);
         }
     }
 
     public static void setProgress(Player player, float value) {
-        InfoDisplay display = displays.get(WITListener.getPlayerConfig(player).getString("type"));
+        InfoDisplay display = displays.get(WITListener.getSettings(player).type);
         if (display != null) {
             display.setProgress(player, value);
         }
     }
 
     public static void removeBar(Player player, String type) {
-        if (!displays.isEmpty() && displays.containsKey(type)) {
-            displays.get(type).removeBar(player);
+        InfoDisplay display = displays.get(type);
+        if (display != null) {
+            display.removeBar(player);
         }
     }
 
