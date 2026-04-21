@@ -10,6 +10,8 @@
 
 Adds detailed block and entity information directly in-game, including:
 
+- 2 default display types (Actionbar and Bossbar available by default) more can be added by API.
+- Extensive configurability (turn any info/feature off, set entity/block range etc)
 - Block break progress
 - Container contents
 - Redstone levels
