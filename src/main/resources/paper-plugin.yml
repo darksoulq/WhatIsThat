@@ -1,5 +1,5 @@
 name: WIT
-version: '1.7.1'
+version: '1.8.0'
 main: com.github.darksoulq.wit.WIT
 api-version: '1.21'
 authors:

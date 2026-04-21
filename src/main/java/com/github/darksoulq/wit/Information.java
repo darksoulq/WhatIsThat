@@ -1,6 +1,5 @@
 package com.github.darksoulq.wit;
 
-import com.mojang.datafixers.util.Either;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
@@ -9,11 +8,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.object.ObjectContents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import org.bukkit.Bukkit;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WebBlock;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -58,8 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 public class Information {
@@ -106,6 +101,8 @@ public class Information {
     public static final ToolTier DIAMOND_HOE = new ToolTier(new NamespacedKey("default", "diamond_hoe"), ItemStack.of(Material.DIAMOND_HOE), 5) {};
     public static final ToolTier DIAMOND_SWORD = new ToolTier(new NamespacedKey("default", "diamond_sword"), ItemStack.of(Material.DIAMOND_SWORD), 45) {};
 
+    public static final ToolTier SHEARS = new ToolTier(new NamespacedKey("default", "shears"), ItemStack.of(Material.SHEARS), 0) {};
+
     private static String STR_RS_ON, STR_RS_OFF, STR_RS_LVL;
     private static String STR_CROP_AGE_1, STR_CROP_AGE_2, STR_CROP_AGE_3, STR_CROP_AGE_4;
     private static String STR_HONEY_LVL, STR_SMELT_TIME, STR_CONTAINER, STR_BEACON_1, STR_BEACON_2;
@@ -122,6 +119,9 @@ public class Information {
 
     public static final Function<ItemStack, ToolTier> VANILLA_TIER_GETTER = item -> {
         Material mat = item.getType();
+
+        if (mat == Material.SHEARS) return SHEARS;
+
         ToolTier cached = VANILLA_TIER_CACHE.get(mat);
         if (cached != null) return cached;
 
@@ -155,42 +155,36 @@ public class Information {
     };
 
     public static final Function<Block, ToolTier> VANILLA_BLOCK_TIER_GETTER = block -> {
-        Either<ResourceKey<net.minecraft.world.level.block.Block>, net.minecraft.world.level.block.Block> either =
-            ((CraftBlockState) block.getState()).getHandle().getBlockHolder().unwrap();
-
-        net.minecraft.world.level.block.Block nmsBlock = null;
-        Optional<ResourceKey<net.minecraft.world.level.block.Block>> nmsKey = either.left();
-        Optional<net.minecraft.world.level.block.Block> nmsOptionalBlock = either.right();
-
-        if (nmsKey.isPresent()) {
-            nmsBlock = BuiltInRegistries.BLOCK.getValue(nmsKey.get());
-        } else if (nmsOptionalBlock.isPresent()) {
-            nmsBlock = nmsOptionalBlock.get();
-        }
-
-        if (nmsBlock == null) return null;
-        return getToolTier(nmsBlock.defaultBlockState().getTags().toList());
+        net.minecraft.world.level.block.state.BlockState nmsState = ((CraftBlockState) block.getState()).getHandle();
+        return getToolTier(nmsState);
     };
 
-    private static @Nullable ToolTier getToolTier(List<TagKey<net.minecraft.world.level.block.Block>> tags) {
+    private static @Nullable ToolTier getToolTier(net.minecraft.world.level.block.state.BlockState state) {
+        if (state.is(BlockTags.LEAVES) || state.is(BlockTags.WOOL)) {
+            return SHEARS;
+        } else if (state.is(Blocks.COBWEB)) {
+            return WOODEN_SWORD;
+        }
+
         ToolTier baseTier = null;
         String preferredType = null;
 
-        if (tags.contains(BlockTags.MINEABLE_WITH_AXE)) preferredType = "axe";
-        else if (tags.contains(BlockTags.MINEABLE_WITH_PICKAXE)) preferredType = "pickaxe";
-        else if (tags.contains(BlockTags.MINEABLE_WITH_SHOVEL)) preferredType = "shovel";
-        else if (tags.contains(BlockTags.MINEABLE_WITH_HOE)) preferredType = "hoe";
+        if (state.is(BlockTags.MINEABLE_WITH_AXE)) preferredType = "axe";
+        else if (state.is(BlockTags.MINEABLE_WITH_PICKAXE)) preferredType = "pickaxe";
+        else if (state.is(BlockTags.MINEABLE_WITH_SHOVEL)) preferredType = "shovel";
+        else if (state.is(BlockTags.MINEABLE_WITH_HOE)) preferredType = "hoe";
+        else if (state.is(BlockTags.SWORD_EFFICIENT) || state.is(BlockTags.SWORD_INSTANTLY_MINES)) preferredType = "sword";
 
-        if (tags.contains(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
-        else if (tags.contains(BlockTags.INCORRECT_FOR_IRON_TOOL)) baseTier = getTierByType(preferredType, "diamond");
-        else if (tags.contains(BlockTags.INCORRECT_FOR_STONE_TOOL)) baseTier = getTierByType(preferredType, "iron");
-        else if (tags.contains(BlockTags.INCORRECT_FOR_COPPER_TOOL)) baseTier = getTierByType(preferredType, "stone");
-        else if (tags.contains(BlockTags.INCORRECT_FOR_GOLD_TOOL)) baseTier = getTierByType(preferredType, "copper");
-        else if (tags.contains(BlockTags.INCORRECT_FOR_WOODEN_TOOL)) baseTier = getTierByType(preferredType, "gold");
+        if (state.is(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
+        else if (state.is(BlockTags.INCORRECT_FOR_IRON_TOOL)) baseTier = getTierByType(preferredType, "diamond");
+        else if (state.is(BlockTags.INCORRECT_FOR_STONE_TOOL)) baseTier = getTierByType(preferredType, "iron");
+        else if (state.is(BlockTags.INCORRECT_FOR_COPPER_TOOL)) baseTier = getTierByType(preferredType, "stone");
+        else if (state.is(BlockTags.INCORRECT_FOR_GOLD_TOOL)) baseTier = getTierByType(preferredType, "copper");
+        else if (state.is(BlockTags.INCORRECT_FOR_WOODEN_TOOL)) baseTier = getTierByType(preferredType, "gold");
 
-        if (tags.contains(BlockTags.NEEDS_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
-        else if (tags.contains(BlockTags.NEEDS_IRON_TOOL)) baseTier = getTierByType(preferredType, "iron");
-        else if (tags.contains(BlockTags.NEEDS_STONE_TOOL)) baseTier = getTierByType(preferredType, "stone");
+        if (state.is(BlockTags.NEEDS_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
+        else if (state.is(BlockTags.NEEDS_IRON_TOOL)) baseTier = getTierByType(preferredType, "iron");
+        else if (state.is(BlockTags.NEEDS_STONE_TOOL)) baseTier = getTierByType(preferredType, "stone");
 
         if (baseTier == null && preferredType != null) {
             baseTier = getTierByType(preferredType, "wooden");
