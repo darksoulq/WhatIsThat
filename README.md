@@ -30,14 +30,14 @@ It also provides a simple and easy-to-use API, allowing other plugins to integra
 <table>
 <tr>
 <td align="center" width="50%">
-  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/block-breaking.gif">
-    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/block-breaking.gif" width="100%" />
+  <a href="gifs/block-breaking.gif">
+    <img src="gifs/block-breaking.gif" width="100%" />
   </a><br/>
   <sub><b>Block Break Progress</b></sub>
 </td>
 <td align="center" width="50%">
-  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/redstone.gif">
-    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/redstone.gif" width="100%" />
+  <a href="gifs/redstone.gif">
+    <img src="gifs/redstone.gif" width="100%" />
   </a><br/>
   <sub><b>Redstone Level Detection</b></sub>
 </td>
