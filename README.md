@@ -27,29 +27,38 @@ It also provides a simple and easy-to-use API, allowing other plugins to integra
 
 <div align="center">
 
-  <a href="gifs/block-breaking.gif">
-    <img src="gifs/block-breaking.gif" width="45%" />
-  </a>
-  <a href="gifs/redstone.gif">
-    <img src="gifs/redstone.gif" width="45%" />
-  </a>
+<table>
+<tr>
+<td align="center" width="50%">
+  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/block-breaking.gif">
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/block-breaking.gif" width="100%" />
+  </a><br/>
+  <sub><b>Block Break Progress</b></sub>
+</td>
+<td align="center" width="50%">
+  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/redstone.gif">
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/redstone.gif" width="100%" />
+  </a><br/>
+  <sub><b>Redstone Level Detection</b></sub>
+</td>
+</tr>
 
-  <br/>
-
-  <sub><b>Block Break Progress</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Redstone Level Detection</b></sub>
-
-  <br/><br/>
-
+<tr>
+<td align="center" width="50%">
   <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/horse-attrib.png">
-    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/horse-attrib.png" width="45%" />
-  </a>
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/horse-attrib.png" width="100%" />
+  </a><br/>
+  <sub><b>Horse Attributes</b></sub>
+</td>
+<td align="center" width="50%">
   <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/villager-prof.png">
-    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/villager-prof.png" width="45%" />
-  </a>
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/villager-prof.png" width="100%" />
+  </a><br/>
+  <sub><b>Villager Professions</b></sub>
+</td>
+</tr>
 
-  <br/>
-
-  <sub><b>Horse Attributes</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Villager Professions</b></sub>
+</table>
 
 </div>
 
