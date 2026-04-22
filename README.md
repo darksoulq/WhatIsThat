@@ -1,7 +1,7 @@
 <div align="center" style="line-height:0;">
   <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/banner.png" />
   <br/>
-  <a href="https://discord.gg/e35gP423vN"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/discord.png"/></a><a href="https://jitpack.io/#darksoulq/WhatIsThat"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/builds.png"/></a><a href="https://darksoulq.github.io/wit-docs/api.html"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/docs.png"/></a>
+  <a href="https://discord.gg/e35gP423vN"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/general_parts/discord_dark.png"/></a><a href="https://jitpack.io/#darksoulq/WhatIsThat"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/general_parts/builds_dark.png"/></a><a href="https://darksoulq.github.io/wit-docs/api.html"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/general_parts/docs_dark.png"/></a>
 </div>
 
 ---
