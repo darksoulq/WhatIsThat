@@ -1,5 +1,14 @@
 package com.github.darksoulq.wit.command;
 
+import com.github.darksoulq.wit.Handlers;
+import com.github.darksoulq.wit.Information;
+import com.github.darksoulq.wit.WIT;
+import com.github.darksoulq.wit.WITListener;
+import com.github.darksoulq.wit.api.API;
+import com.github.darksoulq.wit.api.Info;
+import com.github.darksoulq.wit.compatibility.MinecraftCompat;
+import com.github.darksoulq.wit.display.DisplayManager;
+import com.github.darksoulq.wit.misc.ItemGroups;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -8,15 +17,6 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import com.github.darksoulq.wit.Handlers;
-import com.github.darksoulq.wit.Information;
-import com.github.darksoulq.wit.WIT;
-import com.github.darksoulq.wit.WITListener;
-import com.github.darksoulq.wit.api.API;
-import com.github.darksoulq.wit.compatibility.MinecraftCompat;
-import com.github.darksoulq.wit.display.DisplayManager;
-import com.github.darksoulq.wit.misc.ItemGroups;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,6 +37,11 @@ public class WCommands {
                     .requires(sender -> sender.getSender().hasPermission("wit.default"))
                     .suggests(WCommands::changeTypeSuggester)
                     .executes(WCommands::changeTypeExecutor)))
+            .then(Commands.literal("progress")
+                .then(Commands.argument("mode", StringArgumentType.string())
+                    .requires(sender -> sender.getSender().hasPermission("wit.default"))
+                    .suggests(WCommands::progressModeSuggester)
+                    .executes(WCommands::changeProgressModeExecutor)))
             .then(Commands.literal("reload")
                 .requires(sender -> sender.getSender().hasPermission("wit.reload"))
                 .executes(WCommands::reloadExecutor));
@@ -75,6 +80,48 @@ public class WCommands {
         return builder.buildFuture();
     }
 
+    private static int changeProgressModeExecutor(CommandContext<CommandSourceStack> ctx) {
+        if (!(ctx.getSource().getExecutor() instanceof Player player)) {
+            ctx.getSource().getSender().sendMessage("Only players can execute this command");
+            return Command.SINGLE_SUCCESS;
+        }
+
+        String modeStr = StringArgumentType.getString(ctx, "mode").toUpperCase();
+        WITListener.ActionBarProgressMode mode;
+
+        try {
+            mode = WITListener.ActionBarProgressMode.valueOf(modeStr);
+        } catch (IllegalArgumentException e) {
+            player.sendMessage("Invalid mode. Use OFF, BAR, or PERCENT.");
+            return Command.SINGLE_SUCCESS;
+        }
+
+        WITListener.PlayerSettings settings = WITListener.getSettings(player);
+        settings.abProgressMode = mode;
+
+        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+            File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
+            try {
+                if (!playerFile.exists()) playerFile.createNewFile();
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+                config.set("abProgressMode", mode.name());
+                config.save(playerFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        player.sendMessage("Action bar progress mode set to: " + mode.name());
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static CompletableFuture<Suggestions> progressModeSuggester(final CommandContext<CommandSourceStack> ctx, final SuggestionsBuilder builder) {
+        for (WITListener.ActionBarProgressMode mode : WITListener.ActionBarProgressMode.values()) {
+            builder.suggest(mode.name());
+        }
+        return builder.buildFuture();
+    }
+
     private static int reloadExecutor(CommandContext<CommandSourceStack> ctx) {
         WITListener.setup();
         MinecraftCompat.setup();
@@ -82,7 +129,7 @@ public class WCommands {
         Handlers.setup();
         ItemGroups.reload();
         API.fireReload();
-        ctx.getSource().getSender().sendMessage("§2WIT config reloaded.");
+        ctx.getSource().getSender().sendMessage("WIT config reloaded.");
         return Command.SINGLE_SUCCESS;
     }
 
@@ -102,6 +149,7 @@ public class WCommands {
                 e.printStackTrace();
             }
         });
+        player.sendMessage("WAILA display type set to: " + type);
     }
 
     private static void disableBar(Player player, WITListener.PlayerSettings settings) {
@@ -141,7 +189,7 @@ public class WCommands {
 
         if (!WITListener.DISABLED_WORLDS.contains(player.getWorld().getName())) {
             WITListener.addPlayer(player);
-            DisplayManager.setBar(player, Component.empty());
+            DisplayManager.setBar(player, new Info());
         }
         player.sendMessage("WAILA bar enabled.");
     }

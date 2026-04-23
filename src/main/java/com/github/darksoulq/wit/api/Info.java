@@ -38,6 +38,14 @@ public class Info {
         this.name = name;
     }
 
+    public boolean hasPrefix() {
+        return !prefix.isEmpty();
+    }
+
+    public boolean hasSuffix() {
+        return !suffix.isEmpty();
+    }
+
     public Component getPrefix() {
         Component p = Component.empty();
         for (Component pref : prefix) {

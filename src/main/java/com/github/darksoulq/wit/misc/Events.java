@@ -3,20 +3,19 @@ package com.github.darksoulq.wit.misc;
 import com.github.darksoulq.wit.Information;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.API;
+import com.github.darksoulq.wit.api.ProgressProviders;
 import com.github.darksoulq.wit.display.DisplayManager;
-import io.papermc.paper.event.block.BlockBreakProgressUpdateEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageAbortEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class Events implements Listener {
-    public static final Map<Long, Float> BREAK_PROGRESS = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onServerLoad(ServerLoadEvent e) {
@@ -24,19 +23,27 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreakProgress(BlockBreakProgressUpdateEvent event) {
+    public void onBlockDamage(BlockDamageEvent event) {
         if (ItemGroups.getBlacklistedBlocks().contains(event.getBlock().getType())) return;
-        long key = MathUtils.getBlockKey(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
-        float progress = event.getProgress();
-        if (progress == 1f || progress == 0f) {
-            BREAK_PROGRESS.remove(key);
-        } else {
-            BREAK_PROGRESS.put(key, progress);
+        long duration = MathUtils.calculateBreakTimeMs(event.getBlock(), event.getPlayer());
+        if (duration >= 0) {
+            ProgressProviders.SESSIONS.put(event.getPlayer().getUniqueId(), new MiningSession(event.getBlock(), System.currentTimeMillis(), duration));
         }
     }
 
     @EventHandler
+    public void onBlockDamageAbort(BlockDamageAbortEvent event) {
+        ProgressProviders.SESSIONS.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        ProgressProviders.SESSIONS.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
+        ProgressProviders.SESSIONS.remove(event.getPlayer().getUniqueId());
         if (WITListener.DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
             DisplayManager.removeBar(event.getPlayer(), WITListener.getSettings(event.getPlayer()).type);
             WITListener.removePlayer(event.getPlayer());
@@ -47,6 +54,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        ProgressProviders.SESSIONS.remove(event.getPlayer().getUniqueId());
         DisplayManager.removeBar(event.getPlayer(), WITListener.getSettings(event.getPlayer()).type);
         WITListener.removePlayer(event.getPlayer());
         WITListener.unloadSettings(event.getPlayer());

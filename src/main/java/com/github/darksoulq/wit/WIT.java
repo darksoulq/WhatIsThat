@@ -1,13 +1,13 @@
 package com.github.darksoulq.wit;
 
-import com.github.darksoulq.wit.compatibility.PlaceholderAPICompat;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import com.github.darksoulq.wit.command.WCommands;
+import com.github.darksoulq.wit.compatibility.PlaceholderAPICompat;
 import com.github.darksoulq.wit.display.ActionBarDisplay;
 import com.github.darksoulq.wit.display.BossBarDisplay;
 import com.github.darksoulq.wit.display.DisplayManager;
 import com.github.darksoulq.wit.misc.Events;
 import com.github.darksoulq.wit.misc.Metrics;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

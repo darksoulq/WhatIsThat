@@ -1,7 +1,6 @@
 package com.github.darksoulq.wit;
 
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 

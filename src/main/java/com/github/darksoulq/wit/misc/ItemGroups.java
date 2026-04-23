@@ -3,7 +3,6 @@ package com.github.darksoulq.wit.misc;
 import com.github.darksoulq.wit.WITListener;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;

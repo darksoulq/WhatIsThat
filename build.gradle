@@ -4,8 +4,8 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-group = 'me.darksoul'
-version = '1.8.1'
+group = 'com.github.darksoulq'
+version = '1.9.0-mc.1.21.11'
 
 repositories {
     mavenCentral()

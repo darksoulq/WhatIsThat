@@ -2,8 +2,6 @@ package com.github.darksoulq.wit.misc;
 
 import com.github.darksoulq.wit.WIT;
 import com.github.darksoulq.wit.WITListener;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

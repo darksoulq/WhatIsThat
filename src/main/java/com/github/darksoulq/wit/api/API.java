@@ -2,8 +2,8 @@ package com.github.darksoulq.wit.api;
 
 import com.github.darksoulq.wit.Handlers;
 import com.github.darksoulq.wit.WITListener;
-import com.github.darksoulq.wit.display.InfoDisplay;
 import com.github.darksoulq.wit.display.DisplayManager;
+import com.github.darksoulq.wit.display.InfoDisplay;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -102,7 +102,7 @@ public class API {
      */
     public static void updateBar(Info info, Player player) {
         WITListener.setLookingAt(player, info);
-        DisplayManager.setBar(player, info.getCombined());
+        DisplayManager.setBar(player, info);
     }
 
     /**
@@ -113,9 +113,8 @@ public class API {
      * @param player the {@link Player} for whom the boss bar text is updated.
      */
     public static void updateBar(Info info, float progress, Player player) {
-        WITListener.setLookingAt(player, info);
+        updateBar(info, player);
         DisplayManager.setProgress(player, progress);
-        DisplayManager.setBar(player, info.getCombined());
     }
 
     /**

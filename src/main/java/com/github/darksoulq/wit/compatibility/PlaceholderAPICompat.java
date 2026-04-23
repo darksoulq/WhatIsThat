@@ -1,9 +1,9 @@
 package com.github.darksoulq.wit.compatibility;
 
+import com.github.darksoulq.wit.WIT;
+import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.Info;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import com.github.darksoulq.wit.WITListener;
-import com.github.darksoulq.wit.WIT;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;

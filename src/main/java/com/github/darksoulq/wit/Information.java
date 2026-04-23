@@ -1,8 +1,8 @@
 package com.github.darksoulq.wit;
 
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -10,7 +10,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.object.ObjectContents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WebBlock;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -28,15 +27,7 @@ import org.bukkit.block.data.type.Farmland;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.block.CraftBlockState;
-import org.bukkit.entity.AbstractHorse;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Villager;
+import org.bukkit.entity.*;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -49,12 +40,7 @@ import org.bukkit.spawner.Spawner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 public class Information {
@@ -99,7 +85,7 @@ public class Information {
     public static final ToolTier DIAMOND_PICKAXE = new ToolTier(new NamespacedKey("default", "diamond_pickaxe"), ItemStack.of(Material.DIAMOND_PICKAXE), 5) {};
     public static final ToolTier DIAMOND_SHOVEL = new ToolTier(new NamespacedKey("default", "diamond_shovel"), ItemStack.of(Material.DIAMOND_SHOVEL), 5) {};
     public static final ToolTier DIAMOND_HOE = new ToolTier(new NamespacedKey("default", "diamond_hoe"), ItemStack.of(Material.DIAMOND_HOE), 5) {};
-    public static final ToolTier DIAMOND_SWORD = new ToolTier(new NamespacedKey("default", "diamond_sword"), ItemStack.of(Material.DIAMOND_SWORD), 45) {};
+    public static final ToolTier DIAMOND_SWORD = new ToolTier(new NamespacedKey("default", "diamond_sword"), ItemStack.of(Material.DIAMOND_SWORD), 5) {};
 
     public static final ToolTier SHEARS = new ToolTier(new NamespacedKey("default", "shears"), ItemStack.of(Material.SHEARS), 0) {};
 
@@ -577,7 +563,7 @@ public class Information {
         STR_LEASH = valuesFile.getString("minecraft.entity_is_leashed", "<leash_icon> ");
         STR_HEALTH = valuesFile.getString("minecraft.entity_health", " <heart_icon> <red><entity_health>/<entity_max_health></red>");
         STR_PROFESSION = valuesFile.getString("minecraft.villager_profession", " <gray><profession></gray>");
-        STR_TNT = valuesFile.getString("minecraft.tnt_fuse_time", " <red>\\uD83D\\uDCA3<fuse_time></red>");
+        STR_TNT = valuesFile.getString("minecraft.tnt_fuse_time", " <red>\uD83D\uDCA3<fuse_time></red>");
         STR_HORSE_SPD = valuesFile.getString("minecraft.horse_speed", " <speed_icon> <horse_speed>");
         STR_HORSE_JMP = valuesFile.getString("minecraft.horse_jump_strength", " <jump_icon> <horse_jump_strength>");
 

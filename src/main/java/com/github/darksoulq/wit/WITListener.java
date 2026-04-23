@@ -6,7 +6,6 @@ import com.github.darksoulq.wit.display.DisplayManager;
 import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import com.github.darksoulq.wit.misc.MathUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,7 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
@@ -38,13 +39,19 @@ public class WITListener implements Listener {
     public static boolean BLOCKS_ENABLED = true;
     public static boolean DEFAULT_DISABLED = false;
 
+    public enum ActionBarProgressMode {
+        OFF, BAR, PERCENT, UNDERLINE
+    }
+
     public static class PlayerSettings {
         public String type;
         public boolean disabled;
+        public ActionBarProgressMode abProgressMode;
 
-        public PlayerSettings(String type, boolean disabled) {
+        public PlayerSettings(String type, boolean disabled, ActionBarProgressMode abProgressMode) {
             this.type = type;
             this.disabled = disabled;
+            this.abProgressMode = abProgressMode;
         }
     }
 
@@ -96,7 +103,7 @@ public class WITListener implements Listener {
             }
         }
 
-        DisplayManager.setBar(player, Component.empty());
+        DisplayManager.setBar(player, new Info());
         LOOKING_AT.remove(player.getUniqueId());
 
         if (DisplayManager.getDisplays().get(getSettings(player).type).isEmpty(player)) {
@@ -160,6 +167,7 @@ public class WITListener implements Listener {
                     file.createNewFile();
                     conf.set("disableWAILA", DEFAULT_DISABLED);
                     conf.set("type", "bossbar");
+                    conf.set("abProgressMode", "BAR");
                     conf.save(file);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -168,7 +176,18 @@ public class WITListener implements Listener {
                 conf = YamlConfiguration.loadConfiguration(file);
             }
 
-            SETTINGS.put(player.getUniqueId(), new PlayerSettings(conf.getString("type", "bossbar"), conf.getBoolean("disableWAILA", DEFAULT_DISABLED)));
+            ActionBarProgressMode mode;
+            try {
+                mode = ActionBarProgressMode.valueOf(conf.getString("abProgressMode", "BAR").toUpperCase());
+            } catch (IllegalArgumentException e) {
+                mode = ActionBarProgressMode.BAR;
+            }
+
+            SETTINGS.put(player.getUniqueId(), new PlayerSettings(
+                conf.getString("type", "bossbar"),
+                conf.getBoolean("disableWAILA", DEFAULT_DISABLED),
+                mode
+            ));
 
             if (callback != null) {
                 Bukkit.getScheduler().runTask(WIT.instance(), callback);
@@ -181,7 +200,7 @@ public class WITListener implements Listener {
     }
 
     public static PlayerSettings getSettings(Player player) {
-        return SETTINGS.getOrDefault(player.getUniqueId(), new PlayerSettings("bossbar", DEFAULT_DISABLED));
+        return SETTINGS.getOrDefault(player.getUniqueId(), new PlayerSettings("bossbar", DEFAULT_DISABLED, ActionBarProgressMode.BAR));
     }
 
     public static YamlConfiguration getPlayerConfig(Player player) {
@@ -189,6 +208,7 @@ public class WITListener implements Listener {
         PlayerSettings s = getSettings(player);
         conf.set("type", s.type);
         conf.set("disableWAILA", s.disabled);
+        conf.set("abProgressMode", s.abProgressMode.name());
         return conf;
     }
 }
