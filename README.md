@@ -1,5 +1,61 @@
-[![Modrinth Downloads](https://img.shields.io/modrinth/dt/what-is-that?style=flat-square&logo=modrinth&link=https%3A%2F%2Fmodrinth.com%2Fplugin%2Fwhat-is-that)](https://modrinth.com/plugin/what-is-that/)[![Spiget Downloads](https://img.shields.io/spiget/downloads/120891?style=flat-square&logo=spigotmc&link=https%3A%2F%2Fwww.spigotmc.org%2Fresources%2Fwhat-is-that.120891%2F)](https://www.spigotmc.org/resources/what-is-that.120891/)[![Static Badge](https://img.shields.io/badge/-wiki-gray?style=flat-square&logo=readthedocs&link=https%3A%2F%2Fdarksoulq.github.io%2Fwit-docs%2Fapi.html)](https://darksoulq.github.io/wit-docs/api.html)[![Discord](https://img.shields.io/discord/1204752282919370812?style=flat-square&logo=discord&link=https%3A%2F%2Fdiscord.gg%2Fe35gP423vN)](https://discord.gg/e35gP423vN)
-<img src="imgs/witpage2.png" alt="Description" style="width: 100%; height : 99%;">
+<div align="center" style="line-height:0;">
+  <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/banner.png" />
+  <br/>
+  <a href="https://discord.gg/e35gP423vN"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/discord.png"/></a><a href="https://jitpack.io/#darksoulq/WhatIsThat"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/builds.png"/></a><a href="https://darksoulq.github.io/wit-docs/api.html"><img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/docs.png"/></a>
+</div>
 
-## Note:
-As the plugin is in early release, there may be missing translations for specific vanilla blocks, if you find them, please report it in the Issues section!
+---
+
+## Features
+
+Adds detailed block and entity information directly in-game, including:
+
+- Block break progress
+- Container contents
+- Redstone levels
+- Required tools and tiers
+- Horse Speed and Jump strength
+- Mob owner
+- Villager Profession
+- And much more
+
+It also provides a simple and easy-to-use API, allowing other plugins to integrate seamlessly and extend functionality.
+
+---
+
+<div align="center">
+
+  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/block-breaking.gif">
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/block-breaking.gif" width="45%" />
+  </a>
+  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/redstone.gif">
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/redstone.gif" width="45%" />
+  </a>
+
+  <br/>
+
+  <sub><b>Block Break Progress</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Redstone Level Detection</b></sub>
+
+  <br/><br/>
+
+  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/horse-attrib.png">
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/horse-attrib.png" width="45%" />
+  </a>
+  <a href="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/villager-prof.png">
+    <img src="https://cdn.jsdelivr.net/gh/darksoulq/ImageStorage/plugin_icons/v1/what-is-that/villager-prof.png" width="45%" />
+  </a>
+
+  <br/>
+
+  <sub><b>Horse Attributes</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Villager Professions</b></sub>
+
+</div>
+
+---
+
+## Credits
+
+Inspired by:
+
+- [Jade](https://modrinth.com/mod/jade)
+- [WAILA (What Am I Looking At)](https://www.curseforge.com/minecraft/mc-mods/waila)

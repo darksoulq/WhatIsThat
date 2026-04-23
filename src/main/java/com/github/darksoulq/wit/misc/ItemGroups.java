@@ -15,11 +15,10 @@ public class ItemGroups {
 
     static {
         // Containers
-        CONTAINERS.add(Material.CHEST);
-        CONTAINERS.add(Material.TRAPPED_CHEST);
         CONTAINERS.add(Material.BARREL);
         CONTAINERS.add(Material.HOPPER);
         for (Material mat : Material.values()) if (mat.name().endsWith("SHULKER_BOX")) CONTAINERS.add(mat);
+        for (Material mat : Material.values()) if (mat.name().endsWith("CHEST")) CONTAINERS.add(mat);
 
         // BlackListed Blocks
         for (String mat : WITListener.getConfig().getStringList("block-blacklist")) {

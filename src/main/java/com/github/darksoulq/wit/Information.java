@@ -13,6 +13,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WebBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -104,7 +106,9 @@ public class Information {
     public static final ToolTier DIAMOND_PICKAXE = new ToolTier(new NamespacedKey("default", "diamond_pickaxe"), ItemStack.of(Material.DIAMOND_PICKAXE), 5) {};
     public static final ToolTier DIAMOND_SHOVEL = new ToolTier(new NamespacedKey("default", "diamond_shovel"), ItemStack.of(Material.DIAMOND_SHOVEL), 5) {};
     public static final ToolTier DIAMOND_HOE = new ToolTier(new NamespacedKey("default", "diamond_hoe"), ItemStack.of(Material.DIAMOND_HOE), 5) {};
-    public static final ToolTier DIAMOND_SWORD = new ToolTier(new NamespacedKey("default", "diamond_sword"), ItemStack.of(Material.DIAMOND_SWORD), 45) {};
+    public static final ToolTier DIAMOND_SWORD = new ToolTier(new NamespacedKey("default", "diamond_sword"), ItemStack.of(Material.DIAMOND_SWORD), 5) {};
+
+    public static final ToolTier SHEARS = new ToolTier(new NamespacedKey("default", "shears"), ItemStack.of(Material.SHEARS), 0) {};
 
     private static String STR_RS_ON, STR_RS_OFF, STR_RS_LVL;
     private static String STR_CROP_AGE_1, STR_CROP_AGE_2, STR_CROP_AGE_3, STR_CROP_AGE_4;
@@ -122,6 +126,9 @@ public class Information {
 
     public static final Function<ItemStack, ToolTier> VANILLA_TIER_GETTER = item -> {
         Material mat = item.getType();
+
+        if (mat == Material.SHEARS) return SHEARS;
+
         ToolTier cached = VANILLA_TIER_CACHE.get(mat);
         if (cached != null) return cached;
 
@@ -169,10 +176,16 @@ public class Information {
         }
 
         if (nmsBlock == null) return null;
-        return getToolTier(nmsBlock.defaultBlockState().getTags().toList());
+        return getToolTier(nmsBlock.defaultBlockState().getTags().toList(), nmsBlock);
     };
 
-    private static @Nullable ToolTier getToolTier(List<TagKey<net.minecraft.world.level.block.Block>> tags) {
+    private static @Nullable ToolTier getToolTier(List<TagKey<net.minecraft.world.level.block.Block>> tags, net.minecraft.world.level.block.Block block) {
+        if (tags.contains(BlockTags.LEAVES) || tags.contains(BlockTags.WOOL)) {
+            return SHEARS;
+        } else if (block instanceof WebBlock) {
+            return WOODEN_SWORD;
+        }
+
         ToolTier baseTier = null;
         String preferredType = null;
 
@@ -180,6 +193,7 @@ public class Information {
         else if (tags.contains(BlockTags.MINEABLE_WITH_PICKAXE)) preferredType = "pickaxe";
         else if (tags.contains(BlockTags.MINEABLE_WITH_SHOVEL)) preferredType = "shovel";
         else if (tags.contains(BlockTags.MINEABLE_WITH_HOE)) preferredType = "hoe";
+        else if (tags.contains(BlockTags.SWORD_EFFICIENT) || tags.contains(BlockTags.SWORD_INSTANTLY_MINES)) preferredType = "sword";
 
         if (tags.contains(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)) baseTier = getTierByType(preferredType, "diamond");
         else if (tags.contains(BlockTags.INCORRECT_FOR_IRON_TOOL)) baseTier = getTierByType(preferredType, "diamond");
@@ -583,7 +597,7 @@ public class Information {
         STR_LEASH = valuesFile.getString("minecraft.entity_is_leashed", "<leash_icon> ");
         STR_HEALTH = valuesFile.getString("minecraft.entity_health", " <heart_icon> <red><entity_health>/<entity_max_health></red>");
         STR_PROFESSION = valuesFile.getString("minecraft.villager_profession", " <gray><profession></gray>");
-        STR_TNT = valuesFile.getString("minecraft.tnt_fuse_time", " <red>\\uD83D\\uDCA3<fuse_time></red>");
+        STR_TNT = valuesFile.getString("minecraft.tnt_fuse_time", " <red>\uD83D\uDCA3<fuse_time></red>");
         STR_HORSE_SPD = valuesFile.getString("minecraft.horse_speed", " <speed_icon> <horse_speed>");
         STR_HORSE_JMP = valuesFile.getString("minecraft.horse_jump_strength", " <jump_icon> <horse_jump_strength>");
 
