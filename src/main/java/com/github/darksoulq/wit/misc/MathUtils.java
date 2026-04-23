@@ -8,10 +8,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 public class MathUtils {
 
@@ -52,5 +56,70 @@ public class MathUtils {
             return player.getWorld().getBlockAt(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ());
         }
         return null;
+    }
+
+    public static float getToolMultiplier(ItemStack item, Block block) {
+        Material type = item.getType();
+        Material blockType = block.getType();
+        String name = type.name();
+
+        if (name.endsWith("_SWORD")) return blockType == Material.COBWEB ? 15f : 1.5f;
+        if (name.endsWith("_SHEARS")) return (blockType.name().contains("LEAVES") || blockType.name().contains("WOOL")) ? 5f : 15f;
+        if (name.contains("NETHERITE")) return 9f;
+        if (name.contains("DIAMOND")) return 8f;
+        if (name.contains("IRON")) return 6f;
+        if (name.contains("STONE")) return 4f;
+        if (name.contains("WOODEN") || name.contains("GOLDEN")) return 2f;
+
+        return 1f;
+    }
+
+    public static long calculateBreakTimeMs(Block block, Player player) {
+        float hardness = block.getType().getHardness();
+        if (hardness < 0) return -1;
+        if (hardness == 0) return 0;
+
+        ItemStack tool = player.getInventory().getItemInMainHand();
+        boolean canHarvest = block.isPreferredTool(tool);
+
+        float speedMultiplier = 1f;
+        if (canHarvest || tool.getType().name().contains("SHEARS") || tool.getType().name().contains("SWORD")) {
+            speedMultiplier = getToolMultiplier(tool, block);
+        }
+
+        if (canHarvest && tool.containsEnchantment(Enchantment.EFFICIENCY)) {
+            int effLevel = tool.getEnchantmentLevel(Enchantment.EFFICIENCY);
+            speedMultiplier += (effLevel * effLevel + 1);
+        }
+
+        if (player.hasPotionEffect(PotionEffectType.HASTE)) {
+            speedMultiplier *= (1f + (0.2f * (player.getPotionEffect(PotionEffectType.HASTE).getAmplifier() + 1)));
+        }
+
+        if (player.hasPotionEffect(PotionEffectType.CONDUIT_POWER)) {
+            speedMultiplier *= (1f + (0.2f * (player.getPotionEffect(PotionEffectType.CONDUIT_POWER).getAmplifier() + 1)));
+        }
+
+        if (player.hasPotionEffect(PotionEffectType.MINING_FATIGUE)) {
+            int fatigueLevel = player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier();
+            speedMultiplier *= (float) Math.pow(0.3, fatigueLevel + 1);
+        }
+
+        if (player.isInWater() && !tool.containsEnchantment(Enchantment.AQUA_AFFINITY)) {
+            ItemStack helmet = player.getInventory().getHelmet();
+            if (helmet == null || !helmet.containsEnchantment(Enchantment.AQUA_AFFINITY)) {
+                speedMultiplier /= 5f;
+            }
+        }
+
+        if (!player.isOnGround()) {
+            speedMultiplier /= 5f;
+        }
+
+        float damage = speedMultiplier / hardness / (canHarvest ? 30f : 100f);
+        if (damage > 1f) return 0;
+
+        int ticks = (int) Math.ceil(1f / damage);
+        return ticks * 50L;
     }
 }

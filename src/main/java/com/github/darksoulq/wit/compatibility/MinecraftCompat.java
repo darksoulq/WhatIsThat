@@ -4,9 +4,8 @@ import com.github.darksoulq.wit.Information;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.API;
 import com.github.darksoulq.wit.api.Info;
-import com.github.darksoulq.wit.misc.Events;
+import com.github.darksoulq.wit.api.ProgressProviders;
 import com.github.darksoulq.wit.misc.ItemGroups;
-import com.github.darksoulq.wit.misc.MathUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -70,11 +69,10 @@ public class MinecraftCompat {
         if (!ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
             Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
             Info info = new Info();
-            float progress = 0;
+            float progress = 0f;
 
             if (BREAK_PROGRESS) {
-                Float p = Events.BREAK_PROGRESS.get(MathUtils.getBlockKey(block.getX(), block.getY(), block.getZ()));
-                if (p != null) progress = p;
+                progress = ProgressProviders.getProgress(block, player);
             }
 
             for (Function<Block, Component> func : blockSuffix) {
@@ -87,7 +85,7 @@ public class MinecraftCompat {
                 info.addPrefix(func.apply(block));
             }
             info.setName(key);
-            API.updateBar(info, 1 - progress, player);
+            API.updateBar(info, 1f - progress, player);
             return true;
         }
         return false;
