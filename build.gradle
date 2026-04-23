@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.darksoulq'
-version = '1.9.0-mc.1.21.11'
+version = '1.9.0-mc.26.1.2'
 
 repositories {
     mavenCentral()
