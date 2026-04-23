@@ -1,5 +1,6 @@
 package com.github.darksoulq.wit.display;
 
+import com.github.darksoulq.wit.api.Info;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
@@ -20,7 +21,8 @@ public class BossBarDisplay extends InfoDisplay {
     }
 
     @Override
-    public void setBar(Player player, Component text) {
+    public void setBar(Player player, Info info) {
+        Component text = info.getCombined();
         ServerBossEvent bar = playerBossBars.get(player.getUniqueId());
         net.minecraft.network.chat.Component vanillaText = PaperAdventure.asVanilla(text);
 

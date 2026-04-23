@@ -1,6 +1,7 @@
 package com.github.darksoulq.wit.display;
 
 import com.github.darksoulq.wit.WITListener;
+import com.github.darksoulq.wit.api.Info;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,7 @@ public class DisplayManager {
         displays.put(display.getId(), display);
     }
 
-    public static void setBar(Player player, Component text) {
+    public static void setBar(Player player, Info text) {
         String type = WITListener.getSettings(player).type;
         if (!WITListener.isHidden()) {
             InfoDisplay display = displays.get(type);
