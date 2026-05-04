@@ -187,7 +187,7 @@ public class WCommands {
             }
         });
 
-        if (!WITListener.DISABLED_WORLDS.contains(player.getWorld().getName())) {
+        if (!WITListener.isDisabledWorld(player.getWorld())) {
             WITListener.addPlayer(player);
             DisplayManager.setBar(player, new Info());
         }

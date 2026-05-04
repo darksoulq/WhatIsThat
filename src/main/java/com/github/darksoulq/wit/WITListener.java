@@ -7,6 +7,7 @@ import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import com.github.darksoulq.wit.misc.MathUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -27,6 +28,7 @@ public class WITListener implements Listener {
     public static final File PREF_FOLDER = new File(WIT.instance().getDataFolder(), "cache/players");
     private static final Set<UUID> PLAYERS = ConcurrentHashMap.newKeySet();
     public static final Set<String> DISABLED_WORLDS = ConcurrentHashMap.newKeySet();
+    private static final Map<UUID, Boolean> CACHED_WORLD_CHECKS = new ConcurrentHashMap<>();
     private static final Map<UUID, Info> LOOKING_AT = new ConcurrentHashMap<>();
     private static final Map<UUID, PlayerSettings> SETTINGS = new ConcurrentHashMap<>();
 
@@ -81,7 +83,7 @@ public class WITListener implements Listener {
     }
 
     private void updateWAILA(Player player) {
-        if (DISABLED_WORLDS.contains(player.getWorld().getName())) return;
+        if (isDisabledWorld(player.getWorld())) return;
 
         Entity entity = MathUtils.isLookingAtEntity(player, ENTITY_DISTANCE);
         if (entity != null) {
@@ -123,7 +125,27 @@ public class WITListener implements Listener {
         DEFAULT_DISABLED = "disabled".equalsIgnoreCase(CONFIG.getString("core.default_state", "enabled"));
 
         DISABLED_WORLDS.clear();
-        DISABLED_WORLDS.addAll(CONFIG.getStringList("core.disabled-worlds"));
+        CACHED_WORLD_CHECKS.clear();
+        for (String worldConfig : CONFIG.getStringList("world-blacklist")) {
+            DISABLED_WORLDS.add(worldConfig.toLowerCase());
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!isDisabledWorld(player.getWorld())) {
+                addPlayer(player);
+                DisplayManager.setBar(player, new Info());
+            } else {
+                removePlayer(player);
+                DisplayManager.removeBar(player, SETTINGS.get(player.getUniqueId()).type);
+            }
+        }
+    }
+
+    public static boolean isDisabledWorld(World world) {
+        return CACHED_WORLD_CHECKS.computeIfAbsent(world.getUID(), uid -> {
+            String name = world.getName().toLowerCase();
+            String key = world.getKey().toString().toLowerCase();
+            return DISABLED_WORLDS.contains(name) || DISABLED_WORLDS.contains(key);
+        });
     }
 
     public static void removePlayer(Player player) {
@@ -131,6 +153,7 @@ public class WITListener implements Listener {
     }
 
     public static void addPlayer(Player player) {
+        if (PLAYERS.contains(player.getUniqueId())) return;
         PLAYERS.add(player.getUniqueId());
     }
 
