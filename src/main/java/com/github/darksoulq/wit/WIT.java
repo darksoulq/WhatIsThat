@@ -29,7 +29,7 @@ public final class WIT extends JavaPlugin {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             WITListener.loadSettings(player, () -> {
-                if (!WITListener.getSettings(player).disabled && !WITListener.DISABLED_WORLDS.contains(player.getWorld().getName())) {
+                if (!WITListener.getSettings(player).disabled && !WITListener.isDisabledWorld(player.getWorld())) {
                     WITListener.addPlayer(player);
                 }
             });

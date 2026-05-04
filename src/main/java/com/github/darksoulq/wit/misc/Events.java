@@ -44,7 +44,7 @@ public class Events implements Listener {
     @EventHandler
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
         ProgressProviders.SESSIONS.remove(event.getPlayer().getUniqueId());
-        if (WITListener.DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
+        if (WITListener.isDisabledWorld(event.getPlayer().getWorld())) {
             DisplayManager.removeBar(event.getPlayer(), WITListener.getSettings(event.getPlayer()).type);
             WITListener.removePlayer(event.getPlayer());
         } else {
@@ -64,7 +64,7 @@ public class Events implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         WITListener.loadSettings(event.getPlayer(), () -> {
             WITListener.PlayerSettings settings = WITListener.getSettings(event.getPlayer());
-            if (!settings.disabled && !WITListener.DISABLED_WORLDS.contains(event.getPlayer().getWorld().getName())) {
+            if (!settings.disabled && !WITListener.isDisabledWorld(event.getPlayer().getWorld())) {
                 WITListener.addPlayer(event.getPlayer());
             }
         });
