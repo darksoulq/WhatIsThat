@@ -6,6 +6,7 @@ import com.github.darksoulq.wit.display.DisplayManager;
 import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import com.github.darksoulq.wit.misc.MathUtils;
+import com.github.darksoulq.wit.misc.scheduler.Clock;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -69,17 +70,14 @@ public class WITListener implements Listener {
             }
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (IS_HIDDEN) return;
-                for (UUID playerID : PLAYERS) {
-                    Player player = Bukkit.getPlayer(playerID);
-                    if (player == null || (SNEAKING_MODE && !player.isSneaking())) continue;
-                    updateWAILA(player);
-                }
-            }
-        }.runTaskTimer(WIT.instance(), 0, Math.max(1, CONFIG.getInt("core.update-delay", 5)));
+       WIT.SCHEDULER.schedule(() -> {
+           if (IS_HIDDEN) return;
+           for (UUID playerID : PLAYERS) {
+               Player player = Bukkit.getPlayer(playerID);
+               if (player == null || (SNEAKING_MODE && !player.isSneaking())) continue;
+               WIT.SCHEDULER.schedule(() -> updateWAILA(player)).entity(player).once();
+           }
+        }).repeatEvery(Math.max(1, CONFIG.getInt("core.update-delay", 5)), Clock.TICKS);
     }
 
     private void updateWAILA(Player player) {
@@ -182,7 +180,7 @@ public class WITListener implements Listener {
     }
 
     public static void loadSettings(Player player, Runnable callback) {
-        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+        WIT.SCHEDULER.schedule(() -> {
             File file = new File(PREF_FOLDER, player.getName() + ".yml");
             YamlConfiguration conf = new YamlConfiguration();
             if (!file.exists()) {
@@ -213,9 +211,9 @@ public class WITListener implements Listener {
             ));
 
             if (callback != null) {
-                Bukkit.getScheduler().runTask(WIT.instance(), callback);
+                WIT.SCHEDULER.schedule(callback).once();
             }
-        });
+        }).async().once();
     }
 
     public static void unloadSettings(Player player) {

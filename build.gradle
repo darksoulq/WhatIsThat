@@ -1,60 +1,67 @@
 plugins {
-    id 'java'
-    id "io.papermc.paperweight.userdev" version "2.0.0-beta.21"
-    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id 'java-library'
+    id 'io.papermc.paperweight.userdev' version '2.0.0-beta.21'
+    id 'xyz.jpenilla.run-paper' version '3.0.2'
 }
 
 group = 'com.github.darksoulq'
-version = '1.9.1-mc.26.1.2'
+version = '1.9.2-mc.26.1.2'
+
+def targetJavaVersion = 25
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+}
 
 repositories {
     mavenCentral()
+
     maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
+        name = 'papermc-repo'
+        url = uri('https://repo.papermc.io/repository/maven-public/')
     }
+
     maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
+        name = 'sonatype'
+        url = uri('https://oss.sonatype.org/content/groups/public/')
     }
+
     // PlaceholderAPI
     maven {
-        url = 'https://repo.extendedclip.com/releases/'
+        name = 'placeholderapi'
+        url = uri('https://repo.extendedclip.com/releases/')
     }
 }
 
 dependencies {
-    paperweight.paperDevBundle("26.1.2.build.12-alpha")
-    compileOnly('me.clip:placeholderapi:2.11.6')
+    paperweight.paperDevBundle('26.1.2.build.12-alpha')
+    compileOnly 'me.clip:placeholderapi:2.11.6'
 }
 
-def targetJavaVersion = 25
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-}
+runPaper.folia.registerTask()
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
+    options.release.set(targetJavaVersion)
 }
 
-processResources {
+tasks.named('runServer') {
+    minecraftVersion('26.1.2')
+    jvmArgs '-Xms2G', '-Xmx2G', '-Dcom.mojang.eula.agree=true'
+}
+
+tasks.named('runFolia') {
+    minecraftVersion('26.1.2')
+    jvmArgs '-Xms2G', '-Xmx2G', '-Dcom.mojang.eula.agree=true'
+}
+
+tasks.named('processResources') {
     def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('paper-plugin.yml') {
-        expand props
-    }
-}
 
-tasks.runServer {
-    minecraftVersion("26.1.2")
+    inputs.properties(props)
+    filteringCharset = 'UTF-8'
+
+    filesMatching('paper-plugin.yml') {
+        expand(props)
+    }
 }

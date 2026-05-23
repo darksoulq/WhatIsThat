@@ -158,7 +158,7 @@ public class WCommands {
         DisplayManager.removeBar(player, settings.type);
         WITListener.setLookingAt(player, null);
 
-        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+        WIT.SCHEDULER.schedule(() -> {
             File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
             try {
                 if (!playerFile.exists()) playerFile.createNewFile();
@@ -168,14 +168,14 @@ public class WCommands {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }).async().once();
         player.sendMessage("WAILA bar disabled.");
     }
 
     private static void enableBar(Player player, WITListener.PlayerSettings settings) {
         settings.disabled = false;
 
-        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+        WIT.SCHEDULER.schedule(() -> {
             File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
             try {
                 if (!playerFile.exists()) playerFile.createNewFile();
@@ -185,7 +185,7 @@ public class WCommands {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }).async().once();
 
         if (!WITListener.isDisabledWorld(player.getWorld())) {
             WITListener.addPlayer(player);
