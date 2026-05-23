@@ -1,6 +1,8 @@
 package com.github.darksoulq.wit;
 
 import com.github.darksoulq.wit.compatibility.PlaceholderAPICompat;
+import com.github.darksoulq.wit.misc.scheduler.Clock;
+import com.github.darksoulq.wit.misc.scheduler.Scheduler;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import com.github.darksoulq.wit.command.WCommands;
 import com.github.darksoulq.wit.display.ActionBarDisplay;
@@ -18,11 +20,14 @@ import java.util.logging.Logger;
 public final class WIT extends JavaPlugin {
     private static WIT INSTANCE;
     public static Logger LOGGER;
+    public static Scheduler SCHEDULER;
 
     @Override
     public void onEnable() {
         INSTANCE = this;
         LOGGER = getLogger();
+        SCHEDULER = new Scheduler(this);
+
         setupDisplays();
         WITListener.setup();
         Handlers.setup();
@@ -35,12 +40,7 @@ public final class WIT extends JavaPlugin {
             });
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getPluginManager().callEvent(new Information.StartTierRegistrationEvent());
-            }
-        }.runTaskLater(this, 10);
+        SCHEDULER.schedule(() -> Bukkit.getPluginManager().callEvent(new Information.StartTierRegistrationEvent())).after(10L, Clock.TICKS).once();
 
         if (WITListener.getConfig().getBoolean("core.bstats", true)) {
             new Metrics(INSTANCE, 25423);
