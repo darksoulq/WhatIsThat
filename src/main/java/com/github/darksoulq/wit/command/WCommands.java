@@ -139,7 +139,7 @@ public class WCommands {
         DisplayManager.removeBar(player, settings.type);
         settings.type = type;
 
-        Bukkit.getScheduler().runTaskAsynchronously(WIT.instance(), () -> {
+        WIT.SCHEDULER.schedule(() -> {
             File playerFile = new File(WITListener.getPrefFolder(), player.getName() + ".yml");
             try {
                 if (!playerFile.exists()) playerFile.createNewFile();
@@ -149,7 +149,7 @@ public class WCommands {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }).async().once();
         player.sendMessage("WAILA display type set to: " + type);
     }
 

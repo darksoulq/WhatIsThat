@@ -11,6 +11,7 @@ core:
 
 blocks:
   enabled: true
+  dynamic_progress_colors: false
   redstoneinfo: true # Show RedStone power/status
   cropinfo: true # Show Crop age
   beehiveinfo: true # Show Honey in BeeHive/Nest
@@ -25,6 +26,7 @@ blocks:
 
 entities:
   enabled: true
+  dynamic_progress_colors: true
   ageinfo: true # Show Time left for entity to become adult
   ownerinfo: true # Show Name of the player who tamed the animal
   leashinfo: true # Show Whether entity is leashed or not

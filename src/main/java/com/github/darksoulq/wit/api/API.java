@@ -4,6 +4,7 @@ import com.github.darksoulq.wit.Handlers;
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.display.InfoDisplay;
 import com.github.darksoulq.wit.display.DisplayManager;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -115,6 +116,42 @@ public class API {
     public static void updateBar(Info info, float progress, Player player) {
         updateBar(info, player);
         DisplayManager.setProgress(player, progress);
+    }
+
+    /**
+     * Updates the boss bar text and color displayed to a specific player.
+     *
+     * @param info   the new text to display on the boss bar.
+     * @param color  the color to set for the display.
+     * @param player the {@link Player} for whom the boss bar text is updated.
+     */
+    public static void updateBar(Info info, TextColor color, Player player) {
+        updateBar(info, player);
+        DisplayManager.setColor(player, color);
+    }
+
+    /**
+     * Updates the boss bar text, progress, and color displayed to a specific player.
+     *
+     * @param info     the new text to display on the boss bar.
+     * @param progress the progress to set for the bossBar.
+     * @param color    the color to set for the display.
+     * @param player   the {@link Player} for whom the boss bar text is updated.
+     */
+    public static void updateBar(Info info, float progress, TextColor color, Player player) {
+        updateBar(info, player);
+        DisplayManager.setProgress(player, progress);
+        DisplayManager.setColor(player, color);
+    }
+
+    /**
+     * Updates the color displayed to a specific player.
+     *
+     * @param color  the color to set for the display.
+     * @param player the {@link Player} for whom the color is updated.
+     */
+    public static void updateColor(TextColor color, Player player) {
+        DisplayManager.setColor(player, color);
     }
 
     /**

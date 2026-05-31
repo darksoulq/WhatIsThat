@@ -50,3 +50,17 @@ profession:
   NITWIT: " Nitwit"
   SHEPHERD: " Shepherd"
   JOBLESS: " Jobless"
+
+block_color: "green"
+block_progress_colors:
+  25: "red"
+  50: "yellow"
+  75: "green"
+  100: "dark_green"
+
+entity_color: "red"
+entity_progress_colors:
+  25: "dark_red"
+  50: "red"
+  75: "yellow"
+  100: "green"

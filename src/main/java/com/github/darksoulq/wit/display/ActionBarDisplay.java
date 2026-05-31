@@ -5,6 +5,7 @@ import com.github.darksoulq.wit.api.Info;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionBarDisplay extends InfoDisplay {
     private final Map<UUID, Component> currentTextMap = new ConcurrentHashMap<>();
+    private final Map<UUID, TextColor> colorMap = new ConcurrentHashMap<>();
 
     public ActionBarDisplay() {
         super("actionbar");
@@ -34,6 +36,11 @@ public class ActionBarDisplay extends InfoDisplay {
     }
 
     @Override
+    public void setColor(Player player, TextColor color) {
+        colorMap.put(player.getUniqueId(), color != null ? color : NamedTextColor.GREEN);
+    }
+
+    @Override
     public void setProgress(Player player, float value) {
         Component text = currentTextMap.getOrDefault(player.getUniqueId(), Component.empty());
         WITListener.PlayerSettings settings = WITListener.getSettings(player);
@@ -44,19 +51,21 @@ public class ActionBarDisplay extends InfoDisplay {
         }
 
         Component suffix = Component.empty();
+        TextColor activeColor = colorMap.getOrDefault(player.getUniqueId(), NamedTextColor.GREEN);
+
         if (settings.abProgressMode == WITListener.ActionBarProgressMode.BAR) {
             int bars = 10;
             int filled = Math.round(bars * value);
 
             suffix = Component.text(" [")
                 .color(NamedTextColor.DARK_GRAY)
-                .append(Component.text("|".repeat(Math.max(0, filled))).color(NamedTextColor.GREEN))
+                .append(Component.text("|".repeat(Math.max(0, filled))).color(activeColor))
                 .append(Component.text("|".repeat(Math.max(0, bars - filled))).color(NamedTextColor.GRAY))
                 .append(Component.text("]"));
 
         } else if (settings.abProgressMode == WITListener.ActionBarProgressMode.PERCENT) {
             suffix = Component.text(" (" + Math.round(value * 100) + "%)")
-                .color(NamedTextColor.YELLOW);
+                .color(activeColor);
 
         } else if (settings.abProgressMode == WITListener.ActionBarProgressMode.UNDERLINE) {
             int length = 20;
@@ -65,7 +74,7 @@ public class ActionBarDisplay extends InfoDisplay {
             suffix = Component.text("  ")
                 .append(Component.text(" ".repeat(Math.max(0, filled)))
                     .decorate(TextDecoration.UNDERLINED)
-                    .color(NamedTextColor.GREEN))
+                    .color(activeColor))
                 .append(Component.text(" ".repeat(Math.max(0, length - filled)))
                     .decorate(TextDecoration.UNDERLINED)
                     .color(NamedTextColor.GRAY));
@@ -77,6 +86,7 @@ public class ActionBarDisplay extends InfoDisplay {
     @Override
     public void removeBar(Player player) {
         currentTextMap.remove(player.getUniqueId());
+        colorMap.remove(player.getUniqueId());
         sendPacket(player, Component.empty());
     }
 

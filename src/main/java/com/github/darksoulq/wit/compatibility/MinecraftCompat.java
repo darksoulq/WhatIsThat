@@ -7,8 +7,11 @@ import com.github.darksoulq.wit.api.Info;
 import com.github.darksoulq.wit.api.ProgressProviders;
 import com.github.darksoulq.wit.misc.ItemGroups;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -16,6 +19,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 public class MinecraftCompat {
@@ -27,6 +32,13 @@ public class MinecraftCompat {
     private static boolean BREAK_PROGRESS;
     private static boolean TOOL_INFO;
     private static boolean HEALTH_PROGRESS;
+    private static boolean DYNAMIC_BLOCK_COLORS;
+    private static boolean DYNAMIC_ENTITY_COLORS;
+    private static TextColor DEFAULT_BLOCK_COLOR;
+    private static TextColor DEFAULT_ENTITY_COLOR;
+
+    private static TreeMap<Integer, TextColor> blockProgressColors = new TreeMap<>();
+    private static TreeMap<Integer, TextColor> entityProgressColors = new TreeMap<>();
 
     public static void setup() {
         entityPrefix.clear();
@@ -35,9 +47,38 @@ public class MinecraftCompat {
         blockSuffix.clear();
 
         YamlConfiguration config = WITListener.getConfig();
-        BREAK_PROGRESS = config.getBoolean("break-progress", true);
-        TOOL_INFO = config.getBoolean("block.toolinfo", true);
-        HEALTH_PROGRESS = config.getBoolean("health-progress", true);
+        YamlConfiguration values = Information.getValuesFile();
+
+        BREAK_PROGRESS = config.getBoolean("blocks.break-progress", true);
+        TOOL_INFO = config.getBoolean("blocks.toolinfo", true);
+        HEALTH_PROGRESS = config.getBoolean("entities.health-progress", true);
+        DYNAMIC_BLOCK_COLORS = config.getBoolean("blocks.dynamic_progress_colors", false);
+        DYNAMIC_ENTITY_COLORS = config.getBoolean("entities.dynamic_progress_colors", true);
+
+        DEFAULT_BLOCK_COLOR = parseColor(values.getString("block_color", "green"));
+        DEFAULT_ENTITY_COLOR = parseColor(values.getString("entity_color", "red"));
+
+        TreeMap<Integer, TextColor> newBlockColors = new TreeMap<>();
+        ConfigurationSection blockColorsSec = values.getConfigurationSection("block_progress_colors");
+        if (blockColorsSec != null) {
+            for (String keyStr : blockColorsSec.getKeys(false)) {
+                try {
+                    newBlockColors.put(Integer.parseInt(keyStr), parseColor(blockColorsSec.getString(keyStr)));
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        blockProgressColors = newBlockColors;
+
+        TreeMap<Integer, TextColor> newEntityColors = new TreeMap<>();
+        ConfigurationSection entityColorsSec = values.getConfigurationSection("entity_progress_colors");
+        if (entityColorsSec != null) {
+            for (String keyStr : entityColorsSec.getKeys(false)) {
+                try {
+                    newEntityColors.put(Integer.parseInt(keyStr), parseColor(entityColorsSec.getString(keyStr)));
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        entityProgressColors = newEntityColors;
 
         if (config.getBoolean("blocks.containerinfo", true)) blockPrefix.add(Information::defaultGetTotalItemsInContainer);
         if (config.getBoolean("blocks.redstoneinfo", true)) blockSuffix.add(Information::defaultGetRedstoneInfo);
@@ -65,6 +106,23 @@ public class MinecraftCompat {
         setup();
     }
 
+    private static TextColor parseColor(String str) {
+        if (str == null || str.isEmpty()) return NamedTextColor.WHITE;
+        if (str.startsWith("#")) {
+            TextColor c = TextColor.fromHexString(str);
+            return c != null ? c : NamedTextColor.WHITE;
+        }
+        TextColor named = NamedTextColor.NAMES.value(str.toLowerCase());
+        if (named != null) return named;
+        TextColor c = TextColor.fromHexString("#" + str);
+        return c != null ? c : NamedTextColor.WHITE;
+    }
+
+    private static TextColor getMatchingColor(TreeMap<Integer, TextColor> colorMap, int percentage, TextColor fallback) {
+        Map.Entry<Integer, TextColor> entry = colorMap.ceilingEntry(percentage);
+        return entry != null ? entry.getValue() : fallback;
+    }
+
     public static boolean handleBlock(Block block, Player player) {
         if (!ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
             Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
@@ -85,7 +143,15 @@ public class MinecraftCompat {
                 info.addPrefix(func.apply(block));
             }
             info.setName(key);
-            API.updateBar(info, 1f - progress, player);
+
+            float displayProgress = 1f - progress;
+            TextColor activeColor = DEFAULT_BLOCK_COLOR;
+            if (DYNAMIC_BLOCK_COLORS) {
+                int pct = Math.round(displayProgress * 100);
+                activeColor = getMatchingColor(blockProgressColors, pct, DEFAULT_BLOCK_COLOR);
+            }
+
+            API.updateBar(info, displayProgress, activeColor, player);
             return true;
         }
         return false;
@@ -115,7 +181,15 @@ public class MinecraftCompat {
             info.addPrefix(func.apply(entity));
         }
         info.setName(key);
-        API.updateBar(info, 1 - health, player);
+
+        float displayProgress = 1f - health;
+        TextColor activeColor = DEFAULT_ENTITY_COLOR;
+        if (DYNAMIC_ENTITY_COLORS) {
+            int pct = Math.round(displayProgress * 100);
+            activeColor = getMatchingColor(entityProgressColors, pct, DEFAULT_ENTITY_COLOR);
+        }
+
+        API.updateBar(info, displayProgress, activeColor, player);
         return true;
     }
 }

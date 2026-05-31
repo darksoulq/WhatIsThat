@@ -3,6 +3,8 @@ package com.github.darksoulq.wit.display;
 import com.github.darksoulq.wit.api.Info;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.world.BossEvent;
@@ -18,6 +20,19 @@ public class BossBarDisplay extends InfoDisplay {
 
     public BossBarDisplay() {
         super("bossbar");
+    }
+
+    private BossEvent.BossBarColor mapToBossBarColor(TextColor color) {
+        if (color == null) return BossEvent.BossBarColor.WHITE;
+
+        int hex = color.value();
+        if (hex == NamedTextColor.RED.value() || hex == NamedTextColor.DARK_RED.value()) return BossEvent.BossBarColor.RED;
+        if (hex == NamedTextColor.BLUE.value() || hex == NamedTextColor.DARK_BLUE.value() || hex == NamedTextColor.AQUA.value()) return BossEvent.BossBarColor.BLUE;
+        if (hex == NamedTextColor.GREEN.value() || hex == NamedTextColor.DARK_GREEN.value()) return BossEvent.BossBarColor.GREEN;
+        if (hex == NamedTextColor.YELLOW.value() || hex == NamedTextColor.GOLD.value()) return BossEvent.BossBarColor.YELLOW;
+        if (hex == NamedTextColor.LIGHT_PURPLE.value() || hex == NamedTextColor.DARK_PURPLE.value()) return BossEvent.BossBarColor.PURPLE;
+
+        return BossEvent.BossBarColor.WHITE;
     }
 
     @Override
@@ -46,6 +61,18 @@ public class BossBarDisplay extends InfoDisplay {
         if (bar != null && bar.getProgress() != value) {
             bar.setProgress(value);
             ((CraftPlayer) player).getHandle().connection.send(ClientboundBossEventPacket.createUpdateProgressPacket(bar));
+        }
+    }
+
+    @Override
+    public void setColor(Player player, TextColor color) {
+        ServerBossEvent bar = playerBossBars.get(player.getUniqueId());
+        if (bar != null) {
+            BossEvent.BossBarColor finalColor = mapToBossBarColor(color);
+            if (bar.getColor() != finalColor) {
+                bar.setColor(finalColor);
+                ((CraftPlayer) player).getHandle().connection.send(ClientboundBossEventPacket.createUpdateStylePacket(bar));
+            }
         }
     }
 
