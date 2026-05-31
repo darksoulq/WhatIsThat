@@ -189,4 +189,17 @@ public class MinecraftCompat {
         API.updateBar(info, displayProgress, activeColor, player);
         return true;
     }
+
+    public static List<Function<Block, Component>> getBlockPrefix() {
+        return blockPrefix;
+    }
+    public static List<Function<Block, Component>> getBlockSuffix() {
+        return blockSuffix;
+    }
+    public static List<Function<Entity, Component>> getEntityPrefix() {
+        return entityPrefix;
+    }
+    public static List<Function<Entity, Component>> getEntitySuffix() {
+        return entitySuffix;
+    }
 }

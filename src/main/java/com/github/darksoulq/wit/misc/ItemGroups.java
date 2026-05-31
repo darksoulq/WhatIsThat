@@ -24,12 +24,10 @@ public class ItemGroups {
 
         BLOCK_WHITELIST = WITListener.getConfig().getBoolean("core.block_whitelist", false);
         ENTITY_WHITELIST = WITListener.getConfig().getBoolean("core.entity_whitelist", false);
-        // BlackListed Blocks
         for (String mat : WITListener.getConfig().getStringList("block-blacklist")) {
             BlACKLISTED_BLOCKS.add(Material.valueOf(mat));
         }
 
-        // Entities to not render for
         for (String type : WITListener.getConfig().getStringList("entity-blacklist")) {
             BLACKLISTED_ENTITIES.add(EntityType.valueOf(type));
         }
@@ -39,6 +37,8 @@ public class ItemGroups {
         BLACKLISTED_ENTITIES.clear();
         BlACKLISTED_BLOCKS.clear();
 
+        BLOCK_WHITELIST = WITListener.getConfig().getBoolean("core.block_whitelist", false);
+        ENTITY_WHITELIST = WITListener.getConfig().getBoolean("core.entity_whitelist", false);
         for (String type : WITListener.getConfig().getStringList("entity-blacklist")) {
             BLACKLISTED_ENTITIES.add(EntityType.valueOf(type));
         }
