@@ -11,6 +11,8 @@ public class ItemGroups {
     private static final List<Material> CONTAINERS = new ArrayList<>();
     private static final List<EntityType> BLACKLISTED_ENTITIES = new ArrayList<>();
     private static final List<Material> BlACKLISTED_BLOCKS = new ArrayList<>();
+    private static boolean BLOCK_WHITELIST = false;
+    private static boolean ENTITY_WHITELIST = false;
 
     static {
         // Containers
@@ -20,6 +22,8 @@ public class ItemGroups {
         for (Material mat : Material.values()) if (mat.name().endsWith("CHEST")) CONTAINERS.add(mat);
 
         // BlackListed Blocks
+        BLOCK_WHITELIST = WITListener.getConfig().getBoolean("core.block_whitelist");
+        ENTITY_WHITELIST = WITListener.getConfig().getBoolean("core.entity_whitelist");
         for (String mat : WITListener.getConfig().getStringList("block-blacklist")) {
             BlACKLISTED_BLOCKS.add(Material.valueOf(mat));
         }
@@ -49,5 +53,23 @@ public class ItemGroups {
     }
     public static List<EntityType> getBlacklistedEntities() {
         return BLACKLISTED_ENTITIES;
+    }
+
+    public static boolean isBlockWhitelist() {
+        return BLOCK_WHITELIST;
+    }
+
+    public static boolean isEntityWhitelist() {
+        return ENTITY_WHITELIST;
+    }
+
+    public static boolean isAllowedBlock(Material type) {
+        boolean contains = ItemGroups.getBlacklistedBlocks().contains(type);
+        return ItemGroups.isBlockWhitelist() == contains;
+    }
+
+    public static boolean isAllowedEntity(EntityType type) {
+        boolean contains = ItemGroups.getBlacklistedEntities().contains(type);
+        return ItemGroups.isEntityWhitelist() == contains;
     }
 }

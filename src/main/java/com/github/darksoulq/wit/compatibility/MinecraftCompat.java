@@ -124,36 +124,33 @@ public class MinecraftCompat {
     }
 
     public static boolean handleBlock(Block block, Player player) {
-        if (!ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
-            Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
-            Info info = new Info();
-            float progress = 0f;
+        Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
+        Info info = new Info();
+        float progress = 0f;
 
-            if (BREAK_PROGRESS) {
-                progress = ProgressProviders.getProgress(block, player);
-            }
-
-            for (Function<Block, Component> func : blockSuffix) {
-                info.addSuffix(func.apply(block));
-            }
-            if (TOOL_INFO) {
-                info.addPrefix(Information.defaultGetToolToBreak(block, player));
-            }
-            for (Function<Block, Component> func : blockPrefix) {
-                info.addPrefix(func.apply(block));
-            }
-            info.setName(key);
-            float displayProgress = 1f - progress;
-            TextColor activeColor = DEFAULT_BLOCK_COLOR;
-            if (DYNAMIC_BLOCK_COLORS) {
-                int pct = Math.round(displayProgress * 100);
-                activeColor = getMatchingColor(blockProgressColors, pct, DEFAULT_BLOCK_COLOR);
-            }
-
-            API.updateBar(info, displayProgress, activeColor, player);
-            return true;
+        if (BREAK_PROGRESS) {
+            progress = ProgressProviders.getProgress(block, player);
         }
-        return false;
+
+        for (Function<Block, Component> func : blockSuffix) {
+            info.addSuffix(func.apply(block));
+        }
+        if (TOOL_INFO) {
+            info.addPrefix(Information.defaultGetToolToBreak(block, player));
+        }
+        for (Function<Block, Component> func : blockPrefix) {
+            info.addPrefix(func.apply(block));
+        }
+        info.setName(key);
+        float displayProgress = 1f - progress;
+        TextColor activeColor = DEFAULT_BLOCK_COLOR;
+        if (DYNAMIC_BLOCK_COLORS) {
+            int pct = Math.round(displayProgress * 100);
+            activeColor = getMatchingColor(blockProgressColors, pct, DEFAULT_BLOCK_COLOR);
+        }
+
+        API.updateBar(info, displayProgress, activeColor, player);
+        return true;
     }
 
     public static boolean handleEntity(Entity entity, Player player) {
