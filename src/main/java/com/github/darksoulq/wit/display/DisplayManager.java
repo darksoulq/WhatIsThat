@@ -2,6 +2,7 @@ package com.github.darksoulq.wit.display;
 
 import com.github.darksoulq.wit.WITListener;
 import com.github.darksoulq.wit.api.Info;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -30,6 +31,13 @@ public class DisplayManager {
         InfoDisplay display = displays.get(WITListener.getSettings(player).type);
         if (display != null) {
             display.setProgress(player, value);
+        }
+    }
+
+    public static void setColor(Player player, TextColor color) {
+        InfoDisplay display = displays.get(WITListener.getSettings(player).type);
+        if (display != null) {
+            display.setColor(player, color);
         }
     }
 
