@@ -87,7 +87,7 @@ public class WITListener implements Listener {
             for (BiFunction<Entity, Player, Boolean> eHandler : Handlers.getEntityHandlers()) {
                 if (eHandler.apply(entity, player)) return;
             }
-            if (ENTITIES_ENABLED && !ItemGroups.getBlacklistedEntities().contains(entity.getType())) {
+            if (ENTITIES_ENABLED && ItemGroups.isAllowedEntity(entity.getType())) {
                 if (MinecraftCompat.handleEntity(entity, player)) return;
             }
         }
@@ -97,7 +97,7 @@ public class WITListener implements Listener {
             for (BiFunction<Block, Player, Boolean> bHandler : Handlers.getBlockHandlers()) {
                 if (bHandler.apply(block, player)) return;
             }
-            if (BLOCKS_ENABLED && !ItemGroups.getBlacklistedBlocks().contains(block.getType())) {
+            if (BLOCKS_ENABLED && ItemGroups.isAllowedBlock(block.getType())) {
                 if (MinecraftCompat.handleBlock(block, player)) return;
             }
         }

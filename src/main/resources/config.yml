@@ -8,6 +8,8 @@ core:
   mode: "normal" # The mode of the plugin (normal, sneaking, hidden) (hidden mode will hide the bossbars, is useful when you want to display info somewhere else)
   default_state: "enabled" # Whether bossbars should be "disabled" by default or "enabled".
   bstats: true # whether to enable bsStats or not (recommended to keep on)
+  block_whitelist: false # whether to treat "block-blacklist" as a whitelist instead
+  entity_whitelist: false # whether to treat "entity-blacklist" as a whitelist instead
 
 blocks:
   enabled: true
