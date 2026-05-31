@@ -22,8 +22,8 @@ public class ItemGroups {
         for (Material mat : Material.values()) if (mat.name().endsWith("CHEST")) CONTAINERS.add(mat);
 
         // BlackListed Blocks
-        BLOCK_WHITELIST = WITListener.getConfig().getBoolean("core.block_whitelist");
-        ENTITY_WHITELIST = WITListener.getConfig().getBoolean("core.entity_whitelist");
+        BLOCK_WHITELIST = WITListener.getConfig().getBoolean("core.block_whitelist", false);
+        ENTITY_WHITELIST = WITListener.getConfig().getBoolean("core.entity_whitelist", false);
         for (String mat : WITListener.getConfig().getStringList("block-blacklist")) {
             BlACKLISTED_BLOCKS.add(Material.valueOf(mat));
         }
