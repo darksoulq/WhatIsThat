@@ -2,6 +2,7 @@ package com.github.darksoulq.wit;
 
 import com.github.darksoulq.wit.misc.ConfigUtils;
 import com.github.darksoulq.wit.misc.ItemGroups;
+import com.github.darksoulq.wit.misc.Result;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -27,6 +28,7 @@ import org.bukkit.block.data.type.Farmland;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.block.CraftBlockState;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.Event;
@@ -382,14 +384,24 @@ public class Information {
         return Component.empty();
     }
 
-    public static Component defaultGetToolToBreak(Block block, Player player) {
+    public static Result<Component> defaultGetToolToBreak(Block block, Player player) {
         ToolTier reqTier = getRequiredTier(block);
-        if (reqTier == null) return Component.empty();
+        if (reqTier == null) return Result.success(Component.empty());
 
         Key baseKey = reqTier.stack.getDataOrDefault(DataComponentTypes.ITEM_MODEL,
             new NamespacedKey("minecraft", reqTier.stack.getType().name().toLowerCase(Locale.ROOT)));
 
-        return getSprite(Atlases.ITEMS.key, new NamespacedKey(baseKey.namespace(), "item/" + baseKey.value())).append(Component.space());
+        Component spriteComponent = getSprite(Atlases.ITEMS.key, new NamespacedKey(baseKey.namespace(), "item/" + baseKey.value())).append(Component.space());
+
+        net.minecraft.world.level.block.state.BlockState nmsState = ((CraftBlockState) block.getState()).getHandle();
+        boolean isCompatible = true;
+
+        if (nmsState.requiresCorrectToolForDrops()) {
+            net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(player.getInventory().getItemInMainHand());
+            isCompatible = nmsItem.isCorrectToolForDrops(nmsState);
+        }
+
+        return isCompatible ? Result.success(spriteComponent) : Result.failure(spriteComponent);
     }
 
     public static Component defaultGetEntityAgeLeft(Entity entity) {

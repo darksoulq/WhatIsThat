@@ -64,3 +64,6 @@ entity_progress_colors:
   50: "red"
   75: "yellow"
   100: "green"
+
+compatible_tool_color: "white"
+incompatible_tool_color: "gray"

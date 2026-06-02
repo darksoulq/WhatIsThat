@@ -6,6 +6,7 @@ import com.github.darksoulq.wit.api.API;
 import com.github.darksoulq.wit.api.Info;
 import com.github.darksoulq.wit.api.ProgressProviders;
 import com.github.darksoulq.wit.misc.ItemGroups;
+import com.github.darksoulq.wit.misc.Result;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -36,6 +37,8 @@ public class MinecraftCompat {
     private static boolean DYNAMIC_ENTITY_COLORS;
     private static TextColor DEFAULT_BLOCK_COLOR;
     private static TextColor DEFAULT_ENTITY_COLOR;
+    private static TextColor COMPATIBLE_TOOL_COLOR;
+    private static TextColor INCOMPATIBLE_TOOL_COLOR;
 
     private static TreeMap<Integer, TextColor> blockProgressColors = new TreeMap<>();
     private static TreeMap<Integer, TextColor> entityProgressColors = new TreeMap<>();
@@ -57,6 +60,8 @@ public class MinecraftCompat {
 
         DEFAULT_BLOCK_COLOR = parseColor(values.getString("block_color", "green"));
         DEFAULT_ENTITY_COLOR = parseColor(values.getString("entity_color", "red"));
+        COMPATIBLE_TOOL_COLOR = parseColor(values.getString("compatible_tool_color", "white"));
+        INCOMPATIBLE_TOOL_COLOR = parseColor(values.getString("incompatible_tool_color", "gray"));
 
         TreeMap<Integer, TextColor> newBlockColors = new TreeMap<>();
         ConfigurationSection blockColorsSec = values.getConfigurationSection("block_progress_colors");
@@ -127,6 +132,7 @@ public class MinecraftCompat {
         Component key = Component.translatable("block.minecraft." + block.getType().toString().toLowerCase());
         Info info = new Info();
         float progress = 0f;
+        boolean isCompatible = true;
 
         if (BREAK_PROGRESS) {
             progress = ProgressProviders.getProgress(block, player);
@@ -135,13 +141,22 @@ public class MinecraftCompat {
         for (Function<Block, Component> func : blockSuffix) {
             info.addSuffix(func.apply(block));
         }
+
         if (TOOL_INFO) {
-            info.addPrefix(Information.defaultGetToolToBreak(block, player));
+            Result<Component> toolResult = Information.defaultGetToolToBreak(block, player);
+            if (toolResult != null && !Component.empty().equals(toolResult.value())) {
+                info.addPrefix(toolResult.value());
+                isCompatible = toolResult.isSuccess();
+            }
         }
+
         for (Function<Block, Component> func : blockPrefix) {
             info.addPrefix(func.apply(block));
         }
+
+        key = key.color(isCompatible ? COMPATIBLE_TOOL_COLOR : INCOMPATIBLE_TOOL_COLOR);
         info.setName(key);
+
         float displayProgress = 1f - progress;
         TextColor activeColor = DEFAULT_BLOCK_COLOR;
         if (DYNAMIC_BLOCK_COLORS) {
@@ -152,6 +167,7 @@ public class MinecraftCompat {
         API.updateBar(info, displayProgress, activeColor, player);
         return true;
     }
+
     public static boolean handleEntity(Entity entity, Player player) {
         float health = 0;
         if (HEALTH_PROGRESS && entity instanceof LivingEntity le) {
