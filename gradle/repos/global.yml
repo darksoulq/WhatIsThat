@@ -1,0 +1,4 @@
+mavenCentral: "default"
+papermc-repo: "https://repo.papermc.io/repository/maven-public/"
+sonatype: "https://oss.sonatype.org/content/groups/public/"
+placeholderapi: "https://repo.extendedclip.com/releases/"

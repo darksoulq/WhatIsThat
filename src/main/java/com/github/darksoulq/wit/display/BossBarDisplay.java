@@ -43,7 +43,12 @@ public class BossBarDisplay extends InfoDisplay {
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
 
         if (bar == null) {
-            bar = new ServerBossEvent(UUID.randomUUID(), vanillaText, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+            bar =
+                //? >1.21.11 {
+                /*new ServerBossEvent(UUID.randomUUID(), vanillaText, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+                *///?} else {
+                new ServerBossEvent(vanillaText, BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+                //?}
             bar.setProgress(1.0f);
             playerBossBars.put(player.getUniqueId(), bar);
 

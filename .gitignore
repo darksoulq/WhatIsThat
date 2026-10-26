@@ -2,3 +2,4 @@
 .idea/git_toolbox_prj.xml
 build
 run
+gradle.properties
